@@ -1,0 +1,16 @@
+.env
+.venv/
+*.db
+media/
+__pycache__/
+*.pyc
+data/subtitles_samples/*.srt
+backups/
+storage/
+*.db-shm
+*.db-wal
+*.worker.lock
+playwright-report/
+test-results/
+node_modules/
+.monitor-state.json

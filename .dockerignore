@@ -1,0 +1,12 @@
+.venv/
+.git/
+*.db
+media/
+__pycache__/
+.env
+backups/
+storage/
+node_modules/
+*.db-wal
+*.db-shm
+*.worker.lock
