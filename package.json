@@ -1,0 +1,6 @@
+{
+  "name": "scena-ui-checks",
+  "private": true,
+  "scripts": { "test": "node --test tests/ui/*.test.cjs" },
+  "devDependencies": { "jsdom": "^26.0.0" }
+}

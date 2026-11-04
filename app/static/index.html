@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Сцена — ваш общий фильм</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+
+  <nav aria-label="Основная навигация" id="topnav" class="topnav hidden">
+    <button data-nav="/create" class="nav-btn">🎁 Создать</button>
+    <button data-nav="/catalog" class="nav-btn">🎞️ Сцены</button>
+    <button data-nav="/timeline" class="nav-btn">💞 Таймлайн</button>
+    <button data-nav="/dates" class="nav-btn">📅 Даты</button>
+    <button data-nav="/shop" class="nav-btn">🏪 Студия</button>
+    <button data-nav="/admin" class="nav-btn">🛠</button>
+  </nav>
+
+  <main id="app" aria-live="polite"><div class="loading">Загружаем «Сцену»… 🎬</div></main>
+  <div role="status" aria-live="polite" id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

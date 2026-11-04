@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сцена — подари момент из фильма</title>
+  <link rel="stylesheet" href="/app/style.css">
+  <style>
+    .landing { max-width: 760px; margin: 0 auto; padding: 40px 18px 60px; }
+    .hero { text-align: center; padding: 40px 0 20px; }
+    .hero h1 { font-size: 42px; background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--muted); font-size: 18px; margin-top: 10px; }
+    .cta-row { display: flex; gap: 10px; justify-content: center; margin: 24px 0; flex-wrap: wrap; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 28px 0; }
+    .step { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+    .step .n { font-size: 26px; }
+    .step h3 { margin: 8px 0 6px; font-size: 16px; }
+    .step p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .b2b { background: linear-gradient(150deg, var(--panel2), var(--panel)); border: 1px solid #3a3260;
+      border-radius: 20px; padding: 24px; margin: 28px 0; }
+    .b2b h2 { font-size: 22px; margin-bottom: 8px; }
+    .b2b p { color: var(--muted); font-size: 14px; line-height: 1.55; margin-bottom: 8px; }
+    .price-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .price { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; }
+    .price .v { font-size: 20px; font-weight: 800; color: var(--accent); }
+    .price .l { color: var(--muted); font-size: 13px; }
+    footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 40px; line-height: 1.6; }
+    .legal { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <main class="landing">
+    <section class="hero">
+      <div style="font-size:52px">🎬</div>
+      <h1>Сцена</h1>
+      <p>Подари не просто букет — а момент из фильма.<br>С таймкодом, личным сообщением и общим «вашим фильмом».</p>
+      <div class="cta-row">
+        <a class="btn primary" href="/app/" style="text-decoration:none">🎁 Создать подарок</a>
+        <a class="btn ghost" href="https://t.me/scena_bot" style="text-decoration:none">🤖 Бот в Telegram</a>
+      </div>
+    </section>
+
+    <section class="steps">
+      <div class="step"><div class="n">1️⃣</div><h3>Выбери сцену</h3>
+        <p>Каталог из 60+ сцен с поводами и настроениями: признание, извинение, поддержка, 8 марта…</p></div>
+      <div class="step"><div class="n">2️⃣</div><h3>Добавь букет и сообщение</h3>
+        <p>QR-карточка в букет или ссылка в чат. Голосовое, фото, серия на несколько дней, отложенное открытие.</p></div>
+      <div class="step"><div class="n">3️⃣</div><h3>Получатель отвечает сценой</h3>
+        <p>Из сцен складывается ваш общий таймлайн — «ваш фильм» года, которым можно поделиться.</p></div>
+    </section>
+
+    <section class="b2b">
+      <h2>🌷 Цветочным студиям</h2>
+      <p>Вкладывайте QR-карточку «Сцена» в каждый букет: получатель сканирует — и попадает на личную страницу
+        с фильмом и поздравлением, может ответить своей сценой. Вы видите статистику сканов в кабинете.</p>
+      <p>Заказы букетов из открытки идут через партнёрскую ссылку (например, Flowwow): для магазина комиссия
+        площадки 0%, а нам — агентское вознаграждение 10–15% с заказа.</p>
+      <div class="price-row">
+        <div class="price"><div class="v">50 ₽</div><div class="l">за QR-карточку (от 100 шт.)</div></div>
+        <div class="price"><div class="v">990 ₽/мес</div><div class="l">подписка: кабинет + аналитика</div></div>
+        <div class="price"><div class="v">10–15%</div><div class="l">агентская комиссия с букетов</div></div>
+      </div>
+      <div class="cta-row" style="justify-content:flex-start">
+        <a class="btn primary" href="/app/#/shop?id=1" style="text-decoration:none">🏪 Кабинет студии</a>
+      </div>
+    </section>
+
+    <section class="steps">
+      <div class="price"><div class="v">Бесплатно</div><div class="l">создание и открытие подарков</div></div>
+      <div class="price"><div class="v">499 ₽/год</div><div class="l">премиум «ваш фильм»: экспорт HTML/PDF, обложка, поделиться</div></div>
+    </section>
+
+    <section class="daily">
+      <h2>🎞️ Сцена дня</h2>
+      <div id="daily-scene" class="daily-card">Загружаем…</div>
+      <div class="cta-row"><button id="daily-more" class="btn ghost">Показать другую 🎲</button>
+        <a class="btn primary" href="/app/#/catalog" style="text-decoration:none">Весь каталог сцен →</a></div>
+    </section>
+
+    <footer>
+      <p class="legal">Мы показываем только название фильма, год и таймкод — без видео и дословных реплик.
+        Сцены смотрятся в легальных плеерах (Кинопоиск, Иви, Okko, YouTube).
+        Обработка персональных данных — по 152-ФЗ, согласие запрашивается при создании подарка.</p>
+      <p><a href="/privacy" style="color:#a79fc0">Политика обработки данных (152-ФЗ)</a> ·
+         <a href="/terms" style="color:#a79fc0">Условия сервиса</a></p>
+      <p>«Сцена» · 2026 · сделано с любовью к кино ❤️</p>
+    </footer>
+  </main>
+<script>
+(async function loadDaily() {
+  const box = document.getElementById("daily-scene");
+  async function load() {
+    try {
+      const s = await (await fetch("/api/scenes/daily")).json();
+      box.innerHTML = `<div class="movie">🎬 <b>${s.movie_title}</b> (${s.movie_year})</div>
+        <div class="tc">⏱ ${s.timecode_label || "—"}</div>
+        <p>${s.description || ""}</p>
+        <div class="tags">${(s.occasion_tags || []).map(t => `<span class="tag">${t}</span>`).join("")}</div>`;
+    } catch (e) { box.textContent = "Каталог пока пуст 🎬"; }
+  }
+  await load();
+  document.getElementById("daily-more").onclick = load;
+})();
+</script>
+<style>
+.daily { text-align:center; }
+.daily-card { max-width:520px; margin:12px auto; background:#1b1729; border:1px solid #322b4d; border-radius:18px; padding:20px; }
+.daily-card .movie { font-size:20px; }
+.daily-card .tc { color:#ffd166; margin:6px 0; font-weight:600; }
+.daily-card p { color:#a79fc0; font-size:14px; }
+.daily-card .tags { margin-top:8px; }
+.daily-card .tag { display:inline-block; background:#2a2340; border-radius:999px; padding:3px 10px; font-size:12px; margin:2px; color:#cfc7e8; }
+</style>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "comment": "Dev-образцы SRT с GitHub (зеркала субтитров OpenSubtitles). В продакшене источник — OPUS/OpenSubtitles напрямую (см. docs/06-timecode-sources.md). Текст субтитров НЕ хранится — только таймкоды-кандидаты + sha1. Несколько файлов одного фильма в одном блоке = консенсус (anti-мусор).",
+  "entries": [
+    {
+      "file": ["forrest_gump.srt", "forrest_gump2.srt"],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Forrest%20Gump.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Forrest%20Gump.srt"
+      ],
+      "movie_title": "Forrest Gump",
+      "movie_year": 1994,
+      "lang": "en",
+      "service": "opensubtitles",
+      "source_license": "OpenSubtitles community subtitles via OPUS (ODC-BY), mirrors on GitHub; see docs/06",
+      "scenes": [
+        { "match_title": "Форрест Гамп", "keywords": ["run", "life is like a box of chocolates", "chocolates", "lieutenant dan", "mom", "feather", "bus stop", "wait"],
+          "keywords_ru": ["бежать", "жизнь как коробка конфет", "мама", "смерть", "война", "любовь"] }
+      ]
+    },
+    {
+      "file": "the_godfather.srt",
+      "movie_title": "The Godfather",
+      "movie_year": 1972,
+      "lang": "en",
+      "service": "opensubtitles",
+      "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather.srt",
+      "source_license": "OpenSubtitles community subtitles via OPUS (ODC-BY), mirror on GitHub; see docs/06",
+      "scenes": [
+        { "match_title": "Крёстный отец", "keywords": ["offer", "refuse", "godfather", "family", "horse", "leave the gun", "cannoli"],
+          "keywords_ru": ["предложение", "отказ", "семья", "преступление"] }
+      ]
+    },
+    {
+      "file": "inception.srt",
+      "movie_title": "Inception",
+      "movie_year": 2010,
+      "lang": "en",
+      "service": "opensubtitles",
+      "source": "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Inception.srt",
+      "source_license": "OpenSubtitles community subtitles (AllSubs.org mirror) on GitHub; see docs/06",
+      "scenes": [
+        { "match_title": "Начало", "keywords": ["dream", "kick", "totem", "inception", "time", "spinning top", "limbo", "deeper"],
+          "keywords_ru": ["сон", "толчок", "волчок", "время", "глубже"] }
+      ]
+    },
+    {
+      "file": "spirited_away.srt",
+      "movie_title": "Spirited Away",
+      "movie_year": 2001,
+      "lang": "en",
+      "service": "opensubtitles",
+      "source": "https://github.com/fosskers/subtitles/blob/master/Spirited%20Away.en.srt",
+      "source_license": "OpenSubtitles community subtitles on GitHub; see docs/06",
+      "scenes": [
+        { "match_title": "Унесённые призраками", "keywords": ["spirits", "bathhouse", "parents", "pigs", "dragon", "haku", "no face", "train", "chihiro"],
+          "keywords_ru": ["духи", "родители", "дракон", "поезд", "Тихиро"] }
+      ]
+    }
+  ]
+}

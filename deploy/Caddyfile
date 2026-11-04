@@ -1,0 +1,9 @@
+{$PUBLIC_DOMAIN} {
+    encode zstd gzip
+    request_body {
+        max_size 12MB
+    }
+    header Strict-Transport-Security "max-age=31536000"
+    # Do not serve media directly or log bearer gift/media URLs.
+    reverse_proxy api:8000
+}
