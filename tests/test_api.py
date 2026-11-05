@@ -647,6 +647,10 @@ def test_admin_timecode_library_coverage_endpoint(client):
     assert d["manifests"]["full"]["matched_scenes"] >= 60
     assert d["manifests"]["full"]["catalog_scenes"] == 140
     assert any(f["name"] == "full_manifest.json" for f in d["files"])
+    assert any(f["name"] == "official_free_videos.json" for f in d["files"])
+    assert d["moderation"]["scenes_with_official_deep"] >= 8
+    assert len(d["moderation"]["targets"]) >= 8
+    assert d["moderation"]["requires_version_check"] is True
     assert "pending" in d["note"]
 
 

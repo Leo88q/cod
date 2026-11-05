@@ -105,6 +105,8 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/timecodes?status=pending': {candidates:[]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:0},scenes_with_candidates:0,total:0},
+      moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
+        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=0s',provider:'youtube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://www.youtube.com/watch?v=sDdrTIp8mxs',pending_candidates:0}]},
       sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
       manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
       files:[],note:'Ручная сверка обязательна.'}
@@ -118,6 +120,9 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Авто-одобрение отключено/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Библиотека таймкодов/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /полный манифест: 62 из 140/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные бесплатные версии: 10 сцен/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные полные версии для ручного поиска момента/);
+    assert.ok(dom.window.document.querySelector('.md-target'));
   } finally { dom.window.close(); }
 });
 
@@ -138,23 +143,33 @@ test('admin timecode queue supports manual verification fields', async () => {
       source:'https://github.com/o/r/blob/sha/Forrest.srt',
       source_license:'OpenSubtitles community subtitles, GitHub mirror',
       line_index:512, confidence:1.25, consensus:2, auto:1,
-      moment_label:'момент, где Форрест бежит', watch_links:[]
+      moment_label:'момент, где Форрест бежит', watch_links:[],
+      moderation_links:[
+        {kind:'official_deep',priority:1,label:'▶ youtube_mosfilm · 0:50:19',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=3019s',note:'Сверь издание'},
+        {kind:'local',priority:3,label:'⏱ Открыть локальный файл на моменте',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
+      ]
     }]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:1},scenes_with_candidates:1,total:1},
+      moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
+        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=0s',provider:'youtube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://www.youtube.com/watch?v=sDdrTIp8mxs',pending_candidates:0}]},
       sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
       manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
       files:[],note:'Ручная сверка обязательна.'}
   });
   try {
     dom.window.localStorage.setItem('scena_admin_token', 'test-admin');
-    let opened = null, posted = null;
+    let opened = null, posted = null, manualPosted = null;
     dom.window.open = (url) => { opened = url; };
     const originalFetch = dom.window.fetch;
     dom.window.fetch = async (path, opts) => {
       if (opts && opts.method === 'POST' && String(path).includes('/review')) {
         posted = { path, body: JSON.parse(opts.body) };
         return { ok: true, json: async () => ({ok:true}) };
+      }
+      if (opts && opts.method === 'POST' && String(path).includes('/timecodes/manual')) {
+        manualPosted = JSON.parse(opts.body);
+        return { ok: true, json: async () => ({ok:true,id:999}) };
       }
       return originalFetch(path, opts);
     };
@@ -169,6 +184,22 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.match(doc.querySelector('#adm-body').textContent, /Наш момент: Форрест бежит через страну/);
     doc.querySelector('.tc-open').click();
     assert.ok(opened && opened.includes('kinopoisk'));
+    assert.ok(doc.querySelector('.md-link'), 'должна быть легальная deep link на момент');
+    assert.match(doc.querySelector('.md-link').dataset.url, /t=3019s/);
+    assert.ok(doc.querySelector('.md-copy'), 'должна быть команда для локального файла');
+    assert.match(doc.querySelector('#adm-body').textContent, /Официальная бесплатная версия найдена/);
+    doc.querySelector('.md-start').value = '0:32:56';
+    doc.querySelector('.md-end').value = '0:33:21';
+    doc.querySelector('.md-version').value = 'Мосфильм, реставрация';
+    doc.querySelector('.md-label').value = 'Женя у двери';
+    doc.querySelector('.md-add').click();
+    await new Promise(resolve => setTimeout(resolve, 60));
+    assert.ok(manualPosted, 'ручной момент должен уйти на /timecodes/manual');
+    assert.equal(manualPosted.movie_title, 'Ирония судьбы, или С лёгким паром!');
+    assert.equal(manualPosted.timecode_label, '0:32:56');
+    assert.equal(manualPosted.timecode_end_label, '0:33:21');
+    assert.equal(manualPosted.version_note, 'Мосфильм, реставрация');
+    // adm-load перезагрузил разметку после успешного добавления
     doc.querySelector('.tc-start').value = '0:50:20';
     doc.querySelector('.tc-approve').click();
     await new Promise(resolve => setTimeout(resolve, 20));

@@ -1,0 +1,147 @@
+{
+  "comment": "Легальные бесплатные полные версии фильмов для РУЧНОЙ модерации таймкодов. НЕ пиратские зеркала. Храним только ID/ссылки официальных каналов и страниц, без видео и текстов. video_id найдены в описаниях официальных роликов/страниц Мосфильм и ПОКА не подтверждены человеком: издание/реставрация может отличаться, поэтому version_note обязателен.",
+  "license_note": "Официальный канал «Киноконцерн Мосфильм» / cinema.mosfilm.ru и официальные страницы студии. Бесплатный просмотр не отменяет авторских прав; перед продуктовым использованием нужна юридическая проверка.",
+  "requires_version_check": true,
+  "verified_by_human": false,
+  "provider_templates": {
+    "youtube": "https://www.youtube.com/watch?v={video_id}&t={seconds}s",
+    "rutube": "https://rutube.ru/video/{video_id}/",
+    "official_page": "{url}"
+  },
+  "sources": [
+    {
+      "id": "mosfilm_youtube",
+      "name": "Киноконцерн «Мосфильм» на YouTube",
+      "url": "https://www.youtube.com/@Mosfilm",
+      "search_url": "https://www.youtube.com/results?search_query={q}"
+    },
+    {
+      "id": "mosfilm_cinema",
+      "name": "cinema.mosfilm.ru / mosfilm.ru",
+      "url": "https://cinema.mosfilm.ru/",
+      "search_url": "https://www.mosfilm.ru/search/?q={q}"
+    }
+  ],
+  "videos": [
+    {
+      "key": "Ирония судьбы, или С лёгким паром!|1975",
+      "imdb_id": "tt0073179",
+      "provider": "youtube_mosfilm",
+      "video_id": "y5CQr_D-NZg",
+      "template": "youtube",
+      "version_hint": "Реставрация/полная версия на официальном канале; сверь монтаж с изданием.",
+      "evidence_url": "https://www.youtube.com/watch?v=sDdrTIp8mxs",
+      "evidence_note": "Описание официального трейлера Мосфильм содержит ссылку на полную версию."
+    },
+    {
+      "key": "Иван Васильевич меняет профессию|1973",
+      "imdb_id": "tt0070233",
+      "provider": "youtube_mosfilm",
+      "video_id": "a50qT9bW2Qo",
+      "template": "youtube",
+      "version_hint": "Официальный канал Мосфильм; возможны разные загрузки 4K/FullHD.",
+      "evidence_url": "https://www.youtube.com/shorts/rhZldWH6DVI",
+      "evidence_note": "Описание официального shorts содержит ссылку «Смотрите фильм ... на нашем канале»."
+    },
+    {
+      "key": "Иван Васильевич меняет профессию|1973",
+      "imdb_id": "tt0070233",
+      "provider": "rutube_mosfilm",
+      "video_id": "d8aa512b3e650d80d8262d090bd565c0",
+      "template": "rutube",
+      "version_hint": "Официальный RuTube-канал Мосфильм; deep-link с таймкодом не гарантирован.",
+      "evidence_url": "https://rutube.ru/video/d93fcb86e2b7153eaf644cfae3159992/",
+      "evidence_note": "В описании фрагмента указана полная версия на официальном канале."
+    },
+    {
+      "key": "Москва слезам не верит|1979",
+      "imdb_id": "tt0079579",
+      "provider": "youtube_mosfilm",
+      "video_id": "rtpOR7_XzWs",
+      "template": "youtube",
+      "version_hint": "Официальная полная версия; двухсерийный фильм, проверь серию.",
+      "evidence_url": "https://www.youtube.com/watch?v=9noEXoYStAA",
+      "evidence_note": "Описание трейлера и фрагмента Мосфильм содержит ссылку на полную версию."
+    },
+    {
+      "key": "Служебный роман|1977",
+      "imdb_id": "tt0076727",
+      "provider": "youtube_mosfilm",
+      "video_id": "DZ3kBL1TUHk",
+      "template": "youtube",
+      "version_hint": "Официальная полная версия; фильм из двух серий.",
+      "evidence_url": "https://www.youtube.com/watch?v=rX1JWSTTksw",
+      "evidence_note": "Описание официального трейлера Мосфильм содержит ссылку на полную версию."
+    },
+    {
+      "key": "Операция «Ы» и другие приключения Шурика|1965",
+      "imdb_id": "tt0059550",
+      "provider": "youtube_mosfilm",
+      "video_id": "xJ5iHFSdAU4",
+      "template": "youtube",
+      "version_hint": "Официальная полная версия Мосфильм.",
+      "evidence_url": "https://www.youtube.com/watch?v=Eu5AhZNp_Ok",
+      "evidence_note": "Описание официального фрагмента содержит ссылку на полную версию."
+    },
+    {
+      "key": "Любовь и голуби|1984",
+      "imdb_id": "tt0087650",
+      "provider": "youtube_mosfilm",
+      "video_id": "qYPVTBIgF7Q",
+      "template": "youtube",
+      "version_hint": "Официальный канал Мосфильм; в описаниях встречается и другой ID 0KmS5gk4ve4 — сверь загрузку вручную.",
+      "evidence_url": "https://www.youtube.com/watch?v=r1-bxZlYeZ4",
+      "evidence_note": "Описание официального shorts содержит ссылку на полную версию."
+    },
+    {
+      "key": "Кин-дза-дза!|1986",
+      "imdb_id": "tt0091341",
+      "provider": "youtube_mosfilm",
+      "video_id": "EYHv8eJrW2Y",
+      "template": "youtube",
+      "version_hint": "Официальная полная версия; двухсерийный фильм.",
+      "evidence_url": "https://www.youtube.com/watch?v=EYHv8eJrW2Y",
+      "evidence_note": "Официальная загрузка FullHD; shorts Мосфильм ссылается на неё."
+    },
+    {
+      "key": "Девчата|1961",
+      "imdb_id": "tt0054824",
+      "provider": "youtube_mosfilm",
+      "video_id": "8CYY8EM5xYE",
+      "template": "youtube",
+      "version_hint": "Официальная FullHD-загрузка Мосфильм; сверь цветную/чб версию.",
+      "evidence_url": "https://www.youtube.com/watch?v=MOmo-89xlKE",
+      "evidence_note": "Результат поиска указывает официальную загрузку «Девчата (FullHD, ... Мосфильм)»."
+    },
+    {
+      "key": "Гараж|1979",
+      "imdb_id": "tt0079193",
+      "provider": "youtube_mosfilm",
+      "video_id": "Xqsa4u00GXM",
+      "template": "youtube",
+      "version_hint": "Официальная полная версия Мосфильм.",
+      "evidence_url": "https://www.youtube.com/watch?v=lbreEBzPpbg",
+      "evidence_note": "Описание официального shorts содержит ссылку на полную версию."
+    },
+    {
+      "key": "Белое солнце пустыни|1969",
+      "imdb_id": "tt0066565",
+      "provider": "mosfilm_page",
+      "template": "official_page",
+      "url": "https://www.mosfilm.ru/cinema/films/beloe-solntse-pustyni/",
+      "version_hint": "Официальная страница фильма с легальными ссылками на YouTube/RuTube/VK; точный video_id не подтверждён.",
+      "evidence_url": "https://www.mosfilm.ru/cinema/films/beloe-solntse-pustyni/",
+      "evidence_note": "Официальная страница Мосфильм с метаданными и ссылками на просмотр."
+    },
+    {
+      "key": "Война и мир|1966",
+      "imdb_id": "tt0063794",
+      "provider": "youtube_mosfilm",
+      "video_id": "V-SAh4jdssA",
+      "template": "youtube",
+      "version_hint": "Многосерийная экранизация: это фильм 1-й, серия 1; для других моментов выбери нужную часть вручную.",
+      "evidence_url": "https://www.youtube.com/watch?v=_HBUet56gSw",
+      "evidence_note": "Описание официального фрагмента Мосфильм перечисляет полные части."
+    }
+  ]
+}

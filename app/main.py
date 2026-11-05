@@ -4,6 +4,7 @@
 Бот отдельным процессом: BOT_TOKEN=... python -m app.bot
 """
 import asyncio
+import hashlib
 import json
 import os
 from contextlib import asynccontextmanager
@@ -20,6 +21,9 @@ from . import bot as bot_module
 from . import config, payments, scheduler, search as semantic
 from .db import connect, init_db, new_code, row_to_dict, enqueue_notification
 from .flowwow import watch_links, order_link
+from .moderation_links import (
+    build_moderation_links, load_official_videos, moderation_coverage, moderation_targets,
+)
 from .qr import qr_svg
 from .security import request_user, require_admin, log_consent, require_self, require_shop, require_metrics
 
@@ -1770,6 +1774,18 @@ class TimecodeReview(BaseModel):
     moment_label: Optional[str] = None  # короткая метка НАШИМИ словами: что в этом моменте (без реплик)
 
 
+class ManualTimecodeCandidate(BaseModel):
+    """Оператор сам нашёл момент в легальной полной версии (без SRT-кандидата)."""
+    movie_title: str
+    movie_year: int
+    timecode_label: str
+    timecode_end_label: Optional[str] = None
+    moment_label: Optional[str] = None
+    version_note: str
+    source_url: Optional[str] = None
+    watch_url: Optional[str] = None
+
+
 @app.get("/api/admin/timecodes")
 def admin_timecodes(request: Request, status: str = "pending"):
     """Очередь кандидатов таймкодов из внешних библиотек (OpenSubtitles/OPUS и др.)."""
@@ -1790,8 +1806,54 @@ def admin_timecodes(request: Request, status: str = "pending"):
             "service": d.get("service"),
             "watch_url": None,
         })
+        # Легальные deep links для модерации: официальные бесплатные полные версии
+        # с &t=<секунда>, локальная копия, поиск в сервисах, IMDb/TMDB.
+        d["moderation_links"] = build_moderation_links(d)
         out.append(d)
     return {"candidates": out}
+
+
+@app.post("/api/admin/timecodes/manual")
+def admin_timecode_manual(request: Request, body: ManualTimecodeCandidate):
+    """Создаёт `pending`-кандидат для сцены, где SRT-зеркала ничего не нашли.
+
+    Момент найден оператором вручную в легальной полной версии. Кандидат НЕ
+    получает verified=1: его нужно подтвердить через `/review` с version_note.
+    """
+    require_admin(request)
+    start = tc_label_to_seconds(body.timecode_label)
+    end = tc_label_to_seconds(body.timecode_end_label) if body.timecode_end_label else None
+    if start is None or (body.timecode_end_label and end is None):
+        raise HTTPException(400, "Некорректный таймкод: используй формат 0:32:56")
+    if not (body.version_note or "").strip():
+        raise HTTPException(400, "Укажи version_note: версия издания обязательна")
+    conn = connect(config.DB_PATH)
+    scene = conn.execute(
+        "SELECT id, imdb_id FROM scenes WHERE movie_title=? AND movie_year=? AND status='approved'",
+        (body.movie_title.strip(), body.movie_year),
+    ).fetchone()
+    if not scene:
+        conn.close()
+        raise HTTPException(404, "Сцена не найдена в каталоге")
+    source = body.source_url or "manual-legal-player"
+    license_note = ("Официальная бесплатная публикация правообладателя; таймкод указан "
+                    "оператором вручную, текст субтитров не хранится")
+    digest = hashlib.sha1(
+        f"{body.movie_title}|{body.movie_year}|{body.timecode_label}|{body.version_note}".encode("utf-8")
+    ).hexdigest()
+    cur = conn.execute(
+        "INSERT INTO timecode_candidates (scene_id, service, timecode_label, timecode_seconds,"
+        " timecode_end_label, timecode_end_seconds, source, source_license, evidence_sha1,"
+        " line_index, match_score, moment_label, confidence, consensus, auto, status, created_at)"
+        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
+        (scene["id"], "manual", body.timecode_label, start, body.timecode_end_label, end,
+         source, license_note, digest, 0, 0.0, body.moment_label or "момент найден вручную",
+         0.0, 1, 0, now_iso()),
+    )
+    conn.commit()
+    cid = cur.lastrowid
+    conn.close()
+    return {"ok": True, "id": cid, "scene_id": scene["id"], "status": "pending"}
 
 
 @app.get("/api/admin/timecode-library")
@@ -1810,6 +1872,8 @@ def admin_timecode_library(request: Request):
     with_candidates = conn.execute("SELECT COUNT(DISTINCT scene_id) AS n FROM timecode_candidates").fetchone()["n"]
     top_sources = [dict(r) for r in conn.execute(
         "SELECT source, COUNT(*) AS n FROM timecode_candidates GROUP BY source ORDER BY n DESC LIMIT 8").fetchall()]
+    official = load_official_videos()
+    targets = moderation_targets(conn, official)
     conn.close()
 
     def read(name: str):
@@ -1825,7 +1889,7 @@ def admin_timecode_library(request: Request):
     pilot = read("pilot_manifest.json") or {}
     files = []
     for name in ("source_registry.json", "srt_index.json", "imdb_map_full.json",
-                 "pilot_manifest.json", "full_manifest.json"):
+                 "pilot_manifest.json", "full_manifest.json", "official_free_videos.json"):
         path = os.path.join(LIB_DIR, name)
         if os.path.exists(path):
             files.append({"name": name, "bytes": os.path.getsize(path)})
@@ -1844,6 +1908,7 @@ def admin_timecode_library(request: Request):
             "optional": registry.get("optional_sources", []),
             "top_in_db": top_sources,
         },
+        "moderation": {**moderation_coverage(official), "targets": targets},
         "manifests": {
             "pilot_scenes": len(pilot.get("entries", [])),
             "full": full.get("stats", {}),

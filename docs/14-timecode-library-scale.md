@@ -171,14 +171,14 @@ curl -s -H 'X-Admin-Token: local-admin' \
 ## 8. Что осталось за рамками
 
 - Реальных `verified=1` таймкодов пока **0**: это и есть работа оператора, ради которой всё строилось.
-- 78 сцен без SRT в GitHub-зеркалах; 7 сцен без IMDb ID; `tmdb_id` не заполнен.
-- Прямые `?t=` deep links не генерируются автоматически: `watch_url` вставляется вручную, кнопки плееров остаются поисковыми.
+- 78 сцен без SRT в GitHub-зеркалах; для части из них есть официальные бесплатные полные версии и ручное создание `pending`-кандидата через `POST /api/admin/timecodes/manual` (см. [docs/15-moderation-links.md](docs/15-moderation-links.md)). 7 сцен без IMDb ID; `tmdb_id` не заполнен.
+- Прямые `?t=` deep links теперь генерируются для официальных бесплатных YouTube-версий Мосфильм и для вставленного `watch_url` на YouTube/Vimeo; для Okko/ivi/Кинопоиска стабильного публичного формата нет, там остаётся поиск + локальная команда. См. [docs/15-moderation-links.md](docs/15-moderation-links.md).
 - Разные издания фильма дают разный таймкод — поэтому `version_note` обязателен при подтверждении (и на бэкенде, и в UI), а `ambiguous` кандидаты нужно проверять особенно внимательно. Авто-одобрение консенсуса отключено по умолчанию: `bulk-approve` → 403 без `ALLOW_BULK_AUTO_APPROVE=1`, кнопка ⚡ заблокирована.
 - Перед коммерческим запуском нужна юридическая проверка: `ODC-BY` у OPUS не отменяет прав правообладателей на тексты субтитров; CineSubBench — NC-лицензия.
 
 ## 9. Проверки
 
-- `100 passed` pytest, `13 passed` Node/jsdom.
+- `109 passed` pytest, `13 passed` Node/jsdom.
 - `bash scripts/check.sh` с живым сервером: 5/5 шагов, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - `git diff --exit-code db/seed_catalog.sql` — чисто.
 - `full_manifest.json` / `imdb_map_full.json` / OPUS-адаптер / admin coverage endpoint / raw→API fallback загрузчика покрыты отдельными тестами.

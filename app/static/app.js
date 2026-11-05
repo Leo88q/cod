@@ -1196,15 +1196,35 @@
         const libCat = lib && lib.catalog ? lib.catalog : {};
         const libCand = lib && lib.candidates ? lib.candidates : {};
         const libMan = lib && lib.manifests ? lib.manifests : {};
+        const libMod = lib && lib.moderation ? lib.moderation : {};
+        const libTargets = Array.isArray(libMod.targets) ? libMod.targets : [];
         const libFull = libMan.full || {};
         const libStatus = libCand.by_status || {};
         body.innerHTML = `<section class="panel"><h3>📚 Библиотека таймкодов</h3>
           <p>Каталог: ${Number(libCat.total ?? 0)} сцен · IMDb ID: ${Number(libCat.with_imdb ?? 0)} · с реальным таймкодом: ${Number(libCat.with_timecode ?? 0)} · проверено вручную: ${Number(libCat.verified ?? 0)}</p>
           <p>Кандидаты: pending ${Number(libStatus.pending ?? 0)}, approved ${Number(libStatus.approved ?? 0)}, rejected ${Number(libStatus.rejected ?? 0)} · сцен в очереди: ${Number(libCand.scenes_with_candidates ?? 0)}</p>
           <p class="muted">Пилот: ${Number(libMan.pilot_scenes ?? 0)} сцен · полный манифест: ${Number(libFull.matched_scenes ?? 0)} из ${Number(libFull.catalog_scenes ?? 0)} · файлов субтитров: ${Number(libFull.subtitle_files ?? 0)} · сомнительных: ${Number(libMan.ambiguous_count ?? 0)} · исключено ложных: ${Number(libMan.excluded_count ?? 0)}</p>
+          <p class="muted">Легальные бесплатные версии: ${Number(libMod.scenes_with_official_deep ?? 0)} сцен с deep link на момент · ${Number(libMod.official_videos ?? 0)} ссылок · сверка издания обязательна</p>
           ${((lib.sources && lib.sources.registry) ? lib.sources.registry : []).map(s =>
             `<p class="muted">${esc(s.id)}: ${Number(s.count ?? 0)} файлов · ${esc((s.license || '').slice(0, 90))}</p>`).join('')}
           <p class="muted">${esc((lib && lib.note) || 'Ручная сверка обязательна.')}</p>
+          </section><section class="panel"><h3>🎬 Легальные полные версии для ручного поиска момента</h3>
+          <p class="muted">Здесь фильмы, для которых есть официальная бесплатная полная версия (Мосфильм и др.), но GitHub-SRT часто ничего не нашёл. Открой фильм, найди момент сам и добавь кандидата в очередь — он останется pending до «✓ Подтвердить». Пиратские зеркала не используются.</p>
+          ${libTargets.map(t => `<article class="reply-item md-target" data-title="${esc(t.movie_title)}" data-year="${Number(t.movie_year)}" data-url="${esc(t.url || "")}" data-source="${esc(t.url || "")}" data-imdb="${esc(t.imdb_id || "")}">
+            <p><b>${esc(t.movie_title)}</b> (${Number(t.movie_year)})${t.imdb_id ? ` · ${esc(t.imdb_id)}` : ""} · ${esc(t.provider || "официальный источник")} · в очереди: ${Number(t.pending_candidates ?? 0)}</p>
+            <p class="muted">${esc((t.version_hint || "").slice(0, 140))}</p>
+            <div class="row" style="margin-bottom:6px">
+              <button class="btn ghost small md-target-open">▶ Открыть фильм</button>
+              <a class="muted" href="${esc(t.evidence_url || "#")}" target="_blank" rel="noopener noreferrer">источник ссылки</a>
+            </div>
+            <div class="row" style="margin-top:4px">
+              <input class="search-input md-start" style="max-width:95px" placeholder="начало *" value="">
+              <input class="search-input md-end" style="max-width:95px" placeholder="конец" value="">
+              <input class="search-input md-version" style="max-width:150px" placeholder="версия издания *" value="">
+              <input class="search-input md-label" style="max-width:220px" placeholder="метка момента нашими словами" value="">
+              <button class="btn ok small md-add">＋ Добавить момент</button>
+            </div>
+          </article>`).join("") || '<p class="muted">Официальные бесплатные версии пока не заведены.</p>'}
           </section><section class="panel"><h3>Состояние фоновых задач</h3>
           <p>Worker: ${esc(metrics.worker.status)} · без heartbeat: ${esc(metrics.worker.age_seconds ?? '—')} сек.</p>
           <p>В очереди: ${Number(metrics.pending_notifications)} · окончательных ошибок: ${Number(metrics.failed_notifications)}</p>
@@ -1260,6 +1280,9 @@
             ${tcs.candidates.map((c) => {
               const range = c.timecode_end_label ? `${c.timecode_label}–${c.timecode_end_label}` : (c.timecode_label || "—");
               const src = c.source || "";
+              const md = (c.moderation_links || []).filter(l => l.url).slice(0, 5);
+              const local = (c.moderation_links || []).find(l => l.kind === 'local');
+              const hasOfficial = (c.moderation_links || []).some(l => l.kind === 'official_deep');
               return `<div class="tl-item" style="margin-top:8px" data-title="${esc(c.movie_title)}" data-year="${esc(c.movie_year ?? "")}">
                 <b>${esc(c.movie_title)}</b> (${esc(c.movie_year ?? "?")})${c.imdb_id ? ` · IMDb ${esc(c.imdb_id)}` : ""} · предлагается ⏱ <b>${esc(range)}</b><br>
                 <span class="muted">Наш момент: ${esc(c.description || "—")}${c.why_fits ? ` — ${esc(c.why_fits)}` : ""}</span><br>
@@ -1272,6 +1295,11 @@
                   <button class="btn ghost small tc-open">🔍 Найти фильм в плеере</button>
                   <button class="btn ghost small tc-copy" data-tc="${esc(range)}">⏱ Копировать время</button>
                 </div>
+                <div class="row" style="margin-top:6px">
+                  ${md.map(l => `<button class="btn ghost small md-link" data-url="${esc(l.url)}" title="${esc(l.note || "")}">${esc(l.label)}</button>`).join("")}
+                  ${local ? `<button class="btn ghost small md-copy" data-cmd="${esc(local.commands[0].command)}">⏱ Локально (mpv)</button>` : ""}
+                </div>
+                ${hasOfficial ? '<p class="muted">⚠️ Официальная бесплатная версия найдена, но издание/реставрация может отличаться — обязательно заполни «версия издания *».</p>' : ""}
                 <div class="row" style="margin-top:6px">
                   <input class="search-input tc-start" style="max-width:95px" placeholder="начало 1:23:45" value="${esc(c.timecode_label || "")}">
                   <input class="search-input tc-end" style="max-width:95px" placeholder="конец 1:24:10" value="${esc(c.timecode_end_label || "")}">
@@ -1319,6 +1347,36 @@
         body.querySelectorAll(".tc-copy").forEach((b) => (b.onclick = async () => {
           try { await navigator.clipboard.writeText(b.dataset.tc || ""); toast("Время скопировано ⏱"); }
           catch (e) { toast("Скопируй время вручную"); }
+        }));
+        body.querySelectorAll(".md-link").forEach((b) => (b.onclick = () => openLink(b.dataset.url)));
+        body.querySelectorAll(".md-copy").forEach((b) => (b.onclick = async () => {
+          try { await navigator.clipboard.writeText(b.dataset.cmd || ""); toast("Команда скопирована: замени путь к файлу ⏱"); }
+          catch (e) { toast("Скопируй команду вручную"); }
+        }));
+        body.querySelectorAll(".md-target-open").forEach((b) => (b.onclick = () => {
+          const box = b.closest(".md-target");
+          if (box && box.dataset.url) openLink(box.dataset.url);
+        }));
+        body.querySelectorAll(".md-add").forEach((b) => (b.onclick = async () => {
+          const box = b.closest(".md-target");
+          if (!box) return;
+          const payload = {
+            movie_title: box.dataset.title,
+            movie_year: Number(box.dataset.year),
+            timecode_label: (box.querySelector(".md-start").value || "").trim(),
+            timecode_end_label: (box.querySelector(".md-end").value || "").trim() || null,
+            moment_label: (box.querySelector(".md-label").value || "").trim() || null,
+            version_note: (box.querySelector(".md-version").value || "").trim(),
+            source_url: box.dataset.source || null,
+          };
+          if (!payload.timecode_label || !payload.version_note) {
+            toast("Укажи начало и версию издания"); return;
+          }
+          try {
+            await adminApi("/api/admin/timecodes/manual", { method: "POST", body: payload });
+            toast("Момент добавлен в pending-очередь ✅");
+            document.getElementById("adm-load").click();
+          } catch (e) { toast(e.message); }
         }));
         body.querySelectorAll(".tc-approve").forEach((b) => (b.onclick = async () => {
           const box = b.closest(".tl-item");

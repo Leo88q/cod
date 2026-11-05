@@ -20,7 +20,7 @@
 - `app/scheduler.py` — отложенные открытия, «сгорание» подарков, напоминания о датах, рассылка уведомлений
 - `app/payments.py` — оплаты (ЮKassa в проде, dev-подтверждение локально): пачки карточек, подписки студий, премиум «ваш фильм»; идемпотентные эффекты
 - `app/security.py` — валидация Telegram initData (HMAC), админ-токен
-- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (100 тестов) + `tests/ui/` (Node/jsdom): `npm test` (13 тестов)
+- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (109 тестов) + `tests/ui/` (Node/jsdom): `npm test` (13 тестов)
 - `Dockerfile` — прод-образ: `docker build -t scena . && docker run -p 8000:8000 -e BOT_TOKEN=... scena`
 - `app/static/landing.html` — лендинг продукта на `/`
 - `scripts/import_scenes.py` / `scripts/export_scenes.py` — импорт/экспорт каталога сцен в CSV (`db/scenes_template.csv` — шаблон)
@@ -74,7 +74,7 @@ bash scripts/dev.sh                                    # затем #/admin с A
 
 `source_registry.json` + `srt_index.json` описывают 4 GitHub-зеркала (39 861 + 1 300 + 14 SRT и 1 305 CSV), `imdb_map_full.json` даёт 133 IMDb ID на 140 сцен каталога. Для OPUS / OpenSubtitles v2024 на локальной машине есть `scripts/import_opus_timecodes.py`. Сводка покрытия — `GET /api/admin/timecode-library` и панель «📚 Библиотека таймкодов» в админке.
 
-Инструкция оператора: [docs/13-timecode-verification.md](docs/13-timecode-verification.md), масштабирование/источники: [docs/14-timecode-library-scale.md](docs/14-timecode-library-scale.md). Импорт **не** ставит `verified=1`: таймкод становится официальным только после ручного просмотра момента в легальном плеере.
+Инструкция оператора: [docs/13-timecode-verification.md](docs/13-timecode-verification.md), масштабирование/источники: [docs/14-timecode-library-scale.md](docs/14-timecode-library-scale.md), легальные deep links на нужный момент: [docs/15-moderation-links.md](docs/15-moderation-links.md). Официальные бесплатные полные версии Мосфильм открываются сразу с `&t=<секунда>`, для любой сцены есть команда для локального файла, а для фильмов без SRT — панель ручного добавления момента из легальной версии; пиратские зеркала не используются. Импорт **не** ставит `verified=1`: таймкод становится официальным только после ручного просмотра момента в легальном плеере.
 
 ## Юридические рамки
 
