@@ -102,7 +102,12 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/analytics': {funnel:{}},
     '/api/admin/scenes?status=draft': {scenes:[]},
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
-    '/api/admin/timecodes?status=pending': {candidates:[]}
+    '/api/admin/timecodes?status=pending': {candidates:[]},
+    '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
+      candidates:{by_status:{pending:0},scenes_with_candidates:0,total:0},
+      sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
+      manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
+      files:[],note:'Ручная сверка обязательна.'}
   });
   try {
     dom.window.document.querySelector('#adm-load').click();
@@ -110,6 +115,8 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.ok(dom.window.document.querySelector('.notification-retry'));
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /notification_retry/);
     assert.ok(dom.window.document.querySelector('#tc-bulk'));
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Библиотека таймкодов/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /полный манифест: 62 из 140/);
   } finally { dom.window.close(); }
 });
 
@@ -131,7 +138,12 @@ test('admin timecode queue supports manual verification fields', async () => {
       source_license:'OpenSubtitles community subtitles, GitHub mirror',
       line_index:512, confidence:1.25, consensus:2, auto:1,
       moment_label:'момент, где Форрест бежит', watch_links:[]
-    }]}
+    }]},
+    '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
+      candidates:{by_status:{pending:1},scenes_with_candidates:1,total:1},
+      sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
+      manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
+      files:[],note:'Ручная сверка обязательна.'}
   });
   try {
     dom.window.localStorage.setItem('scena_admin_token', 'test-admin');

@@ -4,9 +4,11 @@
 
 ## Что уже сделано кодом
 
-- `data/timecode_library/pilot_manifest.json` — 20 сцен каталога, 38 точных ссылок на SRT-зеркала OpenSubtitles на GitHub. Для большинства фильмов взято **две независимые версии субтитров**, чтобы работал консенсус ±10 сек.
-- `data/timecode_library/imdb_map.json` — `imdb_id` для 15 из 20 пилотных сцен (по метаданным `m-bain/CondensedMovies`). Остальные 5 оставляем пустыми: оператор может заполнить при сверке.
-- `scripts/import_timecode_library.py` — скачивает SRT в gitignored-кэш, зовёт `scripts/fetch_timecodes.py` и складывает кандидатов в `timecode_candidates` со `status='pending'`.
+- `data/timecode_library/pilot_manifest.json` — 20 кураторских сцен, 38 точных ссылок на SRT-зеркала OpenSubtitles на GitHub. Для большинства фильмов взято **две независимые версии субтитров**, чтобы работал консенсус ±10 сек. Вызывается через `--pilot`.
+- `data/timecode_library/full_manifest.json` — **по умолчанию**: 62 сцены / 105 SRT+CSV из 4 зеркал, построено `scripts/build_full_manifest.py` по `srt_index.json`. Сомнительные совпадения помечены `ambiguous/match_note`, 6 ложных исключено.
+- `data/timecode_library/imdb_map_full.json` — **133 IMDb ID на 140 сцен каталога** (ключ `название|год`, чтобы не путать «Начало» 1970 и 2010). 7 ID оставлены пустыми — не выдумываем.
+- `scripts/import_timecode_library.py` — скачивает SRT/CSV в gitignored-кэш, конвертирует subtext-CSV во временный SRT, зовёт `scripts/fetch_timecodes.py` и складывает кандидатов в `timecode_candidates` со `status='pending'`. По умолчанию ограничивает 3 кандидата на сцену (`--max-per-scene`).
+- `scripts/import_opus_timecodes.py` — отдельный адаптер OPUS / OpenSubtitles v2024 для Mac (корпус недоступен из песочницы). Подробнее: [docs/14-timecode-library-scale.md](docs/14-timecode-library-scale.md).
 - В БД добавлены `scenes.imdb_id` / `scenes.tmdb_id`; старые заглушки `"0:00:00"` без `timecode_seconds` больше не считаются таймкодом и не показываются как `0:00:00`.
 - Админка `#/admin` показывает описание момента нашими словами, предлагаемый отрезок, источник, лицензию, `confidence/consensus`, кнопку поиска фильма в плеере, копирование времени и поля для ручного уточнения перед подтверждением.
 
@@ -17,19 +19,20 @@
 ```bash
 cd /Users/zlata/Desktop/timecod
 printf 'PUBLIC_URL=http://localhost:8000\nADMIN_TOKEN=local-admin\n' > .env
-.venv/bin/python scripts/import_timecode_library.py
+.venv/bin/python scripts/import_timecode_library.py          # полный манифест
+.venv/bin/python scripts/import_timecode_library.py --pilot  # только 20 кураторских сцен
 bash scripts/dev.sh
 ```
 
-`import_timecode_library.py` при первом запуске скачает ~38 SRT через `api.github.com` в `data/timecode_library/cache/` (папка в `.gitignore`). Повторный запуск использует кэш; `--refresh` перекачивает заново. Если GitHub вернёт 403 из-за лимита, можно задать `GITHUB_TOKEN` — но для 38 файлов обычно хватает анонимного лимита.
+`import_timecode_library.py` при первом запуске скачает ~105 SRT/CSV через `api.github.com` в `data/timecode_library/cache/` (папка в `.gitignore`). Повторный запуск использует кэш; `--refresh` перекачивает заново. Если GitHub вернёт 403 из-за лимита, задай `GITHUB_TOKEN`. CSV из `jblinder/subtext` автоматически превращаются во временный SRT.
 
 Проверить, не записывая в БД:
 
 ```bash
-.venv/bin/python scripts/import_timecode_library.py --dry-run
+.venv/bin/python scripts/import_timecode_library.py --dry-run --max-per-scene 2
 ```
 
-После импорта в выводе будет число кандидатов и `pending`. **`verified=1` при импорте не ставится ни у одной сцены.**
+После импорта в выводе будет число кандидатов и `pending`. **`verified=1` при импорте не ставится ни у одной сцены.** Полный прогон на временной БД дал **124_pending-кандидата для 62 сцен**, 37 с `auto=1`; 133 сцены получили IMDb ID.
 
 ## 2. Что делать в админке
 
@@ -57,12 +60,16 @@ curl -s http://localhost:8000/api/scenes/meta
 
 Ожидаемо: `total: 146`, `verified` растёт по мере подтверждений, `with_timecode` теперь считает только реальные `timecode_seconds`, а не заглушки.
 
-Список ожидающих:
+Список ожидающих и сводка покрытия библиотеки:
 
 ```bash
 curl -s -H 'X-Admin-Token: local-admin' \
   'http://localhost:8000/api/admin/timecodes?status=pending'
+curl -s -H 'X-Admin-Token: local-admin' \
+  'http://localhost:8000/api/admin/timecode-library'
 ```
+
+Панель «📚 Библиотека таймкодов» в админке показывает те же цифры: сцены, IMDb ID, `pending/approved/rejected`, размер манифестов и реестр источников.
 
 Одобренные моменты сцены:
 
@@ -97,7 +104,7 @@ curl -s http://localhost:8000/api/scenes/11/moments
 | 19 | История игрушек | Toy Story | 1995 |
 | 20 | Рататуй | Ratatouille | 2007 |
 
-Это **пилот**, а не весь каталог: оставшиеся ~126 сцен (особенно советские/российские) требуют других источников субтитров или ручного поиска момента. После пилота имеет смысл добавить `imdb_id/tmdb_id` для всего каталога и подключить OPUS / OpenSubtitles v2024 через `opustools` уже на машине оператора.
+Это кураторский **пилот** с лучшими keyword-группами. Полный манифест покрывает ещё 42 сцены из тех же 4 зеркал; оставшиеся ~78 сцен (особенно советские/российские и фильмы 2019–2023) требуют OPUS / OpenSubtitles v2024 или ручного поиска момента. `imdb_id/tmdb_id` для всего каталога уже заведены; адаптер OPUS описан в [docs/14-timecode-library-scale.md](docs/14-timecode-library-scale.md).
 
 ## 5. Юридические ограничения
 

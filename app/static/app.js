@@ -1192,7 +1192,20 @@
         const drafts = await adminApi("/api/admin/scenes?status=draft");
         const unv = await adminApi("/api/admin/scenes?status=approved&verified=0");
         const tcs = await adminApi("/api/admin/timecodes?status=pending");
-        body.innerHTML = `<section class="panel"><h3>Состояние фоновых задач</h3>
+        const lib = await adminApi("/api/admin/timecode-library");
+        const libCat = lib && lib.catalog ? lib.catalog : {};
+        const libCand = lib && lib.candidates ? lib.candidates : {};
+        const libMan = lib && lib.manifests ? lib.manifests : {};
+        const libFull = libMan.full || {};
+        const libStatus = libCand.by_status || {};
+        body.innerHTML = `<section class="panel"><h3>📚 Библиотека таймкодов</h3>
+          <p>Каталог: ${Number(libCat.total ?? 0)} сцен · IMDb ID: ${Number(libCat.with_imdb ?? 0)} · с реальным таймкодом: ${Number(libCat.with_timecode ?? 0)} · проверено вручную: ${Number(libCat.verified ?? 0)}</p>
+          <p>Кандидаты: pending ${Number(libStatus.pending ?? 0)}, approved ${Number(libStatus.approved ?? 0)}, rejected ${Number(libStatus.rejected ?? 0)} · сцен в очереди: ${Number(libCand.scenes_with_candidates ?? 0)}</p>
+          <p class="muted">Пилот: ${Number(libMan.pilot_scenes ?? 0)} сцен · полный манифест: ${Number(libFull.matched_scenes ?? 0)} из ${Number(libFull.catalog_scenes ?? 0)} · файлов субтитров: ${Number(libFull.subtitle_files ?? 0)} · сомнительных: ${Number(libMan.ambiguous_count ?? 0)} · исключено ложных: ${Number(libMan.excluded_count ?? 0)}</p>
+          ${((lib.sources && lib.sources.registry) ? lib.sources.registry : []).map(s =>
+            `<p class="muted">${esc(s.id)}: ${Number(s.count ?? 0)} файлов · ${esc((s.license || '').slice(0, 90))}</p>`).join('')}
+          <p class="muted">${esc((lib && lib.note) || 'Ручная сверка обязательна.')}</p>
+          </section><section class="panel"><h3>Состояние фоновых задач</h3>
           <p>Worker: ${esc(metrics.worker.status)} · без heartbeat: ${esc(metrics.worker.age_seconds ?? '—')} сек.</p>
           <p>В очереди: ${Number(metrics.pending_notifications)} · окончательных ошибок: ${Number(metrics.failed_notifications)}</p>
           ${failedNotifications.notifications.map(n => `<article class="reply-item"><p>#${Number(n.id)} · ${esc(n.kind)} · попыток: ${Number(n.attempts)}</p>

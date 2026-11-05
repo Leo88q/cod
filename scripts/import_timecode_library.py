@@ -1,23 +1,32 @@
 #!/usr/bin/env python3
 """Импорт КАНДИДАТОВ таймкодов из большой библиотеки субтитров в очередь ручной сверки.
 
-Источник: `data/timecode_library/pilot_manifest.json` — точные ссылки на SRT-зеркала
-OpenSubtitles на GitHub. Скрипт:
+По умолчанию работает с `data/timecode_library/full_manifest.json` (62 сцены /
+105 SRT+CSV из 4 GitHub-зеркал) и полным справочником `imdb_map_full.json`
+(133 IMDb ID на 140 сцен каталога). `--pilot` переключает на кураторский
+20-фильмовый `pilot_manifest.json`. Для OPUS / OpenSubtitles v2024 на Mac есть
+отдельный `scripts/import_opus_timecodes.py`.
 
-1. скачивает SRT через `api.github.com` в gitignored-кэш `data/timecode_library/cache/`;
-2. строит локальный манифест с путями к кэшу;
-3. зовёт `scripts/fetch_timecodes.py`, который извлекает ТОЛЬКО факт времени
+Скрипт:
+
+1. скачивает SRT/CSV через `api.github.com` в gitignored-кэш `data/timecode_library/cache/`;
+2. CSV из `jblinder/subtext` конвертирует во временный SRT (startTime/endTime в мс);
+3. строит локальный манифест с путями к кэшу;
+4. зовёт `scripts/fetch_timecodes.py`, который извлекает ТОЛЬКО факт времени
    (start/end + sha1 + source/license + confidence/consensus), но НЕ текст реплик;
-4. проставляет `imdb_id` для пилотных сцен из `data/timecode_library/imdb_map.json`;
-5. оставляет все кандидаты в `status='pending'` — `verified=1` ставится ТОЛЬКО
+5. проставляет `imdb_id`/`tmdb_id` из полного справочника;
+6. оставляет все кандидаты в `status='pending'` — `verified=1` ставится ТОЛЬКО
    вручную в админке `#/admin` после просмотра момента в легальном плеере.
 
 Запуск:
     .venv/bin/python scripts/import_timecode_library.py
     .venv/bin/python scripts/import_timecode_library.py --dry-run
+    .venv/bin/python scripts/import_timecode_library.py --pilot
     .venv/bin/python scripts/import_timecode_library.py --db /tmp/scena.db --refresh
+    .venv/bin/python scripts/import_timecode_library.py --max-per-scene 0  # все кандидаты
 """
 import argparse
+import csv
 import hashlib
 import json
 import os
@@ -32,9 +41,14 @@ from app import config  # noqa: E402
 from app.db import connect, init_db  # noqa: E402
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_MANIFEST = os.path.join(BASE_DIR, "data", "timecode_library", "pilot_manifest.json")
-DEFAULT_IDS = os.path.join(BASE_DIR, "data", "timecode_library", "imdb_map.json")
-DEFAULT_CACHE = os.path.join(BASE_DIR, "data", "timecode_library", "cache")
+LIB_DIR = os.path.join(BASE_DIR, "data", "timecode_library")
+DEFAULT_FULL_MANIFEST = os.path.join(LIB_DIR, "full_manifest.json")
+DEFAULT_PILOT_MANIFEST = os.path.join(LIB_DIR, "pilot_manifest.json")
+DEFAULT_FULL_IDS = os.path.join(LIB_DIR, "imdb_map_full.json")
+DEFAULT_PILOT_IDS = os.path.join(LIB_DIR, "imdb_map.json")
+DEFAULT_MANIFEST = DEFAULT_FULL_MANIFEST
+DEFAULT_IDS = DEFAULT_FULL_IDS
+DEFAULT_CACHE = os.path.join(LIB_DIR, "cache")
 FETCH_SCRIPT = os.path.join(BASE_DIR, "scripts", "fetch_timecodes.py")
 
 
@@ -58,6 +72,36 @@ def cache_name(url: str) -> str:
     tail = os.path.basename(urllib.parse.urlparse(url).path)
     safe = "".join(c if c.isalnum() or c in "._-" else "_" for c in tail)
     return f"{digest}_{safe}"
+
+
+def _fmt_srt_time(ms: float) -> str:
+    total = max(0, int(round(ms)))
+    h, rem = divmod(total, 3600000)
+    m, rem = divmod(rem, 60000)
+    s, milli = divmod(rem, 1000)
+    return f"{h:02d}:{m:02d}:{s:02d},{milli:03d}"
+
+
+def csv_to_srt(csv_path: str, srt_path: str) -> str:
+    """Конвертирует subtext-CSV (startTime/endTime в мс) во временный SRT для parse_srt()."""
+    if os.path.exists(srt_path) and os.path.getsize(srt_path) > 0:
+        return srt_path
+    with open(csv_path, newline="", encoding="utf-8", errors="replace") as src, \
+            open(srt_path, "w", encoding="utf-8") as dst:
+        reader = csv.DictReader(src)
+        n = 0
+        for row in reader:
+            try:
+                start = float(row.get("startTime") or 0)
+                end = float(row.get("endTime") or start)
+            except (TypeError, ValueError):
+                continue
+            text = (row.get("text") or "").strip()
+            if not text or end <= start:
+                continue
+            n += 1
+            dst.write(f"{n}\n{_fmt_srt_time(start)} --> {_fmt_srt_time(end)}\n{text}\n\n")
+    return srt_path
 
 
 def download_srt(url: str, dest: str, refresh: bool = False) -> str:
@@ -96,10 +140,11 @@ def build_local_manifest(manifest: dict, cache_dir: str, refresh: bool = False) 
     for entry in entries:
         files = entry["file"] if isinstance(entry["file"], list) else [entry["file"]]
         sources = entry.get("sources") or [entry.get("source", "local")] * len(files)
-        if len(sources) != len(files):
-            raise ValueError(f"Разная длина file/sources у {entry.get('movie_title')}")
+        formats = entry.get("formats") or [("csv" if f.lower().split("?")[0].endswith(".csv") else "srt") for f in files]
+        if not (len(sources) == len(files) == len(formats)):
+            raise ValueError(f"Разная длина file/sources/formats у {entry.get('movie_title')}")
         local_files, local_sources = [], []
-        for url, src in zip(files, sources):
+        for url, src, fmt in zip(files, sources, formats):
             if not url.startswith("https://github.com/"):
                 # уже локальный путь (например, при повторном запуске)
                 local_files.append(url)
@@ -107,9 +152,13 @@ def build_local_manifest(manifest: dict, cache_dir: str, refresh: bool = False) 
                 continue
             dest = os.path.join(cache_dir, cache_name(url))
             download_srt(url, dest, refresh=refresh)
+            if fmt == "csv" or dest.lower().endswith(".csv"):
+                srt = dest[:-4] + ".srt" if dest.lower().endswith(".csv") else dest + ".srt"
+                dest = csv_to_srt(dest, srt)
             local_files.append(dest)
             local_sources.append(src)
         item = dict(entry)
+        item.pop("formats", None)
         item["file"] = local_files if isinstance(entry["file"], list) else local_files[0]
         item["sources"] = local_sources
         local.append(item)
@@ -124,10 +173,19 @@ def apply_imdb_map(conn, ids_path: str) -> int:
         data = json.load(f)
     scenes = data.get("scenes", data)
     updated = 0
-    for title, meta in scenes.items():
+    for key, meta in scenes.items():
         if not isinstance(meta, dict):
             continue
-        year = meta.get("movie_year")
+        # Полный справочник использует ключи «название|год» (в каталоге есть
+        # одинаковые названия с разными годами), пилотный — просто «название».
+        if "|" in key:
+            title, raw_year = key.rsplit("|", 1)
+            try:
+                year = int(raw_year)
+            except ValueError:
+                year = meta.get("movie_year")
+        else:
+            title, year = key, meta.get("movie_year")
         imdb = meta.get("imdb_id")
         tmdb = meta.get("tmdb_id")
         if not year or (not imdb and not tmdb):
@@ -145,20 +203,26 @@ def apply_imdb_map(conn, ids_path: str) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--manifest", default=DEFAULT_MANIFEST)
-    ap.add_argument("--ids", default=DEFAULT_IDS)
+    ap.add_argument("--manifest", default=None, help="путь к manifest (по умолчанию полный каталог)")
+    ap.add_argument("--ids", default=None, help="путь к IMDb/TMDB-справочнику")
+    ap.add_argument("--pilot", action="store_true", help="использовать только 20-фильмовый пилот")
     ap.add_argument("--cache-dir", default=DEFAULT_CACHE)
     ap.add_argument("--db", default=config.DB_PATH)
     ap.add_argument("--dry-run", action="store_true", help="ничего не писать в БД, только показать кандидатов")
     ap.add_argument("--refresh", action="store_true", help="перескачать SRT даже если кэш есть")
     ap.add_argument("--auto-threshold", type=float, default=0.45)
     ap.add_argument("--min-consensus", type=int, default=2)
+    ap.add_argument("--max-per-scene", type=int, default=3,
+                    help="сколько лучших кандидатов оставить на сцену (0 = все; для полного каталога рекомендуется 3)")
     args = ap.parse_args()
 
-    with open(args.manifest, encoding="utf-8") as f:
+    manifest_path = args.manifest or (DEFAULT_PILOT_MANIFEST if args.pilot else DEFAULT_MANIFEST)
+    ids_path = args.ids or (DEFAULT_PILOT_IDS if args.pilot else DEFAULT_IDS)
+    with open(manifest_path, encoding="utf-8") as f:
         manifest = json.load(f)
     os.makedirs(args.cache_dir, exist_ok=True)
 
+    print(f"== Манифест: {manifest_path}")
     print(f"== Кэш SRT: {args.cache_dir}")
     local = build_local_manifest(manifest, args.cache_dir, refresh=args.refresh)
     local_manifest_path = os.path.join(args.cache_dir, "_local_manifest.json")
@@ -168,9 +232,9 @@ def main() -> int:
     if not args.dry_run:
         init_db(args.db)
         conn = connect(args.db)
-        n = apply_imdb_map(conn, args.ids)
+        n = apply_imdb_map(conn, ids_path)
         conn.close()
-        print(f"== IMDb/TMDB ID проставлено/обновлено: {n}")
+        print(f"== IMDb/TMDB ID проставлено/обновлено: {n} ({ids_path})")
 
     cmd = [
         sys.executable, FETCH_SCRIPT,
@@ -178,6 +242,7 @@ def main() -> int:
         "--db", args.db,
         "--auto-threshold", str(args.auto_threshold),
         "--min-consensus", str(args.min_consensus),
+        "--max-per-scene", str(args.max_per_scene),
     ]
     if args.dry_run:
         cmd.append("--dry-run")

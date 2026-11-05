@@ -1,0 +1,3418 @@
+{
+  "comment": "Полный best-effort манифест для 140 сцен каталога. НЕ содержит текстов субтитров. Кандидаты остаются pending; verified=1 ставится только вручную. Сомнительные совпадения помечены ambiguous/match_note.",
+  "generated_by": "scripts/build_full_manifest.py",
+  "license_note": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+  "stats": {
+    "catalog_scenes": 140,
+    "matched_scenes": 62,
+    "unmatched_scenes": 78,
+    "excluded_false_matches": 6,
+    "ambiguous_scenes": 5,
+    "subtitle_files": 105,
+    "sources_used": [
+      "fosskers",
+      "imkira",
+      "mesu",
+      "subtext"
+    ],
+    "pilot_curated_keywords": 20
+  },
+  "unmatched": [
+    {
+      "key": "Ирония судьбы, или С лёгким паром!|1975",
+      "english_title": "Irony of Fate, or Enjoy Your Bath!",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Иван Васильевич меняет профессию|1973",
+      "english_title": "Ivan Vasilievich Changes Profession",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Москва слезам не верит|1979",
+      "english_title": "Moscow Does Not Believe in Tears",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Служебный роман|1977",
+      "english_title": "Office Romance",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Операция «Ы» и другие приключения Шурика|1965",
+      "english_title": "Operation Y and Shurik's Other Adventures",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Белое солнце пустыни|1969",
+      "english_title": "White Sun of the Desert",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Любовь и голуби|1984",
+      "english_title": "Love and Pigeons",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Девчата|1961",
+      "english_title": "The Girls",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Гараж|1979",
+      "english_title": "Garage",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Кин-дза-дза!|1986",
+      "english_title": "Kin-dza-dza!",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Покровские ворота|1982",
+      "english_title": "Pokrovsky Gates",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Место встречи изменить нельзя|1979",
+      "english_title": "The Meeting Place Cannot Be Changed",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Семнадцать мгновений весны|1973",
+      "english_title": "Seventeen Moments of Spring",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Кавказская пленница|1966",
+      "english_title": "Kidnapping, Caucasian Style",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Бриллиантовая рука|1968",
+      "english_title": "The Diamond Arm",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Афоня|1975",
+      "english_title": "Afonya",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Начало|1970",
+      "english_title": "The Beginning",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Тихий Дон|1957",
+      "english_title": "And Quiet Flows the Don",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Ирония судьбы. Продолжение|2007",
+      "english_title": "The Irony of Fate 2",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Брат 2|2000",
+      "english_title": "Brother 2",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Утомлённые солнцем|1994",
+      "english_title": "Burnt by the Sun",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Утомлённые солнцем 2|2010",
+      "english_title": "Burnt by the Sun 2",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Сибирский цирюльник|1998",
+      "english_title": "The Barber of Siberia",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "БURNED by the sun|1994",
+      "english_title": "Burnt by the Sun",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Кукушка|2002",
+      "english_title": "The Cuckoo",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Жестокий романс|2008",
+      "english_title": "A Cruel Romance",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Статский советник|2005",
+      "english_title": "The State Counsellor",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Бумер|2003",
+      "english_title": "Bumer",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Бумер 2|2006",
+      "english_title": "Bumer 2",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Груз 200|2007",
+      "english_title": "Cargo 200",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Левиафан|2014",
+      "english_title": "Leviathan",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Возвращение|2003",
+      "english_title": "The Return",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Остров|2006",
+      "english_title": "The Island",
+      "reason": "исключено: English 'The Island' в корпусе — другой фильм (не «Остров» 2006)"
+    },
+    {
+      "key": "Питер FM|2006",
+      "english_title": "Piter FM",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Стиляги|2008",
+      "english_title": "Hipsters",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Духless|2012",
+      "english_title": "Dukhless",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Легенда №17|2012",
+      "english_title": "Legend No. 17",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Движение вверх|2017",
+      "english_title": "Going Vertical",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Т-34|2018",
+      "english_title": "T-34",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Холоп|2019",
+      "english_title": "The Serf",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Карнавальная ночь|1956",
+      "english_title": "Carnival Night",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Гусарская баллада|1962",
+      "english_title": "Hussar Ballad",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Берегись автомобиля|1966",
+      "english_title": "Beware of the Car",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Старики-разбойники|1971",
+      "english_title": "Old Men: Robbers",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Невероятные приключения итальянцев в России|1974",
+      "english_title": "Unbelievable Adventures of Italians in Russia",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Чародеи|1982",
+      "english_title": "Wizards",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Формула любви|1984",
+      "english_title": "Formula of Love",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Зимний вечер в Гаграх|1985",
+      "english_title": "Winter Evening in Gagra",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Курьер|1986",
+      "english_title": "Courier",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Асса|1987",
+      "english_title": "Assa",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Зеркало для героя|1987",
+      "english_title": "Mirror for a Hero",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Зависть богов|2000",
+      "english_title": "Envy of the Gods",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Выкрутасы|2011",
+      "english_title": "Lucky Trouble",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "О чём говорят мужчины|2010",
+      "english_title": "What Men Talk About",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "О чём говорят мужчины 2|2011",
+      "english_title": "What Men Talk About 2",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Ёлки|2010",
+      "english_title": "Yolki",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Ёлки 2|2011",
+      "english_title": "Yolki 2",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Любовь-морковь|2007",
+      "english_title": "Love-Carrot",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Высоцкий. Спасибо, что живой|2011",
+      "english_title": "Vysotsky. Thank You for Being Alive",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Август. Восьмого|2012",
+      "english_title": "August Eighth",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Притяжение|2017",
+      "english_title": "Attraction",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Вторжение|2020",
+      "english_title": "Invasion",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Десять причин моей ненависти|2017",
+      "english_title": "10 Reasons to Hate You",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "После дождя|2001",
+      "english_title": "After the Rain",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Холодное сердце 2|2019",
+      "english_title": "Frozen II",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Человек-паук: Через вселенные|2023",
+      "english_title": "Spider-Man: Across the Spider-Verse",
+      "reason": "исключено: префикс 'Spider-Man' указывает на другой фильм"
+    },
+    {
+      "key": "Душа|2020",
+      "english_title": "Soul",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Зелёная книга|2018",
+      "english_title": "Green Book",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Паразиты|2019",
+      "english_title": "Parasite",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Оппенгеймер|2023",
+      "english_title": "Oppenheimer",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Дюна|2021",
+      "english_title": "Dune",
+      "reason": "исключено: SRT 'Dune' в корпусе относится к экранизации 1984, а не к фильму 2021"
+    },
+    {
+      "key": "Барби|2023",
+      "english_title": "Barbie",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Властелин колец: Братство кольца|2001",
+      "english_title": "The Lord of the Rings: The Fellowship of the Ring",
+      "reason": "исключено: найден только общий 'The Lord of the Rings.srt' без части/года"
+    },
+    {
+      "key": "Властелин колец: Две крепости|2002",
+      "english_title": "The Lord of the Rings: The Two Towers",
+      "reason": "исключено: найден только общий 'The Lord of the Rings.srt' без части/года"
+    },
+    {
+      "key": "Властелин колец: Возвращение короля|2003",
+      "english_title": "The Lord of the Rings: The Return of the King",
+      "reason": "исключено: найден только общий 'The Lord of the Rings.srt' без части/года"
+    },
+    {
+      "key": "Звёздные войны: Новая надежда|1977",
+      "english_title": "Star Wars: A New Hope",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Звёздные войны: Империя наносит ответный удар|1980",
+      "english_title": "Star Wars: The Empire Strikes Back",
+      "reason": "нет SRT/CSV с таким именем"
+    },
+    {
+      "key": "Джокер|2019",
+      "english_title": "Joker",
+      "reason": "нет SRT/CSV с таким именем"
+    }
+  ],
+  "excluded": [
+    {
+      "key": "Остров|2006",
+      "english_title": "The Island",
+      "reason": "English 'The Island' в корпусе — другой фильм (не «Остров» 2006)"
+    },
+    {
+      "key": "Человек-паук: Через вселенные|2023",
+      "english_title": "Spider-Man: Across the Spider-Verse",
+      "reason": "префикс 'Spider-Man' указывает на другой фильм"
+    },
+    {
+      "key": "Дюна|2021",
+      "english_title": "Dune",
+      "reason": "SRT 'Dune' в корпусе относится к экранизации 1984, а не к фильму 2021"
+    },
+    {
+      "key": "Властелин колец: Братство кольца|2001",
+      "english_title": "The Lord of the Rings: The Fellowship of the Ring",
+      "reason": "найден только общий 'The Lord of the Rings.srt' без части/года"
+    },
+    {
+      "key": "Властелин колец: Две крепости|2002",
+      "english_title": "The Lord of the Rings: The Two Towers",
+      "reason": "найден только общий 'The Lord of the Rings.srt' без части/года"
+    },
+    {
+      "key": "Властелин колец: Возвращение короля|2003",
+      "english_title": "The Lord of the Rings: The Return of the King",
+      "reason": "найден только общий 'The Lord of the Rings.srt' без части/года"
+    }
+  ],
+  "ambiguous": [
+    {
+      "key": "Война и мир|1966",
+      "english_title": "War and Peace",
+      "note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)"
+    },
+    {
+      "key": "Брат|1997",
+      "english_title": "Brother",
+      "note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)"
+    },
+    {
+      "key": "Сталинград|2013",
+      "english_title": "Stalingrad",
+      "note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)"
+    },
+    {
+      "key": "Привидение|1990",
+      "english_title": "Ghost",
+      "note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере"
+    },
+    {
+      "key": "Призрак|1990",
+      "english_title": "Ghost",
+      "note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере"
+    }
+  ],
+  "entries": [
+    {
+      "movie_title": "Only Old Men Are Going to Battle",
+      "movie_year": 1973,
+      "imdb_id": "tt0070861",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Only%20Old%20Men%20Are%20Going%20to%20Battle.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Only%20Old%20Men%20Are%20Going%20to%20Battle.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "В бой идут одни «старики»",
+          "keywords": [
+            "Only",
+            "Old",
+            "Men",
+            "Are",
+            "Going",
+            "Battle",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life"
+          ],
+          "keywords_ru": [
+            "лётчики",
+            "поют",
+            "войне",
+            "дружбе",
+            "между",
+            "вылетами"
+          ],
+          "moment_label": "Лётчики поют о войне и дружбе между вылетами. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "War and Peace",
+      "movie_year": 1966,
+      "imdb_id": "tt0063794",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/War%20and%20Peace.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/War%20and%20Peace.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": true,
+      "match_note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Война и мир",
+          "keywords": [
+            "War",
+            "Peace",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "эпопея",
+            "бондарчука",
+            "война",
+            "любовь"
+          ],
+          "moment_label": "Эпопея Бондарчука: война, мир, любовь. [⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Brother",
+      "movie_year": 1997,
+      "imdb_id": "tt0118767",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/Brother.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/Brother.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": true,
+      "match_note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Брат",
+          "keywords": [
+            "Brother",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "ветеран",
+            "возвращается",
+            "домой",
+            "находит",
+            "брата",
+            "другой",
+            "жизни"
+          ],
+          "moment_label": "Ветеран возвращается домой и находит брата в другой жизни. [⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Stalingrad",
+      "movie_year": 2013,
+      "imdb_id": "tt1966566",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Stalingrad.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Stalingrad.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": true,
+      "match_note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Сталинград",
+          "keywords": [
+            "Stalingrad",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "оборона",
+            "дома",
+            "павлова"
+          ],
+          "moment_label": "Оборона дома Павлова. [⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере; в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "When Harry Met Sally",
+      "movie_year": 1989,
+      "imdb_id": "tt0098635",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/When-Harry-Met-Sally...-1989.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/When%20Harry%20Met%20Sally....srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/When-Harry-Met-Sally...-1989.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/When%20Harry%20Met%20Sally....srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Когда Гарри встретил Салли",
+          "keywords": [
+            "orgasm",
+            "deli",
+            "katz",
+            "new year",
+            "love",
+            "friendship",
+            "harry",
+            "sally",
+            "restaurant",
+            "coffee"
+          ],
+          "keywords_ru": [
+            "могут",
+            "мужчина",
+            "женщина",
+            "быть",
+            "друзьями"
+          ],
+          "moment_label": "момент в кафе, где Салли доказывает, что умеет притворяться"
+        }
+      ]
+    },
+    {
+      "movie_title": "Notting Hill",
+      "movie_year": 1999,
+      "imdb_id": "tt0125439",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Notting-Hill-1999.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Notting%20Hill.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Notting-Hill-1999.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Notting%20Hill.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Ноттинг Хилл",
+          "keywords": [
+            "bookshop",
+            "william",
+            "anna",
+            "famous",
+            "actress",
+            "love",
+            "press",
+            "door",
+            "travel",
+            "just a girl"
+          ],
+          "keywords_ru": [
+            "книготорговец",
+            "влюбляется",
+            "голливудскую",
+            "звезду"
+          ],
+          "moment_label": "момент, где Анна говорит, что она просто девушка перед парнем"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Notebook",
+      "movie_year": 2004,
+      "imdb_id": "tt0332280",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Notebook-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Romance/The%20Notebook%20.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Notebook-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Romance/The%20Notebook%20.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Дневник памяти",
+          "keywords": [
+            "noah",
+            "allie",
+            "rain",
+            "kiss",
+            "letter",
+            "house",
+            "memory",
+            "love",
+            "ferris wheel",
+            "promise"
+          ],
+          "keywords_ru": [
+            "история",
+            "любви",
+            "рассказанная",
+            "внукам"
+          ],
+          "moment_label": "момент под дождём, где Ной и Элли снова вместе"
+        }
+      ]
+    },
+    {
+      "movie_title": "Amelie",
+      "movie_year": 2001,
+      "imdb_id": "tt0211915",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Romance/Amelie%20.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Romance/Amelie%20.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Амели",
+          "keywords": [
+            "amelie",
+            "montmartre",
+            "cafe",
+            "photobooth",
+            "gnome",
+            "kindness",
+            "lonely",
+            "love",
+            "nino",
+            "water"
+          ],
+          "keywords_ru": [
+            "девушка",
+            "делает",
+            "лучше",
+            "вокруг",
+            "себя"
+          ],
+          "moment_label": "момент, где Амели решает тайно помогать людям [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "La La Land",
+      "movie_year": 2016,
+      "imdb_id": "tt3783952",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/La-La-Land-2016.csv"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/La-La-Land-2016.csv"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Ла-Ла Ленд",
+          "keywords": [
+            "Land",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "мечтателя",
+            "фоне",
+            "заката",
+            "анджелесе"
+          ],
+          "moment_label": "Два мечтателя на фоне заката в Лос-Анджелесе. [найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Titanic",
+      "movie_year": 1997,
+      "imdb_id": "tt0120338",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Titanic-1997.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Titanic.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Titanic-1997.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Titanic.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Титаник",
+          "keywords": [
+            "jack",
+            "rose",
+            "ship",
+            "iceberg",
+            "ocean",
+            "flying",
+            "bow",
+            "draw me",
+            "heart",
+            "promise"
+          ],
+          "keywords_ru": [
+            "любовь",
+            "фоне",
+            "крушения",
+            "легендарного",
+            "лайнера"
+          ],
+          "moment_label": "момент на носу корабля, где Джек и Роза «летят»"
+        }
+      ]
+    },
+    {
+      "movie_title": "Pretty Woman",
+      "movie_year": 1990,
+      "imdb_id": "tt0100405",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Pretty%20Woman.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Pretty%20Woman.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Красотка",
+          "keywords": [
+            "Pretty",
+            "Woman",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "миллиардер",
+            "девушка",
+            "бедного",
+            "квартала"
+          ],
+          "moment_label": "Миллиардер и девушка из бедного квартала. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Fault in Our Stars",
+      "movie_year": 2014,
+      "imdb_id": "tt1099212",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Fault-in-Our-Stars-2014.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Fault%20in%20Our%20Stars.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Fault-in-Our-Stars-2014.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Fault%20in%20Our%20Stars.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Виноваты звёзды",
+          "keywords": [
+            "Fault",
+            "Our",
+            "Stars",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music"
+          ],
+          "keywords_ru": [
+            "двое",
+            "больных",
+            "подростков",
+            "влюбляются"
+          ],
+          "moment_label": "Двое больных подростков влюбляются."
+        }
+      ]
+    },
+    {
+      "movie_title": "Eat Pray Love",
+      "movie_year": 2010,
+      "imdb_id": "tt0879870",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Eat-Pray-Love-2010.csv"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Eat-Pray-Love-2010.csv"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Ешь, молись, люби",
+          "keywords": [
+            "Eat",
+            "Pray",
+            "Love",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music"
+          ],
+          "keywords_ru": [
+            "женщина",
+            "ищет",
+            "себя",
+            "после",
+            "развода"
+          ],
+          "moment_label": "Женщина ищет себя после развода. [найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Ghost",
+      "movie_year": 1990,
+      "imdb_id": "tt0099653",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Ghost-1990.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Ghost.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Ghost-1990.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Ghost.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": true,
+      "match_note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере",
+      "scenes": [
+        {
+          "match_title": "Привидение",
+          "keywords": [
+            "Ghost",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "погибший",
+            "банкир",
+            "медиум"
+          ],
+          "moment_label": "Погибший банкир и медиум. [⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Ghost",
+      "movie_year": 1990,
+      "imdb_id": "tt0099653",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Ghost-1990.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Ghost.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Ghost-1990.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Ghost.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": true,
+      "match_note": "⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере",
+      "scenes": [
+        {
+          "match_title": "Призрак",
+          "keywords": [
+            "Ghost",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "привидение"
+          ],
+          "moment_label": "То же, что «Привидение». [⚠️ Сопоставление по названию приблизительное: обязательно сверь издание/год в плеере]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Back to the Future",
+      "movie_year": 1985,
+      "imdb_id": "tt0088763",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Back-to-the-Future-1985.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Back%20to%20the%20Future.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Back-to-the-Future-1985.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Back%20to%20the%20Future.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Назад в будущее",
+          "keywords": [
+            "delorean",
+            "time machine",
+            "flux capacitor",
+            "1985",
+            "1955",
+            "marty",
+            "doc",
+            "clock tower",
+            "lightning",
+            "future"
+          ],
+          "keywords_ru": [
+            "подросток",
+            "машине",
+            "времени"
+          ],
+          "moment_label": "момент, где Делоран впервые отправляется в прошлое"
+        }
+      ]
+    },
+    {
+      "movie_title": "Back to the Future Part II",
+      "movie_year": 1989,
+      "imdb_id": "tt0096874",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Back-to-the-Future-Part-II-1989.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Back%20to%20the%20Future%20Part%20II.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Back-to-the-Future-Part-II-1989.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Back%20to%20the%20Future%20Part%20II.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Назад в будущее 2",
+          "keywords": [
+            "Back",
+            "Future",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "сиквел"
+          ],
+          "moment_label": "Сиквел: 2015-й."
+        }
+      ]
+    },
+    {
+      "movie_title": "Home Alone",
+      "movie_year": 1990,
+      "imdb_id": "tt0099785",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Home-Alone-1990.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Home%20Alone.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Home-Alone-1990.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Home%20Alone.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Один дома",
+          "keywords": [
+            "kevin",
+            "family",
+            "christmas",
+            "burglars",
+            "booby traps",
+            "house",
+            "alone",
+            "paint cans",
+            "tarantula",
+            "scream"
+          ],
+          "keywords_ru": [
+            "мальчик",
+            "один",
+            "дома",
+            "против",
+            "грабителей"
+          ],
+          "moment_label": "момент, где Кевин ставит ловушки грабителям"
+        }
+      ]
+    },
+    {
+      "movie_title": "Home Alone 2: Lost in New York",
+      "movie_year": 1992,
+      "imdb_id": "tt0104431",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Home-Alone-2--Lost-in-New-York-1992.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Home%20Alone%202%3A%20Lost%20in%20New%20York.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Home-Alone-2--Lost-in-New-York-1992.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Home%20Alone%202%3A%20Lost%20in%20New%20York.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Один дома 2",
+          "keywords": [
+            "Home",
+            "Alone",
+            "Lost",
+            "New",
+            "York",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father"
+          ],
+          "keywords_ru": [
+            "кевин",
+            "йорке"
+          ],
+          "moment_label": "Кевин в Нью-Йорке."
+        }
+      ]
+    },
+    {
+      "movie_title": "The Hangover",
+      "movie_year": 2009,
+      "imdb_id": "tt1119646",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Hangover-2009.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Hangover.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Hangover-2009.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Hangover.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Мальчишник в Вегасе",
+          "keywords": [
+            "Hangover",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "друзья",
+            "ищут",
+            "жениха",
+            "перед",
+            "свадьбой"
+          ],
+          "moment_label": "Друзья ищут жениха перед свадьбой."
+        }
+      ]
+    },
+    {
+      "movie_title": "Mrs. Doubtfire",
+      "movie_year": 1993,
+      "imdb_id": "tt0107614",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Mrs.-Doubtfire-1993.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Mrs.%20Doubtfire.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Mrs.-Doubtfire-1993.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Mrs.%20Doubtfire.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Миссис Даутфайр",
+          "keywords": [
+            "Mrs",
+            "Doubtfire",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "отец",
+            "притворяется",
+            "няней",
+            "чтобы",
+            "быть",
+            "детьми"
+          ],
+          "moment_label": "Отец притворяется няней, чтобы быть с детьми."
+        }
+      ]
+    },
+    {
+      "movie_title": "Shrek",
+      "movie_year": 2001,
+      "imdb_id": "tt0126029",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Shrek-2001.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Shrek.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Shrek-2001.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Shrek.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Шрек",
+          "keywords": [
+            "Shrek",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "спасает",
+            "принцессу"
+          ],
+          "moment_label": "Огр спасает принцессу."
+        }
+      ]
+    },
+    {
+      "movie_title": "Shrek 2",
+      "movie_year": 2004,
+      "imdb_id": "tt0298148",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Shrek-2-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Shrek%202.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Shrek-2-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Shrek%202.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Шрек 2",
+          "keywords": [
+            "Shrek",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "шрек",
+            "едет",
+            "тёще"
+          ],
+          "moment_label": "Шрек едет к тёще."
+        }
+      ]
+    },
+    {
+      "movie_title": "Up",
+      "movie_year": 2009,
+      "imdb_id": "tt1049413",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Up-2009.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Up.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Up-2009.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Up.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Вверх",
+          "keywords": [
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war",
+            "city"
+          ],
+          "keywords_ru": [
+            "дедушка",
+            "летит",
+            "водопаду",
+            "шариках"
+          ],
+          "moment_label": "Дедушка летит к водопаду на шариках."
+        }
+      ]
+    },
+    {
+      "movie_title": "The Lion King",
+      "movie_year": 1994,
+      "imdb_id": "tt0110357",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Lion-King-1994.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Lion%20King%20%281994%29.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Lion-King-1994.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Lion%20King%20%281994%29.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Король Лев",
+          "keywords": [
+            "simba",
+            "mufasa",
+            "hakuna matata",
+            "circle of life",
+            "pride rock",
+            "remember",
+            "father",
+            "scar",
+            "pumbaa",
+            "timon"
+          ],
+          "keywords_ru": [
+            "львёнок",
+            "симба",
+            "взрослеет"
+          ],
+          "moment_label": "момент, где Муфаса говорит Симбе помнить, кто он"
+        }
+      ]
+    },
+    {
+      "movie_title": "Frozen",
+      "movie_year": 2013,
+      "imdb_id": "tt2294629",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Frozen-2013.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Musical/Frozen.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Frozen-2013.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Musical/Frozen.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Холодное сердце",
+          "keywords": [
+            "Frozen",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "сёстры",
+            "одна",
+            "прячет",
+            "другая",
+            "ищет"
+          ],
+          "moment_label": "Сёстры: одна прячет лёд, другая ищет."
+        }
+      ]
+    },
+    {
+      "movie_title": "How to Train Your Dragon",
+      "movie_year": 2010,
+      "imdb_id": "tt0892769",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/How-to-Train-Your-Dragon-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/How%20to%20Train%20Your%20Dragon.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/How-to-Train-Your-Dragon-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/How%20to%20Train%20Your%20Dragon.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Как приручить дракона",
+          "keywords": [
+            "How",
+            "Train",
+            "Your",
+            "Dragon",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother"
+          ],
+          "keywords_ru": [
+            "мальчик",
+            "дружит",
+            "драконом"
+          ],
+          "moment_label": "Мальчик дружит с драконом."
+        }
+      ]
+    },
+    {
+      "movie_title": "Despicable Me",
+      "movie_year": 2010,
+      "imdb_id": "tt1323594",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Despicable-Me-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Despicable%20Me.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Despicable-Me-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Despicable%20Me.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Гадкий я",
+          "keywords": [
+            "Despicable",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "злодей",
+            "усыновляет",
+            "девочек"
+          ],
+          "moment_label": "Злодей усыновляет девочек."
+        }
+      ]
+    },
+    {
+      "movie_title": "Coco",
+      "movie_year": 2017,
+      "imdb_id": "tt2380307",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Coco-2017.csv"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Coco-2017.csv"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Тайна Коко",
+          "keywords": [
+            "Coco",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "мальчик",
+            "стране",
+            "мёртвых"
+          ],
+          "moment_label": "Мальчик в стране мёртвых. [найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Spirited Away",
+      "movie_year": 2001,
+      "imdb_id": "tt0245429",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Spirited%20Away.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Spirited%20Away.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Унесённые призраками",
+          "keywords": [
+            "spirits",
+            "bathhouse",
+            "parents",
+            "pigs",
+            "dragon",
+            "haku",
+            "no face",
+            "train",
+            "chihiro",
+            "river"
+          ],
+          "keywords_ru": [
+            "тихиро",
+            "спасает",
+            "родителей",
+            "мире",
+            "духов"
+          ],
+          "moment_label": "момент, где Тихиро впервые попадает в мир духов [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Ratatouille",
+      "movie_year": 2007,
+      "imdb_id": "tt0382932",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Ratatouille-2007.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Ratatouille.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Ratatouille-2007.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Ratatouille.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Рататуй",
+          "keywords": [
+            "remy",
+            "rat",
+            "cooking",
+            "kitchen",
+            "linguini",
+            "food",
+            "ratatouille",
+            "anton ego",
+            "flavour",
+            "chef"
+          ],
+          "keywords_ru": [
+            "крыса",
+            "готовит",
+            "французском",
+            "ресторане"
+          ],
+          "moment_label": "момент, где Антон Эго пробует рататуй и вспоминает детство"
+        }
+      ]
+    },
+    {
+      "movie_title": "WALL-E",
+      "movie_year": 2008,
+      "imdb_id": "tt0910970",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/WALL%2AE.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/WALL-E.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/WALL%2AE.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/WALL-E.srt"
+      ],
+      "formats": [
+        "srt",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года",
+      "scenes": [
+        {
+          "match_title": "ВАЛЛ-И",
+          "keywords": [
+            "WALL",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "робот",
+            "уборщик",
+            "влюбляется"
+          ],
+          "moment_label": "Робот-уборщик влюбляется. [в имени файла нет года]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Finding Nemo",
+      "movie_year": 2003,
+      "imdb_id": "tt0266543",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Finding-Nemo-2003.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Finding%20Nemo.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Finding-Nemo-2003.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Finding%20Nemo.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "В поисках Немо",
+          "keywords": [
+            "Finding",
+            "Nemo",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "папа",
+            "рыбка",
+            "ищет",
+            "сына",
+            "океану"
+          ],
+          "moment_label": "Папа-рыбка ищет сына по океану."
+        }
+      ]
+    },
+    {
+      "movie_title": "Toy Story",
+      "movie_year": 1995,
+      "imdb_id": "tt0114709",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Toy-Story-1995.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Toy%20Story.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Toy-Story-1995.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Toy%20Story.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "История игрушек",
+          "keywords": [
+            "woody",
+            "buzz",
+            "andy",
+            "toys",
+            "space ranger",
+            "falling with style",
+            "friendship",
+            "moving",
+            "sid",
+            "rocket"
+          ],
+          "keywords_ru": [
+            "игрушки",
+            "оживают",
+            "пока",
+            "хозяев"
+          ],
+          "moment_label": "момент, где Базз впервые «летает», а Вуди ревнует"
+        }
+      ]
+    },
+    {
+      "movie_title": "Toy Story 3",
+      "movie_year": 2010,
+      "imdb_id": "tt0435761",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Toy-Story-3-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Toy%20Story%203.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Toy-Story-3-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Toy%20Story%203.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "История игрушек 3",
+          "keywords": [
+            "Toy",
+            "Story",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "игрушки",
+            "детском",
+            "саду"
+          ],
+          "moment_label": "Игрушки в детском саду."
+        }
+      ]
+    },
+    {
+      "movie_title": "The Incredibles",
+      "movie_year": 2004,
+      "imdb_id": "tt0317705",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Incredibles-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/The%20Incredibles.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Incredibles-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/The%20Incredibles.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Суперсемейка",
+          "keywords": [
+            "Incredibles",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "семья",
+            "супергероев",
+            "быту"
+          ],
+          "moment_label": "Семья супергероев в быту."
+        }
+      ]
+    },
+    {
+      "movie_title": "Forrest Gump",
+      "movie_year": 1994,
+      "imdb_id": "tt0109830",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Forrest-Gump-1994.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Forrest%20Gump.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Forrest-Gump-1994.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Forrest%20Gump.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Форрест Гамп",
+          "keywords": [
+            "run",
+            "running",
+            "chocolates",
+            "box of chocolates",
+            "mama",
+            "feather",
+            "bus stop",
+            "lieutenant dan",
+            "jenny",
+            "shrimp"
+          ],
+          "keywords_ru": [
+            "честный",
+            "парень",
+            "проживает",
+            "полвека",
+            "истории"
+          ],
+          "moment_label": "момент, где Форрест бежит через страну и вспоминает маму"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Shawshank Redemption",
+      "movie_year": 1994,
+      "imdb_id": "tt0111161",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Shawshank-Redemption-1994.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Shawshank%20Redemption.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Shawshank-Redemption-1994.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Shawshank%20Redemption.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Побег из Шоушенка",
+          "keywords": [
+            "hope",
+            "freedom",
+            "andy",
+            "red",
+            "prison",
+            "escape",
+            "rain",
+            "library",
+            "brooks",
+            "zihuatanejo"
+          ],
+          "keywords_ru": [
+            "невиновный",
+            "роет",
+            "туннель"
+          ],
+          "moment_label": "момент, где Энди выходит под дождь после побега"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Green Mile",
+      "movie_year": 1999,
+      "imdb_id": "tt0120689",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Green-Mile-1999.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Green%20Mile.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Green-Mile-1999.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Green%20Mile.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Зелёная миля",
+          "keywords": [
+            "john coffey",
+            "miracle",
+            "mouse",
+            "electric chair",
+            "healing",
+            "death row",
+            "paul",
+            "mr jingles",
+            "gentle",
+            "gift"
+          ],
+          "keywords_ru": [
+            "надзиратель",
+            "встречает",
+            "чудо"
+          ],
+          "moment_label": "момент, где Джон Коффи исцеляет и говорит о боли мира"
+        }
+      ]
+    },
+    {
+      "movie_title": "A Beautiful Mind",
+      "movie_year": 2001,
+      "imdb_id": "tt0268978",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/A-Beautiful-Mind-2001.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/A%20Beautiful%20Mind.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/A-Beautiful-Mind-2001.csv",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/A%20Beautiful%20Mind.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Игры разума",
+          "keywords": [
+            "Beautiful",
+            "Mind",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "гений",
+            "математик",
+            "борется",
+            "болезнью"
+          ],
+          "moment_label": "Гений-математик борется с болезнью."
+        }
+      ]
+    },
+    {
+      "movie_title": "The Godfather",
+      "movie_year": 1972,
+      "imdb_id": "tt0068646",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Godfather-1972.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Godfather-1972.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Крёстный отец",
+          "keywords": [
+            "offer",
+            "refuse",
+            "godfather",
+            "family",
+            "horse",
+            "leave the gun",
+            "cannoli",
+            "baptism",
+            "don corleone",
+            "wedding"
+          ],
+          "keywords_ru": [
+            "семейная",
+            "сага",
+            "дона",
+            "корлеоне"
+          ],
+          "moment_label": "момент, где семья обсуждает предложение, от которого нельзя отказаться"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Godfather Part II",
+      "movie_year": 1974,
+      "imdb_id": "tt0071562",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Godfather--Part-II-1974.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather%3A%20Part%20II.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Godfather--Part-II-1974.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather%3A%20Part%20II.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Крёстный отец 2",
+          "keywords": [
+            "Godfather",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "молодость",
+            "вито",
+            "бизнес",
+            "майкла"
+          ],
+          "moment_label": "Молодость Вито и бизнес Майкла."
+        }
+      ]
+    },
+    {
+      "movie_title": "Leon: The Professional",
+      "movie_year": 1994,
+      "imdb_id": "tt0110413",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/Leon%3A%20The%20Professional.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/Leon%3A%20The%20Professional.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Леон",
+          "keywords": [
+            "Leon",
+            "Professional",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "киллер",
+            "девочка"
+          ],
+          "moment_label": "Киллер и девочка. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Schindler's List",
+      "movie_year": 1993,
+      "imdb_id": "tt0108052",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Schindler%27s-List-1993.csv"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Schindler%27s-List-1993.csv"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Список Шиндлера",
+          "keywords": [
+            "Schindler",
+            "List",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "немец",
+            "спасает",
+            "евреев",
+            "время",
+            "войны"
+          ],
+          "moment_label": "Немец спасает евреев во время войны. [найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Saving Private Ryan",
+      "movie_year": 1998,
+      "imdb_id": "tt0120815",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Saving-Private-Ryan-1998.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Saving%20Private%20Ryan.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Saving-Private-Ryan-1998.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Saving%20Private%20Ryan.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Saving Private Ryan",
+          "keywords": [
+            "Saving",
+            "Private",
+            "Ryan",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music"
+          ],
+          "keywords_ru": [
+            "отряд",
+            "идёт",
+            "спасать",
+            "солдата"
+          ],
+          "moment_label": "Отряд идёт спасать солдата."
+        }
+      ]
+    },
+    {
+      "movie_title": "The Pianist",
+      "movie_year": 2002,
+      "imdb_id": "tt0253474",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/The%20Pianist.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/The%20Pianist.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Пианист",
+          "keywords": [
+            "Pianist",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "пианист",
+            "выживает",
+            "варшаве"
+          ],
+          "moment_label": "Пианист выживает в Варшаве. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Intouchables",
+      "movie_year": 2011,
+      "imdb_id": "tt1675434",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/The%20Intouchables.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/The%20Intouchables.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "1+1",
+          "keywords": [
+            "Intouchables",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "богач",
+            "коляске",
+            "безработный",
+            "ухажёр"
+          ],
+          "moment_label": "Богач на коляске и безработный ухажёр. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Prestige",
+      "movie_year": 2006,
+      "imdb_id": "tt0482571",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Prestige-2006.csv"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Prestige-2006.csv"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Престиж",
+          "keywords": [
+            "Prestige",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "фокусника",
+            "соперники"
+          ],
+          "moment_label": "Два фокусника — соперники. [найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Matrix",
+      "movie_year": 1999,
+      "imdb_id": "tt0133093",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Matrix-1999.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Action/The%20Matrix.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Matrix-1999.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Action/The%20Matrix.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Матрица",
+          "keywords": [
+            "neo",
+            "morpheus",
+            "red pill",
+            "blue pill",
+            "wake up",
+            "matrix",
+            "rabbit hole",
+            "choice",
+            "trinity",
+            "agents"
+          ],
+          "keywords_ru": [
+            "хакер",
+            "узнаёт",
+            "правду",
+            "мире"
+          ],
+          "moment_label": "момент, где Нео выбирает красную таблетку"
+        }
+      ]
+    },
+    {
+      "movie_title": "Inception",
+      "movie_year": 2010,
+      "imdb_id": "tt1375666",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Inception-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Inception.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Inception-2010.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Inception.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Начало",
+          "keywords": [
+            "dream",
+            "kick",
+            "totem",
+            "spinning top",
+            "limbo",
+            "inception",
+            "deeper",
+            "subconscious",
+            "cobb",
+            "mal"
+          ],
+          "keywords_ru": [
+            "команда",
+            "проникает"
+          ],
+          "moment_label": "момент, где команда погружается в сон внутри сна"
+        }
+      ]
+    },
+    {
+      "movie_title": "Interstellar",
+      "movie_year": 2014,
+      "imdb_id": "tt0816692",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Interstellar-2014.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Interstellar.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Interstellar-2014.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Interstellar.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Интерстеллар",
+          "keywords": [
+            "Interstellar",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance",
+            "war"
+          ],
+          "keywords_ru": [
+            "отец",
+            "летит",
+            "через",
+            "кротовую",
+            "нору",
+            "дочери"
+          ],
+          "moment_label": "Отец летит через кротовую нору к дочери."
+        }
+      ]
+    },
+    {
+      "movie_title": "Harry Potter and the Prisoner of Azkaban",
+      "movie_year": 2004,
+      "imdb_id": "tt0304141",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Harry-Potter-and-the-Prisoner-of-Azkaban-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Adventure/Harry%20Potter%20and%20the%20Prisoner%20of%20Azkaban%20.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Harry-Potter-and-the-Prisoner-of-Azkaban-2004.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Adventure/Harry%20Potter%20and%20the%20Prisoner%20of%20Azkaban%20.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Гарри Поттер и узник Азкабана",
+          "keywords": [
+            "Harry",
+            "Potter",
+            "Prisoner",
+            "Azkaban",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother"
+          ],
+          "keywords_ru": [
+            "третий",
+            "курс",
+            "хогвартса"
+          ],
+          "moment_label": "Третий курс Хогвартса."
+        }
+      ]
+    },
+    {
+      "movie_title": "Harry Potter and the Deathly Hallows: Part 2",
+      "movie_year": 2011,
+      "imdb_id": "tt1201607",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Harry-Potter-and-the-Deathly-Hallows--Part-2-2011.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Harry%20Potter%20and%20the%20Deathly%20Hallows%3A%20Part%202.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Harry-Potter-and-the-Deathly-Hallows--Part-2-2011.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Harry%20Potter%20and%20the%20Deathly%20Hallows%3A%20Part%202.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Гарри Поттер и Дары смерти",
+          "keywords": [
+            "Harry",
+            "Potter",
+            "Deathly",
+            "Hallows",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother"
+          ],
+          "keywords_ru": [
+            "финал",
+            "саги",
+            "мальчике",
+            "волшебнике"
+          ],
+          "moment_label": "Финал саги о мальчике-волшебнике."
+        }
+      ]
+    },
+    {
+      "movie_title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+      "movie_year": 2003,
+      "imdb_id": "tt0325980",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Pirates-of-the-Caribbean--The-Curse-of-the-Black-Pearl-2003.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Pirates%20of%20the%20Caribbean%3A%20The%20Curse%20of%20the%20Black%20Pearl.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Pirates-of-the-Caribbean--The-Curse-of-the-Black-Pearl-2003.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Pirates%20of%20the%20Caribbean%3A%20The%20Curse%20of%20the%20Black%20Pearl.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Пираты Карибского моря",
+          "keywords": [
+            "Pirates",
+            "Caribbean",
+            "Curse",
+            "Black",
+            "Pearl",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father"
+          ],
+          "keywords_ru": [
+            "джек",
+            "воробей",
+            "возвращает",
+            "корабль"
+          ],
+          "moment_label": "Джек Воробей возвращает корабль."
+        }
+      ]
+    },
+    {
+      "movie_title": "Avengers: Endgame",
+      "movie_year": 2019,
+      "imdb_id": "tt4154796",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Avengers%20-%20Endgame.srt"
+      ],
+      "sources": [
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Avengers%20-%20Endgame.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Мстители: Финал",
+          "keywords": [
+            "Avengers",
+            "Endgame",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "финал",
+            "эпохи"
+          ],
+          "moment_label": "Финал эпохи Marvel. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Spider-Man: No Way Home",
+      "movie_year": 2021,
+      "imdb_id": "tt10872600",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Spider-Man%20-%20No%20Way%20Home.srt",
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Spider-Man-2002.csv"
+      ],
+      "sources": [
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Spider-Man%20-%20No%20Way%20Home.srt",
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Spider-Man-2002.csv"
+      ],
+      "formats": [
+        "srt",
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Человек-паук: Нет пути домой",
+          "keywords": [
+            "Spider",
+            "Man",
+            "Way",
+            "Home",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother"
+          ],
+          "keywords_ru": [
+            "мультивселенная",
+            "паучье",
+            "чутьё"
+          ],
+          "moment_label": "Мультивселенная и паучье чутьё."
+        }
+      ]
+    },
+    {
+      "movie_title": "Dirty Dancing",
+      "movie_year": 1987,
+      "imdb_id": "tt0092890",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Dirty%20Dancing.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Dirty%20Dancing.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Грязные танцы",
+          "keywords": [
+            "baby",
+            "johnny",
+            "lift",
+            "watermelon",
+            "dance",
+            "summer",
+            "kellerman",
+            "nobody puts baby",
+            "corner",
+            "music"
+          ],
+          "keywords_ru": [
+            "лето",
+            "учит",
+            "танцевать"
+          ],
+          "moment_label": "момент финального танца с подъёмом [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "A Star Is Born",
+      "movie_year": 2018,
+      "imdb_id": "tt1517451",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Musical/A%20Star%20Is%20Born.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Musical/A%20Star%20Is%20Born.srt"
+      ],
+      "formats": [
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Звезда родилась",
+          "keywords": [
+            "Star",
+            "Born",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "звезда",
+            "рождается",
+            "гаснет"
+          ],
+          "moment_label": "Звезда рождается и гаснет. [в имени файла нет года; найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Greatest Showman",
+      "movie_year": 2017,
+      "imdb_id": "tt1485796",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Greatest-Showman-2017.csv"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Greatest-Showman-2017.csv"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "ambiguous": false,
+      "match_note": "найдена только одна версия субтитров (консенсуса не будет)",
+      "scenes": [
+        {
+          "match_title": "Величайшее шоу на Земле",
+          "keywords": [
+            "Greatest",
+            "Showman",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "создание",
+            "цирка",
+            "барнума"
+          ],
+          "moment_label": "Создание цирка Барнума. [найдена только одна версия субтитров (консенсуса не будет)]"
+        }
+      ]
+    },
+    {
+      "movie_title": "Psycho",
+      "movie_year": 1960,
+      "imdb_id": "tt0054215",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Psycho-1960.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/Psycho.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Psycho-1960.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/Psycho.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Психо",
+          "keywords": [
+            "marion",
+            "shower",
+            "bates",
+            "motel",
+            "mother",
+            "knife",
+            "curtain",
+            "room",
+            "norman",
+            "crime"
+          ],
+          "keywords_ru": [
+            "мотель",
+            "хозяйка"
+          ],
+          "moment_label": "момент в душе у мотеля Бейтса"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Shining",
+      "movie_year": 1980,
+      "imdb_id": "tt0081505",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Shining-1980.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/The%20Shining.srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Shining-1980.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/The%20Shining.srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Сияние",
+          "keywords": [
+            "jack",
+            "overlook",
+            "typewriter",
+            "redrum",
+            "twins",
+            "maze",
+            "snow",
+            "wendy",
+            "hotel",
+            "heres johnny"
+          ],
+          "keywords_ru": [
+            "отель",
+            "оверлук",
+            "зимой"
+          ],
+          "moment_label": "момент, где Джек ломает дверь в ванной"
+        }
+      ]
+    },
+    {
+      "movie_title": "Monsters, Inc.",
+      "movie_year": 2001,
+      "imdb_id": "tt0198781",
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Monsters%2C-Inc.-2001.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Monsters%2C%20Inc..srt"
+      ],
+      "sources": [
+        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Monsters%2C-Inc.-2001.csv",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Monsters%2C%20Inc..srt"
+      ],
+      "formats": [
+        "csv",
+        "srt"
+      ],
+      "ambiguous": false,
+      "match_note": "точное совпадение имени файла с английским названием",
+      "scenes": [
+        {
+          "match_title": "Корпорация монстров",
+          "keywords": [
+            "Monsters",
+            "Inc",
+            "love",
+            "friend",
+            "family",
+            "home",
+            "hope",
+            "dream",
+            "time",
+            "life",
+            "father",
+            "mother",
+            "music",
+            "dance"
+          ],
+          "keywords_ru": [
+            "монстры",
+            "пугают",
+            "детей",
+            "чтобы",
+            "заряжать",
+            "город"
+          ],
+          "moment_label": "Монстры пугают детей, чтобы заряжать город."
+        }
+      ]
+    }
+  ]
+}

@@ -27,6 +27,7 @@ init_db(config.DB_PATH)
 os.makedirs(config.MEDIA_DIR, exist_ok=True)
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+LIB_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "timecode_library")
 
 
 @asynccontextmanager
@@ -1791,6 +1792,69 @@ def admin_timecodes(request: Request, status: str = "pending"):
         })
         out.append(d)
     return {"candidates": out}
+
+
+@app.get("/api/admin/timecode-library")
+def admin_timecode_library(request: Request):
+    """Сводка по внешней библиотеке таймкодов: покрытие, источники, очередь сверки."""
+    require_admin(request)
+    conn = connect(config.DB_PATH)
+    scenes = conn.execute(
+        "SELECT COUNT(*) AS total, SUM(CASE WHEN verified=1 THEN 1 ELSE 0 END) AS verified,"
+        " SUM(CASE WHEN imdb_id IS NOT NULL AND imdb_id<>'' THEN 1 ELSE 0 END) AS with_imdb,"
+        " SUM(CASE WHEN timecode_seconds IS NOT NULL AND timecode_label IS NOT NULL THEN 1 ELSE 0 END) AS with_timecode"
+        " FROM scenes WHERE status='approved'"
+    ).fetchone()
+    by_status = {r["status"]: r["n"] for r in conn.execute(
+        "SELECT status, COUNT(*) AS n FROM timecode_candidates GROUP BY status").fetchall()}
+    with_candidates = conn.execute("SELECT COUNT(DISTINCT scene_id) AS n FROM timecode_candidates").fetchone()["n"]
+    top_sources = [dict(r) for r in conn.execute(
+        "SELECT source, COUNT(*) AS n FROM timecode_candidates GROUP BY source ORDER BY n DESC LIMIT 8").fetchall()]
+    conn.close()
+
+    def read(name: str):
+        path = os.path.join(LIB_DIR, name)
+        if not os.path.exists(path):
+            return None
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+
+    registry = read("source_registry.json") or {}
+    id_map = read("imdb_map_full.json") or {}
+    full = read("full_manifest.json") or {}
+    pilot = read("pilot_manifest.json") or {}
+    files = []
+    for name in ("source_registry.json", "srt_index.json", "imdb_map_full.json",
+                 "pilot_manifest.json", "full_manifest.json"):
+        path = os.path.join(LIB_DIR, name)
+        if os.path.exists(path):
+            files.append({"name": name, "bytes": os.path.getsize(path)})
+    return {
+        "catalog": {
+            "total": scenes["total"], "verified": scenes["verified"] or 0,
+            "with_imdb": scenes["with_imdb"] or 0, "with_timecode": scenes["with_timecode"] or 0,
+        },
+        "candidates": {
+            "by_status": by_status,
+            "scenes_with_candidates": with_candidates,
+            "total": sum(by_status.values()),
+        },
+        "sources": {
+            "registry": registry.get("sources", []),
+            "optional": registry.get("optional_sources", []),
+            "top_in_db": top_sources,
+        },
+        "manifests": {
+            "pilot_scenes": len(pilot.get("entries", [])),
+            "full": full.get("stats", {}),
+            "imdb_map": id_map.get("stats", {}),
+            "unmatched_count": len(full.get("unmatched", [])),
+            "excluded_count": len(full.get("excluded", [])),
+            "ambiguous_count": len(full.get("ambiguous", [])),
+        },
+        "files": files,
+        "note": "Все кандидаты остаются pending; verified=1 ставится только вручную в #/admin.",
+    }
 
 
 class BulkApprove(BaseModel):

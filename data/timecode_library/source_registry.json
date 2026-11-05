@@ -1,0 +1,62 @@
+{
+  "generated_by": "scripts/build_srt_index.py",
+  "comment": "Реестр внешних библиотек timestamped-субтитров. Пути лежат в srt_index.json; тексты реплик в репозиторий не коммитятся.",
+  "sources": [
+    {
+      "id": "mesu",
+      "repo": "mesutgurlek/Movie-Category-Classification-from-Subtitles",
+      "sha": "7ebe351e15ff8220cb8432747902002e5904e349",
+      "format": "srt",
+      "path_filter": "\\.srt$",
+      "license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 stored. See docs/06-timecode-sources.md",
+      "note": "39,861 SRT, genre folders + impaired/non-impaired duplicates",
+      "count": 39861
+    },
+    {
+      "id": "imkira",
+      "repo": "imkira3/imkira3Keys",
+      "sha": "8c1b635c31b2039f19407609572e6d114c155898",
+      "format": "srt",
+      "path_filter": "\\.srt$",
+      "license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 stored. See docs/06-timecode-sources.md",
+      "note": "1,300 SRT, mostly English titles",
+      "count": 1300
+    },
+    {
+      "id": "fosskers",
+      "repo": "fosskers/subtitles",
+      "sha": "0511f2fc68839443ec885eda250c0d65ee15b735",
+      "format": "srt",
+      "path_filter": "\\.srt$",
+      "license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 stored. See docs/06-timecode-sources.md",
+      "note": "14 SRT, includes Spirited Away.en.srt",
+      "count": 14
+    },
+    {
+      "id": "subtext",
+      "repo": "jblinder/subtext",
+      "sha": "601f8e44b2fd1dd5b8daebbea879ced5797b285e",
+      "format": "csv",
+      "path_filter": "^data/srt/srt_csv/.*\\.csv$",
+      "license": "Scraped SRT converted to CSV (startTime/endTime/text/title); same subtitle rights as OpenSubtitles. Only timecodes + sha1 stored.",
+      "note": "1,305 subtitle CSVs, title-year filenames",
+      "count": 1305
+    }
+  ],
+  "optional_sources": [
+    {
+      "id": "opus2024",
+      "name": "OPUS / OpenSubtitles v2024",
+      "license": "ODC-BY 1.0 + attribution to opensubtitles.org; underlying subtitle rights belong to rightsholders",
+      "url": "https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/xml/<lang>.zip",
+      "note": "7.7M subtitle files / 40B tokens / 92 languages. Недоступно из песочницы; скачивается на Mac через OpusTools и читается scripts/import_opus_timecodes.py."
+    },
+    {
+      "id": "cinesubbench",
+      "name": "CineSubBench",
+      "license": "CC BY-NC-SA 4.0 (non-commercial only)",
+      "url": "https://huggingface.co/datasets/tafseer-nayeem/CineSubBench",
+      "note": "1,012 films / 6,072 tracks / 8,126,494 timestamped entries; sample20 не пересёкся с нашим каталогом. Не интегрирован из-за NC-лицензии."
+    }
+  ]
+}

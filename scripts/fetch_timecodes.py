@@ -191,6 +191,8 @@ def main():
     ap.add_argument("--auto-threshold", type=float, default=0.45,
                     help="confidence для auto=1 при consensus>=2")
     ap.add_argument("--min-consensus", type=int, default=2)
+    ap.add_argument("--max-per-scene", type=int, default=0,
+                    help="оставить только N лучших кандидатов на сцену (0 = без ограничения)")
     args = ap.parse_args()
 
     base = os.path.dirname(os.path.abspath(args.manifest))
@@ -236,6 +238,9 @@ def main():
         for scene_id, entries in by_scene.items():
             scene = entries[0]["scene"]
             merged = cluster_consensus(entries)
+            merged.sort(key=lambda x: (x["confidence"], x["score"]), reverse=True)
+            if args.max_per_scene > 0:
+                merged = merged[:args.max_per_scene]
             for m in merged:
                 auto = 1 if (m["consensus"] >= args.min_consensus and m["confidence"] >= args.auto_threshold) else 0
                 sha = hashlib.sha1(norm(m["cand"]["text"]).encode("utf-8")).hexdigest()

@@ -618,3 +618,30 @@ def test_scheduler_gift_soon_and_media_cleanup(tmp_path):
     assert conn.execute("SELECT message_voice_file_id FROM gifts WHERE id='old1'").fetchone()[0] is None
     n = conn.execute("SELECT COUNT(*) FROM notifications WHERE kind='gift_soon'").fetchone()[0]
     conn.close()
+
+
+def test_admin_timecode_library_coverage_endpoint(client):
+    """Сводка покрытия должна читать реестр/манифесты и требовать admin-токен."""
+    import os
+    import sys
+    from app import config
+    from app.db import connect
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
+    from import_timecode_library import apply_imdb_map
+    ids = os.path.join(os.path.dirname(__file__), "..", "data", "timecode_library", "imdb_map_full.json")
+    conn = connect(config.DB_PATH)
+    apply_imdb_map(conn, ids)
+    conn.close()
+    r = client.get("/api/admin/timecode-library")
+    assert r.status_code == 403
+    r = client.get("/api/admin/timecode-library", headers={"X-Admin-Token": "test-admin"})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["catalog"]["total"] >= 146
+    assert d["catalog"]["with_imdb"] >= 130
+    assert len(d["sources"]["registry"]) == 4
+    assert d["manifests"]["pilot_scenes"] == 20
+    assert d["manifests"]["full"]["matched_scenes"] >= 60
+    assert d["manifests"]["full"]["catalog_scenes"] == 140
+    assert any(f["name"] == "full_manifest.json" for f in d["files"])
+    assert "pending" in d["note"]
