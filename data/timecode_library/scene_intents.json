@@ -1,0 +1,2108 @@
+{
+  "version": "1.0",
+  "generated_by": "scripts/build_scene_intents.py",
+  "comment": "Один основной интент + тип фрагмента на каждую approved-сцену. Таймкод не выдумывается: ищется SRT-окно под эту пару или остаётся needs_curator.",
+  "stats": {
+    "scenes": 146,
+    "manual": 59,
+    "by_category": {
+      "male_friendship": 6,
+      "memory_war": 16,
+      "holiday_comedy": 10,
+      "female_friendship": 8,
+      "love_confession": 17,
+      "apology_reconciliation": 1,
+      "just_laugh": 9,
+      "family_parents": 21,
+      "nostalgia_classic": 9,
+      "children_animation": 18,
+      "quiet_farewell": 4,
+      "inspiration_dream": 10,
+      "anniversary_long_love": 7,
+      "support_hope": 10
+    }
+  },
+  "intents": {
+    "1+1|2011": {
+      "primary_intent": "male_friendship",
+      "intent_label": "Мужская дружба / братство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope",
+        "memory_war"
+      ],
+      "intent_query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски Богач на коляске и безработный ухажёр становятся друзьями. Французская комедия, от которой тепло. Разговор Филиппа и Дрисса о доверии и дружбе",
+      "intent_query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together The Intouchables Intouchables love friend family home hope dream time life father mother music",
+      "curated_anchor": "Разговор Филиппа и Дрисса о доверии и дружбе",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Saving Private Ryan|1998": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope",
+        "family_parents"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Отряд идёт спасать солдата. О долге. Разговор о долге и письме матери, а не высадка",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget Saving Private Ryan Saving Private Ryan love friend family home hope dream time life father",
+      "curated_anchor": "Разговор о долге и письме матери, а не высадка",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Ёлки|2010": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Переплетённые истории москвичей в новогоднюю ночь. Новогодняя антология. Новогодняя ночь, переплетение историй и поздравление",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Новогодняя ночь, переплетение историй и поздравление",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Ёлки 2|2011": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Продолжение антологии. — Эпизод: Продолжение антологии.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Эпизод: Продолжение антологии.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Август. Восьмого|2012": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Война 2008-го глазами девочки. Война без пафоса. Эпизод: Война 2008-го глазами девочки.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Война 2008-го глазами девочки.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.79
+    },
+    "Амели|2001": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "children_animation",
+        "love_confession"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Девушка решает сделать мир вокруг лучше — начиная с чужих судеб. Парижская сказка о добрых делах. Амели решает помочь другим; разговор о добрых делах",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk Amelie amelie montmartre cafe photobooth gnome kindness lonely love nino water",
+      "curated_anchor": "Амели решает помочь другим; разговор о добрых делах",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Асса|1987": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "male_friendship",
+        "female_friendship"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Молодёжь и рок в Крыму. Культовое кино перестройки. Эпизод: Молодёжь и рок в Крыму.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Молодёжь и рок в Крыму.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.49
+    },
+    "Афоня|1975": {
+      "primary_intent": "apology_reconciliation",
+      "intent_label": "Извинение и примирение",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "male_friendship",
+        "children_animation"
+      ],
+      "intent_query_ru": "прости извини виноват помириться объяснение прощение обнимемся Сантехник Афоня ищет себя. Для разговора с другом «по душам». Афоня просит прощения и возвращается к своим",
+      "intent_query_en": "im sorry forgive me my fault apologize make peace lets talk",
+      "curated_anchor": "Афоня просит прощения и возвращается к своим",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "БURNED by the sun|1994": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот То же, что «Утомлённые солнцем» (англ. версия). — Эпизод: То же, что «Утомлённые солнцем» (англ. версия).. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Эпизод: То же, что «Утомлённые солнцем» (англ. версия).. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "origin": "rule",
+      "confidence": 0.46
+    },
+    "Барби|2023": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "female_friendship",
+        "children_animation"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Кукла Барби едет в реальный мир — и находит там смысл. Весело, ярко и по-настоящему о выборе. Разговор Барби и женщины о том, что быть собой — уже достаточно",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "curated_anchor": "Разговор Барби и женщины о том, что быть собой — уже достаточно",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Белое солнце пустыни|1969": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "nostalgia_classic",
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Красноармеец Сухов в пустыне между белыми и красными — с верным верблюдом. Легенда, которую знают все мужчины семьи. Эпизод: Красноармеец Сухов в пустыне между белыми и красными — с верным верблюдом.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Красноармеец Сухов в пустыне между белыми и красными — с верным верблюдом.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.69
+    },
+    "Берегись автомобиля|1966": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Деточкин угоняет машины у спекулянтов. Сатира на дефицит. Эпизод: Деточкин угоняет машины у спекулянтов.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Эпизод: Деточкин угоняет машины у спекулянтов.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.55
+    },
+    "Брат|1997": {
+      "primary_intent": "male_friendship",
+      "intent_label": "Мужская дружба / братство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents",
+        "children_animation"
+      ],
+      "intent_query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски Ветеран возвращается домой и находит брата в другой жизни — и в долгах. Про «сила не в этом» и настоящую защиту близких. Разговор Данилы со старшим братом и «сила не в этом»",
+      "intent_query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together Brother Brother love friend family home hope dream time life father mother music",
+      "curated_anchor": "Разговор Данилы со старшим братом и «сила не в этом»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Брат 2|2000": {
+      "primary_intent": "male_friendship",
+      "intent_label": "Мужская дружба / братство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war"
+      ],
+      "intent_query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски Данила едет в Америку вызволять брата из беды. Про братскую верность на большом экране. Данила выручает брата; братская верность",
+      "intent_query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together",
+      "curated_anchor": "Данила выручает брата; братская верность",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Бриллиантовая рука|1968": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "holiday_comedy",
+        "nostalgia_classic"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Контрабандисты и агент под прикрытием. Культовый юмор. «У нас, у советских, своя гордость» / падение с бананом",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "«У нас, у советских, своя гордость» / падение с бананом",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Бумер|2003": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Четверо друзей на BMW в девяностые. Ностальгия по 90-м. Эпизод: Четверо друзей на BMW в девяностые.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Эпизод: Четверо друзей на BMW в девяностые.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.65
+    },
+    "Бумер 2|2006": {
+      "primary_intent": "male_friendship",
+      "intent_label": "Мужская дружба / братство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски Сиквел про братву. — Эпизод: Сиквел про братву.. Искать: брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски",
+      "intent_query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together",
+      "curated_anchor": "Эпизод: Сиквел про братву.. Искать: брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски",
+      "origin": "rule",
+      "confidence": 0.61
+    },
+    "В бой идут одни «старики»|1973": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "nostalgia_classic"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Лётчики поют о войне и дружбе между вылетами. Для пап и дедов — фильмы их молодости, повод вспомнить вместе. Лётчики поют между вылетами: песня о войне и дружбе",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget Only Old Men Are Going to Battle Only Old Men Are Going Battle love friend family home hope dream",
+      "curated_anchor": "Лётчики поют между вылетами: песня о войне и дружбе",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "В поисках Немо|2003": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "children_animation"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Папа-рыбка ищет сына по океану. Про отцовскую любовь. Марлин ищет сына; разговор отца и ребёнка",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child Finding Nemo Finding Nemo love friend family home hope dream time life father mother",
+      "curated_anchor": "Марлин ищет сына; разговор отца и ребёнка",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "ВАЛЛ-И|2008": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "silent_gesture",
+      "fragment_type_label": "Сцена без слов: взгляд, жест, объятие (SRT сам не найдёт — только кураторский якорь)",
+      "secondary_intents": [
+        "memory_war",
+        "children_animation"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Робот-уборщик влюбляется. Романтика без слов. Робот ухаживает за Евой без слов; кураторский якорь",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one WALL-E WALL love friend family home hope dream time life father mother music",
+      "curated_anchor": "Робот ухаживает за Евой без слов; кураторский якорь",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Вверх|2009": {
+      "primary_intent": "quiet_farewell",
+      "intent_label": "Светлая грусть / прощание",
+      "fragment_type": "silent_gesture",
+      "fragment_type_label": "Сцена без слов: взгляд, жест, объятие (SRT сам не найдёт — только кураторский якорь)",
+      "secondary_intents": [
+        "children_animation",
+        "support_hope"
+      ],
+      "intent_query_ru": "прощай не прощайся помни я всегда рядом светлая грусть принятие до встречи Дедушка с домом на воздушных шариках летит к водопаду — ради обещания жене. О том, что приключения не зависят от возраста — для всей семьи. Безсловный монтаж жизни Карла и Элли; SRT не найдёт — кураторский якорь",
+      "intent_query_en": "goodbye dont forget me i will always be with you see you again let go Up love friend family home hope dream time life father mother music dance",
+      "curated_anchor": "Безсловный монтаж жизни Карла и Элли; SRT не найдёт — кураторский якорь",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Величайшее шоу на Земле|2017": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Создание цирка Барнума. Про мечту, которая сбывается. Эпизод: Создание цирка Барнума.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration The Greatest Showman Greatest Showman love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Создание цирка Барнума.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Виноваты звёзды|2014": {
+      "primary_intent": "quiet_farewell",
+      "intent_label": "Светлая грусть / прощание",
+      "fragment_type": "letter_voiceover",
+      "fragment_type_label": "Письмо, дневник, закадровый голос",
+      "secondary_intents": [
+        "support_hope",
+        "love_confession"
+      ],
+      "intent_query_ru": "прощай не прощайся помни я всегда рядом светлая грусть принятие до встречи Двое больных подростков влюбляются. О любви и принятии. Письмо/прощальные слова, принятие и светлая грусть",
+      "intent_query_en": "goodbye dont forget me i will always be with you see you again let go The Fault in Our Stars Fault Our Stars love friend family home hope dream time life father",
+      "curated_anchor": "Письмо/прощальные слова, принятие и светлая грусть",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Властелин колец: Братство кольца|2001": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "male_friendship",
+        "support_hope"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Хоббит отправляется уничтожить кольцо — с братством за спиной. Путешествие, после которого хочется в дорогу. Эпизод: Хоббит отправляется уничтожить кольцо — с братством за спиной.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration",
+      "curated_anchor": "Эпизод: Хоббит отправляется уничтожить кольцо — с братством за спиной.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "origin": "rule",
+      "confidence": 0.65
+    },
+    "Властелин колец: Возвращение короля|2003": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "toast",
+      "fragment_type_label": "Тост, застолье, поздравление",
+      "secondary_intents": [
+        "male_friendship"
+      ],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь Финал эпопеи. — Эпизод: Финал эпопеи.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met",
+      "curated_anchor": "Эпизод: Финал эпопеи.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "origin": "rule",
+      "confidence": 0.53
+    },
+    "Властелин колец: Две крепости|2002": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "male_friendship",
+        "female_friendship"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Битва за Хельмову Падь. Дружба в бою. Эпизод: Битва за Хельмову Падь.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Битва за Хельмову Падь.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Возвращение|2003": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "support_hope"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Два брата встречают вернувшегося отца. Отец и сыновья. Отец и сыновья: первая встреча после возвращения",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Отец и сыновья: первая встреча после возвращения",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Война и мир|1966": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь Эпопея Бондарчука: война, мир, любовь. Для больших семейных anniversaries. Большой семейный разговор о мире, любви и годах",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met War and Peace War Peace love friend family home hope dream time life father mother",
+      "curated_anchor": "Большой семейный разговор о мире, любви и годах",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Вторжение|2020": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Сиквел «Притяжения». — Эпизод: Сиквел «Притяжения».. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Сиквел «Притяжения».. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.49
+    },
+    "Выкрутасы|2011": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "memory_war",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Учитель спасает класс от хулиганов футбольным мячом. Комедия про находчивость. Эпизод: Учитель спасает класс от хулиганов футбольным мячом.. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Эпизод: Учитель спасает класс от хулиганов футбольным мячом.. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "Высоцкий. Спасибо, что живой|2011": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "nostalgia_classic"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Последние гастроли поэта. О легенде эпохи. Эпизод: Последние гастроли поэта.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Последние гастроли поэта.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.65
+    },
+    "Гадкий я|2010": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "children_animation"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Злодей усыновляет трёх девочек — и сам становится хорошим. О том, что семья — не про план. Грю усыновляет девочек: семья не по плану",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child Despicable Me Despicable love friend family home hope dream time life father mother music",
+      "curated_anchor": "Грю усыновляет девочек: семья не по плану",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Гараж|1979": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "just_laugh",
+        "children_animation"
+      ],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Друзья собираются на даче и решают судьбу гаражного кооператива. Добрая комедия о дружбе. Собрание кооператива: узнаваемые реплики про пайщиков",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Собрание кооператива: узнаваемые реплики про пайщиков",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Гарри Поттер и Дары смерти|2011": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Финал саги о мальчике-волшебнике. — Эпизод: Финал саги о мальчике-волшебнике.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Harry Potter and the Deathly Hallows: Part 2 Harry Potter Deathly Hallows love friend family home hope dream time life",
+      "curated_anchor": "Эпизод: Финал саги о мальчике-волшебнике.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Гарри Поттер и узник Азкабана|2004": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Третий курс Хогвартса: сбежал опасный узник, а за ним — dementors. Волшебство для детей и взрослых. Эпизод: Третий курс Хогвартса: сбежал опасный узник, а за ним — dementors.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Harry Potter and the Prisoner of Azkaban Harry Potter Prisoner Azkaban love friend family home hope dream time life",
+      "curated_anchor": "Эпизод: Третий курс Хогвартса: сбежал опасный узник, а за ним — dementors.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.71
+    },
+    "Груз 200|2007": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Эвакуация погибших солдат. Тяжёлая правда о войне. Эпизод: Эвакуация погибших солдат.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Эвакуация погибших солдат.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.8
+    },
+    "Грязные танцы|1987": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "memory_war",
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Лето 1963-го: Baby учит танцевать. Про первую любовь и танец. Финальный танец «I've Had the Time of My Life»",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Dirty Dancing baby johnny lift watermelon dance summer kellerman nobody puts baby corner music",
+      "curated_anchor": "Финальный танец «I've Had the Time of My Life»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Гусарская баллада|1962": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "female_friendship",
+        "just_laugh"
+      ],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Девушка притворяется гусаром. Романтическая комедия о войне 1812-го. Маскарад с переодеванием и новогодний бал",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Маскарад с переодеванием и новогодний бал",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Движение вверх|2017": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "inspiration_dream",
+        "support_hope"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Сборная 1972 обыгрывает американцев. Главный спортивный фильм страны. Разговор о победе и вере в команду",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration",
+      "curated_anchor": "Разговор о победе и вере в команду",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Девчата|1961": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "children_animation"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Молодые работницы общежития спорят, выйдет ли замуж их подруга. Доброе кино про женскую дружбу. Девушки в общежитии спорят о замужестве Тоси и поддерживают подругу",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "curated_anchor": "Девушки в общежитии спорят о замужестве Тоси и поддерживают подругу",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Десять причин моей ненависти|2017": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "toast",
+      "fragment_type_label": "Тост, застолье, поздравление",
+      "secondary_intents": [
+        "nostalgia_classic",
+        "support_hope"
+      ],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь Старшеклассница находит кассеты ушедшего из жизни парня. Для серьёзного разговора с подростком. Эпизод: Старшеклассница находит кассеты ушедшего из жизни парня.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met",
+      "curated_anchor": "Эпизод: Старшеклассница находит кассеты ушедшего из жизни парня.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Джентльмены|2019": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy",
+        "just_laugh"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Аристократ-наркобарон теряет империю из-за подставы. Стильный криминальный юмор. Стильный диалог-перепалка про империю и подставу",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Стильный диалог-перепалка про империю и подставу",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Джокер|2019": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "support_hope",
+        "quiet_farewell"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Как родился злодей. Для серьёзных разговоров. Разговор о том, как тебя видят, и принятие себя",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "curated_anchor": "Разговор о том, как тебя видят, и принятие себя",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Дневник памяти|2004": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "letter_voiceover",
+      "fragment_type_label": "Письмо, дневник, закадровый голос",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "memory_war"
+      ],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь История любви, рассказанная пожилой парой внукам. Классика «любовь на всю жизнь». Пожилой муж читает дневник своей жене: любовь на всю жизнь",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met The Notebook noah allie rain kiss letter house memory love ferris wheel promise",
+      "curated_anchor": "Пожилой муж читает дневник своей жене: любовь на всю жизнь",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Доброе утро, Вьетнам|1987": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "memory_war",
+        "children_animation"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Радиоведущий будит солдат во Вьетнаме шутками и музыкой. Юмор как оружие против войны. Эпизод: Радиоведущий будит солдат во Вьетнаме шутками и музыкой.. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Эпизод: Радиоведущий будит солдат во Вьетнаме шутками и музыкой.. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "Духless|2012": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Тусовщик находит смысл. Про выбор и взросление. Эпизод: Тусовщик находит смысл.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Тусовщик находит смысл.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Душа|2020": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "inspiration_dream",
+        "children_animation"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Джазмен ищет свою искру. О том, зачем мы живём. Джо и 22 об искре и смысле жизни",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration",
+      "curated_anchor": "Джо и 22 об искре и смысле жизни",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Дюна|2021": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "children_animation",
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Наследник великого дома отправляется на опаснейшую планету Вселенной. Эпическая фантастика про судьбу и песок. Эпизод: Наследник великого дома отправляется на опаснейшую планету Вселенной.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Наследник великого дома отправляется на опаснейшую планету Вселенной.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Ешь, молись, люби|2010": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "nostalgia_classic",
+        "female_friendship"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Женщина ищет себя после развода. Про новый старт. Новый старт и разговор с подругой о себе",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk Eat Pray Love Eat Pray Love love friend family home hope dream time life father",
+      "curated_anchor": "Новый старт и разговор с подругой о себе",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Жестокий романс|2008": {
+      "primary_intent": "quiet_farewell",
+      "intent_label": "Светлая грусть / прощание",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "love_confession",
+        "memory_war"
+      ],
+      "intent_query_ru": "прощай не прощайся помни я всегда рядом светлая грусть принятие до встречи Бедная девушка и богатый купец в провинциальной России — любовь против системы. Романтика с трагическим финалом. Тихая сцена прощания и принятия, без пафоса",
+      "intent_query_en": "goodbye dont forget me i will always be with you see you again let go",
+      "curated_anchor": "Тихая сцена прощания и принятия, без пафоса",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Зависть богов|2000": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "memory_war"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Журналистка иテレビщик: любовь и карьера. Романтическая драма о выборе. Эпизод: Журналистка иテレビщик: любовь и карьера.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Журналистка иテレビщик: любовь и карьера.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.65
+    },
+    "Звезда родилась|2018": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "inspiration_dream",
+        "support_hope"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Звезда рождается и гаснет. О цене славы и любви. Эпизод: Звезда рождается и гаснет.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel A Star Is Born Star Born love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Звезда рождается и гаснет.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.62
+    },
+    "Звёздные войны: Империя наносит ответный удар|1980": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "support_hope"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой «Я твой отец». Самый драматичный эпизод. Эпизод: «Я твой отец».. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: «Я твой отец».. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "Звёздные войны: Новая надежда|1977": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "memory_war",
+        "children_animation"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Фермерский парень узнаёт, что он — последний джедай, и спасает принцессу. Космическая опера, с которой всё началось. Эпизод: Фермерский парень узнаёт, что он — последний джедай, и спасает принцессу.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "curated_anchor": "Эпизод: Фермерский парень узнаёт, что он — последний джедай, и спасает принцессу.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.61
+    },
+    "Зелёная книга|2018": {
+      "primary_intent": "male_friendship",
+      "intent_label": "Мужская дружба / братство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents"
+      ],
+      "intent_query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски Водитель-телохранитель и пианист едут по американскому Югу 1960-х. Про дружбу против предрассудков. Дон и Тони в дороге: разговор, который сближает",
+      "intent_query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together",
+      "curated_anchor": "Дон и Тони в дороге: разговор, который сближает",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Зелёная миля|1999": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "family_parents",
+        "quiet_farewell"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Надзиратель тюрьмы встречает чудо среди приговорённых к смерти. О сострадании иhumanности. Исправить: «О сострадании и человечности». Эпизод: Надзиратель тюрьмы встречает чудо среди приговорённых к смерти.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going The Green Mile john coffey miracle mouse electric chair healing death row paul mr jingles gentle gift",
+      "curated_anchor": "Эпизод: Надзиратель тюрьмы встречает чудо среди приговорённых к смерти.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.52
+    },
+    "Зеркало для героя|1987": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "support_hope"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Сын возвращается к отцу-ветерану. Отцы и дети. Эпизод: Сын возвращается к отцу-ветерану.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Сын возвращается к отцу-ветерану.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "Зимний вечер в Гаграх|1985": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Фотограф вспоминает молодость. Ностальгия и музыка. Эпизод: Фотограф вспоминает молодость.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Эпизод: Фотограф вспоминает молодость.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.76
+    },
+    "Иван Васильевич меняет профессию|1973": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "children_animation"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Изобретатель машины времени случайно отправляет начальника в эпоху Ивана Грозного. Когда хочется поднять настроение и посмеяться вместе. «Иван Грозный» в квартире и путаница с машиной времени",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "«Иван Грозный» в квартире и путаница с машиной времени",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Игры разума|2001": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "memory_war"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Гениальный математик борется со шизофренией — и побеждает любовью. Про разум и сердце. Эпизод: Гениальный математик борется со шизофренией — и побеждает любовью.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel A Beautiful Mind Beautiful Mind love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Гениальный математик борется со шизофренией — и побеждает любовью.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.69
+    },
+    "Интерстеллар|2014": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "family_parents",
+        "love_confession"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Отец летит сквозь кротовую нору, чтобы спасти человечество — и успеть к дочери. Про любовь, которая сильнее времени и пространства. Эпизод: Отец летит сквозь кротовую нору, чтобы спасти человечество — и успеть к дочери.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going Interstellar Interstellar love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Отец летит сквозь кротовую нору, чтобы спасти человечество — и успеть к дочери.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "Ирония судьбы, или С лёгким паром!|1975": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "nostalgia_classic",
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Новогодняя Москва, два одинаковых дома в разных городах и встреча, которая меняет всё. Классика «не туда попал» — идеальна на Новый год и годовщину. Новогодняя путаница: ключ, чужая квартира, «не туда попал»",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Новогодняя путаница: ключ, чужая квартира, «не туда попал»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Ирония судьбы. Продолжение|2007": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "nostalgia_classic"
+      ],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Дети героев первой части встречаются снова. Ностальгический sequel на Новый год. Эпизод: Дети героев первой части встречаются снова.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Эпизод: Дети героев первой части встречаются снова.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "origin": "rule",
+      "confidence": 0.79
+    },
+    "История игрушек|1995": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Игрушки оживают, пока хозяев нет. Про дружбу. Эпизод: Игрушки оживают, пока хозяев нет.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Toy Story woody buzz andy toys space ranger falling with style friendship moving sid rocket",
+      "curated_anchor": "Эпизод: Игрушки оживают, пока хозяев нет.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.63
+    },
+    "История игрушек 3|2010": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope",
+        "male_friendship"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Игрушки в детском саду. О принятии перемен. Эпизод: Игрушки в детском саду.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Toy Story 3 Toy Story love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Игрушки в детском саду.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.55
+    },
+    "Кавказская пленница|1966": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Шурик на Кавказе: выкуп невесты по обычаю. Лёгкая романтическая комедия. Орёл, «птичку жалко» и охота на невесту",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Орёл, «птичку жалко» и охота на невесту",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Как приручить дракона|2010": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy",
+        "support_hope"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Мальчик дружит с драконом — и меняет свою деревню. Про дружбу, которая меняет всё. Иккинг и Беззубик: первый контакт и доверие",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one How to Train Your Dragon How Train Your Dragon love friend family home hope dream time life",
+      "curated_anchor": "Иккинг и Беззубик: первый контакт и доверие",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Карнавальная ночь|1956": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Новогодний концерт в Доме культуры. Главный новогодний фильм страны. Новогодний карнавал и песня о пяти минутах",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Новогодний карнавал и песня о пяти минутах",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Кин-дза-дза!|1986": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "male_friendship",
+        "nostalgia_classic"
+      ],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Двое москвичей в галактике Плюк. Культовая фантастика с юмором. Эпизод: Двое москвичей в галактике Плюк.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Эпизод: Двое москвичей в галактике Плюк.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "origin": "rule",
+      "confidence": 0.49
+    },
+    "Когда Гарри встретил Салли|1989": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "love_confession",
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Могут ли мужчина и женщина быть просто друзьями — и что будет, если ответ «да». Каноническая сцена признания. Финальное новогоднее признание Гарри: список того, что он любит в Салли",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel When Harry Met Sally orgasm deli katz new year love friendship harry sally restaurant coffee",
+      "curated_anchor": "Финальное новогоднее признание Гарри: список того, что он любит в Салли",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Король Лев|1994": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Львёнок Симба узнаёт, что значит быть королём. Для самых маленьких — и для тех, кто пересматривает снова. Муфаса и Симба о звёздах и о том, что он всегда рядом",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child The Lion King simba mufasa hakuna matata circle of life pride rock remember father scar pumbaa timon",
+      "curated_anchor": "Муфаса и Симба о звёздах и о том, что он всегда рядом",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Корпорация монстров|2001": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "male_friendship",
+        "female_friendship"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Монстры пугают детей, чтобы заряжать город. Дружба монстра и девочки. Эпизод: Монстры пугают детей, чтобы заряжать город.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Monsters, Inc. Monsters Inc love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Монстры пугают детей, чтобы заряжать город.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.63
+    },
+    "Красотка|1990": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "love_confession"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Миллиардер и девушка из бедного квартала. Сказка про то, что важно не деньги. Разговор о том, что важнее денег, и признание на лестнице",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel Pretty Woman Pretty Woman love friend family home hope dream time life father mother",
+      "curated_anchor": "Разговор о том, что важнее денег, и признание на лестнице",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Крёстный отец|1972": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "male_friendship",
+        "memory_war"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Семейная сага о верности и выборе — «сделаю предложение, от которого нельзя отказаться». Для серьёзного разговора вдвоём. Вито и Майкл о семье и выборе, а не «признание»",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child The Godfather offer refuse godfather family horse leave the gun cannoli baptism don corleone wedding",
+      "curated_anchor": "Вито и Майкл о семье и выборе, а не «признание»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Крёстный отец 2|1974": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Молодость Вито в Нью-Йорке и расширение бизнеса Майкла. История семьи Корлеоне. Эпизод: Молодость Вито в Нью-Йорке и расширение бизнеса Майкла.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child The Godfather Part II Godfather love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Молодость Вито в Нью-Йорке и расширение бизнеса Майкла.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.76
+    },
+    "Кукушка|2002": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "memory_war",
+        "family_parents"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Война, три человека в доме на отшибе и надежда на мир. О войне без батальных сцен — о людях. Эпизод: Война, три человека в доме на отшибе и надежда на мир.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "curated_anchor": "Эпизод: Война, три человека в доме на отшибе и надежда на мир.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.68
+    },
+    "Курьер|1986": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Курьер попадает в чужую жизнь. Романтика на пороге перемен. Эпизод: Курьер попадает в чужую жизнь.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Курьер попадает в чужую жизнь.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.49
+    },
+    "Ла-Ла Ленд|2016": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "children_animation"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Два мечтателя встречаются на фоне заката в Лос-Анджелесе. Про мечты, ради которых стоит смотреть вместе. Разговор о мечте и кафе / финальная «what if»",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration La La Land Land love friend family home hope dream time life father mother music",
+      "curated_anchor": "Разговор о мечте и кафе / финальная «what if»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Левиафан|2014": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "family_parents",
+        "quiet_farewell"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Человек против системы в маленьком городе. Для серьёзного разговора. Эпизод: Человек против системы в маленьком городе.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "curated_anchor": "Эпизод: Человек против системы в маленьком городе.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.52
+    },
+    "Легенда №17|2012": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "memory_war",
+        "support_hope"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Харламов и сборная СССР. Спортивное вдохновение. Эпизод: Харламов и сборная СССР.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration",
+      "curated_anchor": "Эпизод: Харламов и сборная СССР.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "origin": "rule",
+      "confidence": 0.73
+    },
+    "Леон|1994": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Профессиональный убийца и девочка — семья, которой никто не верит. Трогательная история о заботе. Эпизод: Профессиональный убийца и девочка — семья, которой никто не верит.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child Leon: The Professional Leon Professional love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Профессиональный убийца и девочка — семья, которой никто не верит.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.73
+    },
+    "Любовь и голуби|1984": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "just_laugh",
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Деревенская семья, голубятня и мечта о море. Тёплая комедия о семье — на любой «семейный» повод. Семейный разговор у голубятни, тёплый и смешной",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Семейный разговор у голубятни, тёплый и смешной",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Любовь-морковь|2007": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "toast",
+      "fragment_type_label": "Тост, застолье, поздравление",
+      "secondary_intents": [
+        "just_laugh",
+        "love_confession"
+      ],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь Супруги меняются телами. Семейная комедия. Эпизод: Супруги меняются телами.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met",
+      "curated_anchor": "Эпизод: Супруги меняются телами.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "origin": "rule",
+      "confidence": 0.71
+    },
+    "Мальчишник в Вегасе|2009": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Друзья ищут жениха перед свадьбой. Для холостяцкой вечеринки. Эпизод: Друзья ищут жениха перед свадьбой.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget The Hangover Hangover love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Друзья ищут жениха перед свадьбой.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Матрица|1999": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "love_confession",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Хакер узнаёт, что мир — симуляция, и выбирает правду. Для разговора о выборе и свободе. Морфеус предлагает красную таблетку и разговор о выборе правды",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration The Matrix neo morpheus red pill blue pill wake up matrix rabbit hole choice trinity agents",
+      "curated_anchor": "Морфеус предлагает красную таблетку и разговор о выборе правды",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Место встречи изменить нельзя|1979": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями МУР против банды «Фantom». Для отцов и любителей детективов. Эпизод: МУР против банды «Фantom».. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: МУР против банды «Фantom».. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.68
+    },
+    "Миссис Даутфайр|1993": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "love_confession"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Отец притворяется няней, чтобы быть с детьми. Про отцовскую любовь. Эпизод: Отец притворяется няней, чтобы быть с детьми.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child Mrs. Doubtfire Mrs Doubtfire love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Отец притворяется няней, чтобы быть с детьми.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.71
+    },
+    "Москва слезам не верит|1979": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "female_friendship",
+        "male_friendship"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Три подруги, Москва и жизнь, которая не спрашивает разрешения. Сцена «всё наладится» — для момента, когда близкому тяжело. Разговор трёх подруг о жизни, любви и «всё наладится»",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "curated_anchor": "Разговор трёх подруг о жизни, любви и «всё наладится»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Мстители: Финал|2019": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Герои собираются на последнюю битву — «мы сделаем это, что бы ни стоило». Финал эпохи Marvel. Эпизод: Герои собираются на последнюю битву — «мы сделаем это, что бы ни стоило».. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Avengers: Endgame Avengers Endgame love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Герои собираются на последнюю битву — «мы сделаем это, что бы ни стоило».. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.55
+    },
+    "Мунк: Начало|2008": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "support_hope"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Сёрфер, который бросил всё, чтобы стать чемпионом. История о том, что невозможное возможно. Эпизод: Сёрфер, который бросил всё, чтобы стать чемпионом.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration",
+      "curated_anchor": "Эпизод: Сёрфер, который бросил всё, чтобы стать чемпионом.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "origin": "rule",
+      "confidence": 0.53
+    },
+    "Назад в будущее|1985": {
+      "primary_intent": "male_friendship",
+      "intent_label": "Мужская дружба / братство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents",
+        "memory_war"
+      ],
+      "intent_query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски Подросток на машине времени отправляется в 1955-й и меняет будущее своих родителей. Весёлая фантастика для любого возраста. Эпизод: Подросток на машине времени отправляется в 1955-й и меняет будущее своих родителей.. Искать: брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски",
+      "intent_query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together Back to the Future delorean time machine flux capacitor 1985 1955 marty doc clock tower lightning future",
+      "curated_anchor": "Эпизод: Подросток на машине времени отправляется в 1955-й и меняет будущее своих родителей.. Искать: брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски",
+      "origin": "rule",
+      "confidence": 0.61
+    },
+    "Назад в будущее 2|1989": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Сиквел: 2015-й. — Эпизод: Сиквел: 2015-й.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Back to the Future Part II Back Future love friend family home hope dream time life father mother",
+      "curated_anchor": "Эпизод: Сиквел: 2015-й.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.55
+    },
+    "Начало|1970": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "inspiration_dream",
+        "memory_war"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Паша Строгова — народная артистка. Про материнскую любовь и мечту. Паша Строгова о материнской любви и мечте",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Паша Строгова о материнской любви и мечте",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Начало|2010": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "toast",
+      "fragment_type_label": "Тост, застолье, поздравление",
+      "secondary_intents": [
+        "love_confession"
+      ],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь Команда проникает в сны, чтобы внедрить идею — а idea ли это? Про «это был не сон» — идеально на годовщину. Эпизод: Команда проникает в сны, чтобы внедрить идею — а idea ли это?. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met Inception dream kick totem spinning top limbo inception deeper subconscious cobb mal",
+      "curated_anchor": "Эпизод: Команда проникает в сны, чтобы внедрить идею — а idea ли это?. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "origin": "rule",
+      "confidence": 0.65
+    },
+    "Невероятные приключения итальянцев в России|1974": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "children_animation"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Львы, сокровища и погоня по Ленинграду. Приключенческое кино для всей семьи. Эпизод: Львы, сокровища и погоня по Ленинграду.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Львы, сокровища и погоня по Ленинграду.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Ноттинг Хилл|1999": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "female_friendship"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Скромный книготорговец влюбляется в голливудскую звезду. Ромком о «обычном парне и необычной любви». Просьба «просто девушка, стоящая перед парнем»",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel Notting Hill bookshop william anna famous actress love press door travel just a girl",
+      "curated_anchor": "Просьба «просто девушка, стоящая перед парнем»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "О чём говорят мужчины|2010": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Четверо друзей о женщинах и жизни. Мужской разговор по душам. Эпизод: Четверо друзей о женщинах и жизни.. Искать: подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "curated_anchor": "Эпизод: Четверо друзей о женщинах и жизни.. Искать: подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "О чём говорят мужчины 2|2011": {
+      "primary_intent": "anniversary_long_love",
+      "intent_label": "Годовщина / любовь на всю жизнь",
+      "fragment_type": "toast",
+      "fragment_type_label": "Тост, застолье, поздравление",
+      "secondary_intents": [],
+      "intent_query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь Сиквел: отпуск в Питере. — Эпизод: Сиквел: отпуск в Питере.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "intent_query_en": "anniversary all these years together forever vow toast remember when we met",
+      "curated_anchor": "Эпизод: Сиквел: отпуск в Питере.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Один дома|1990": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "children_animation",
+        "family_parents"
+      ],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Мальчик один дома против грабителей. Главный новогодний фильм для детей. Утро в доме без родителей / ловушки для грабителей",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday Home Alone kevin family christmas burglars booby traps house alone paint cans tarantula scream",
+      "curated_anchor": "Утро в доме без родителей / ловушки для грабителей",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Один дома 2|1992": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy",
+        "children_animation"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Кевин в Нью-Йорке. — Эпизод: Кевин в Нью-Йорке.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child Home Alone 2: Lost in New York Home Alone Lost New York love friend family home hope dream time",
+      "curated_anchor": "Эпизод: Кевин в Нью-Йорке.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Операция «Ы» и другие приключения Шурика|1965": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "apology_reconciliation",
+        "just_laugh"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Студент Шурик попадает в криминальные истории — смешно и по-доброму. Лёгкое извинение с улыбкой. Студент на стройке / «чтобы машина пошла, надо...»",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Студент на стройке / «чтобы машина пошла, надо...»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Оппенгеймер|2023": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "inspiration_dream",
+        "support_hope"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Создатель атомной бомбы и расплата совестью. История гения и его тени. Эпизод: Создатель атомной бомбы и расплата совестью.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Создатель атомной бомбы и расплата совестью.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Остров|2006": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Беглый монах на острове. Про искупление и смысл. Эпизод: Беглый монах на острове.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "curated_anchor": "Эпизод: Беглый монах на острове.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.58
+    },
+    "Паразиты|2019": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Бедная семья внедряется в богатый дом — с непредсказуемым финалом. Острая социальная сатира. Эпизод: Бедная семья внедряется в богатый дом — с непредсказуемым финалом.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Бедная семья внедряется в богатый дом — с непредсказуемым финалом.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.81
+    },
+    "Пианист|2002": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "inspiration_dream",
+        "support_hope"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Пианист выживает в Варшаве. Музыка спасает. Эпизод: Пианист выживает в Варшаве.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget The Pianist Pianist love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Пианист выживает в Варшаве.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.6
+    },
+    "Пираты Карибского моря|2003": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Капитан Джек Воробей и кузнец Уилл спасают дочь губернатора от проклятых пиратов. Приключения, юмор и немного рома. Эпизод: Капитан Джек Воробей и кузнец Уилл спасают дочь губернатора от проклятых пиратов.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Pirates of the Caribbean: The Curse of the Black Pearl Pirates Caribbean Curse Black Pearl love friend family home hope dream time",
+      "curated_anchor": "Эпизод: Капитан Джек Воробей и кузнец Уилл спасают дочь губернатора от проклятых пиратов.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Пираты Карибского моря: Проклятие чёрной жемчужины|2003": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Капитан Джек Воробей zurückает свой корабль у проклятых пиратов. Приключения с юмором и легендами. Эпизод: Капитан Джек Воробей zurückает свой корабль у проклятых пиратов.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one",
+      "curated_anchor": "Эпизод: Капитан Джек Воробей zurückает свой корабль у проклятых пиратов.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Питер FM|2006": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Диджей и девушка, теряющая телефон. Романтика большого города. Эпизод: Диджей и девушка, теряющая телефон.. Искать: подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "curated_anchor": "Эпизод: Диджей и девушка, теряющая телефон.. Искать: подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "origin": "rule",
+      "confidence": 0.62
+    },
+    "Побег из Шоушенка|1994": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Банкир, осуждённый невиновно, 19 лет копает túnel к свободе. История о надежде, которая не сдаётся. Исправить: «копает туннель». Энди и Рэд о надежде: «надежда — хорошая штука»",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going The Shawshank Redemption hope freedom andy red prison escape rain library brooks zihuatanejo",
+      "curated_anchor": "Энди и Рэд о надежде: «надежда — хорошая штука»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Поезд в Пусан|2016": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "love_confession"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Во время зомби-апокалипсиса отец спасает дочь на поезде. Про отцовскую любовь в экстремальных обстоятельствах. Эпизод: Во время зомби-апокалипсиса отец спасает дочь на поезде.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Во время зомби-апокалипсиса отец спасает дочь на поезде.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.76
+    },
+    "Покровские ворота|1982": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Жизнь коммунальной квартиры в центре Москвы. Ностальгия по Москве. Коммунальная квартира и разговор Хоботова с Маргаритой Павловной",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Коммунальная квартира и разговор Хоботова с Маргаритой Павловной",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "После дождя|2001": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "nostalgia_classic",
+        "memory_war"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Выпускники вспоминают школьную любовь. Ностальгия по школе. Эпизод: Выпускники вспоминают школьную любовь.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Выпускники вспоминают школьную любовь.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.61
+    },
+    "Престиж|2006": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "male_friendship"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Два фокусника — соперники. О цене успеха. Эпизод: Два фокусника — соперники.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration The Prestige Prestige love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Два фокусника — соперники.. Искать: мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "origin": "rule",
+      "confidence": 0.53
+    },
+    "Привидение|1990": {
+      "primary_intent": "quiet_farewell",
+      "intent_label": "Светлая грусть / прощание",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "прощай не прощайся помни я всегда рядом светлая грусть принятие до встречи Погибший банкир и медиум. Любовь сильнее смерти. Прощание Сэма и Молли через медиума",
+      "intent_query_en": "goodbye dont forget me i will always be with you see you again let go Ghost Ghost love friend family home hope dream time life father mother music",
+      "curated_anchor": "Прощание Сэма и Молли через медиума",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Призрак|1990": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать То же, что «Привидение». — Эпизод: То же, что «Привидение».. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel Ghost Ghost love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: То же, что «Привидение».. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.53
+    },
+    "Притяжение|2017": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Пришельцы в Москве. Фантастика с романтикой. Эпизод: Пришельцы в Москве.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Пришельцы в Москве.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.53
+    },
+    "Психо|1960": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Мотель и его хозяйка. Классика жанра. Эпизод: Мотель и его хозяйка.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to Psycho marion shower bates motel mother knife curtain room norman crime",
+      "curated_anchor": "Эпизод: Мотель и его хозяйка.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.61
+    },
+    "Рататуй|2007": {
+      "primary_intent": "inspiration_dream",
+      "intent_label": "Мечта и вдохновение",
+      "fragment_type": "letter_voiceover",
+      "fragment_type_label": "Письмо, дневник, закадровый голос",
+      "secondary_intents": [
+        "children_animation",
+        "support_hope"
+      ],
+      "intent_query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь Крыса готовит во французском ресторане. Мечта сильнее происхождения. Речь критика Антуана Эго о таланте",
+      "intent_query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration Ratatouille remy rat cooking kitchen linguini food ratatouille anton ego flavour chef",
+      "curated_anchor": "Речь критика Антуана Эго о таланте",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Семнадцать мгновений весны|1973": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "memory_war",
+        "family_parents"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Штирлиц в логове врага. Классика о войне и долге. Тихий разговор Штирлица / письмо домой, без баталий",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Тихий разговор Штирлица / письмо домой, без баталий",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Сибирский цирюльник|1998": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "female_friendship",
+        "nostalgia_classic"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Кадет влюбляется в американку в Москве конца XIX века. Большая романтическая история. Объяснение кадета и Джейн перед разлукой",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Объяснение кадета и Джейн перед разлукой",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Сияние|1980": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Отель «Оверлук» зимой. Для зимнего вечера. Эпизод: Отель «Оверлук» зимой.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday The Shining jack overlook typewriter redrum twins maze snow wendy hotel heres johnny",
+      "curated_anchor": "Эпизод: Отель «Оверлук» зимой.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "origin": "rule",
+      "confidence": 0.63
+    },
+    "Служебный роман|1977": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "love_confession",
+        "memory_war"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Строгий начальник и робкий подчинённый меняются ролями — и в делах, и в любви. Про «мы с тобой как... » — когда нужна лёгкость и улыбка. Робкое объяснение Новосельцева и Калугиной в чувствах, а не сцена переодевания",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Робкое объяснение Новосельцева и Калугиной в чувствах, а не сцена переодевания",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Список Шиндлера|1993": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Немец спасает евреев во время войны. История совести. Финальная речь «кто спас одну жизнь»",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget Schindler's List Schindler List love friend family home hope dream time life father mother",
+      "curated_anchor": "Финальная речь «кто спас одну жизнь»",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Сталинград|2013": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Оборона дома Павлова. Великая битва. Эпизод: Оборона дома Павлова.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget Stalingrad Stalingrad love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Оборона дома Павлова.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.74
+    },
+    "Старики-разбойники|1971": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "just_laugh",
+        "male_friendship"
+      ],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Пенсионеры грабят банк ради помощи другу. Тёплая комедия о старости. Эпизод: Пенсионеры грабят банк ради помощи другу.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Эпизод: Пенсионеры грабят банк ради помощи другу.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.68
+    },
+    "Статский советник|2005": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "family_parents",
+        "memory_war"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Охота на революционера-террориста в Москве начала XX века. Про долг и честь. Эпизод: Охота на революционера-террориста в Москве начала XX века.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "curated_anchor": "Эпизод: Охота на революционера-террориста в Москве начала XX века.. Искать: держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "origin": "rule",
+      "confidence": 0.52
+    },
+    "Стиляги|2008": {
+      "primary_intent": "female_friendship",
+      "intent_label": "Женская дружба / сестринство",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "holiday_comedy",
+        "male_friendship"
+      ],
+      "intent_query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой Стиляги против серости 50-х. Яркая молодёжная история. Эпизод: Стиляги против серости 50-х.. Искать: подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "intent_query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "curated_anchor": "Эпизод: Стиляги против серости 50-х.. Искать: подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "origin": "rule",
+      "confidence": 0.53
+    },
+    "Суперсемейка|2004": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "children_animation"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Семья супергероев в быту. Семья — супергеройская. Эпизод: Семья супергероев в быту.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child The Incredibles Incredibles love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Семья супергероев в быту.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.76
+    },
+    "Т-34|2018": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Экипаж легендарного танка. Танковый экшен. Эпизод: Экипаж легендарного танка.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Экипаж легендарного танка.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.62
+    },
+    "Тайна Коко|2017": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "children_animation",
+        "quiet_farewell"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Мальчик попадает в страну мёртвых в Ночь памяти усопших. О семье и памяти — трогательно до слёз. «Помни меня» и разговор с прабабушкой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child Coco Coco love friend family home hope dream time life father mother music",
+      "curated_anchor": "«Помни меня» и разговор с прабабушкой",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Титаник|1997": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "nostalgia_classic",
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать История любви на фоне крушения легендарного лайнера. Классика «я лечу» — для романтического повода. «Я лечу» на носу корабля и разговор о доверии",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel Titanic jack rose ship iceberg ocean flying bow draw me heart promise",
+      "curated_anchor": "«Я лечу» на носу корабля и разговор о доверии",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Тихий Дон|1957": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "anniversary_long_love"
+      ],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Казачья сага о любви и революции. Для старших поколений. Эпизод: Казачья сага о любви и революции.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Эпизод: Казачья сага о любви и революции.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Унесённые призраками|2001": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "support_hope",
+        "family_parents"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Девочка Тихиро попадает в мир духов и спасает родителей. Волшебство, после которого хочется верить в чудо. Эпизод: Девочка Тихиро попадает в мир духов и спасает родителей.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Spirited Away spirits bathhouse parents pigs dragon haku no face train chihiro river",
+      "curated_anchor": "Эпизод: Девочка Тихиро попадает в мир духов и спасает родителей.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.79
+    },
+    "Утомлённые солнцем|1994": {
+      "primary_intent": "nostalgia_classic",
+      "intent_label": "Ностальгия / классика для старших",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "anniversary_long_love",
+        "family_parents"
+      ],
+      "intent_query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата Лето 1936-го: семья комдива и праздник на даче — перед тем, как всё изменится. История эпохи для старших — тихая и сильная. Эпизод: Лето 1936-го: семья комдива и праздник на даче — перед тем, как всё изменится.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "intent_query_en": "classic old movie remember the good old days we used to",
+      "curated_anchor": "Эпизод: Лето 1936-го: семья комдива и праздник на даче — перед тем, как всё изменится.. Искать: классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "origin": "rule",
+      "confidence": 0.72
+    },
+    "Утомлённые солнцем 2|2010": {
+      "primary_intent": "memory_war",
+      "intent_label": "Память, война, поколения",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents",
+        "children_animation"
+      ],
+      "intent_query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями Котов на войне. Война глазами ребёнка. Эпизод: Котов на войне.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "intent_query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "curated_anchor": "Эпизод: Котов на войне.. Искать: война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "origin": "rule",
+      "confidence": 0.68
+    },
+    "Формула любви|1984": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "female_friendship"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Граф Калиостро и его слуга в России XVIII века. Романтическая авантюра. Эпизод: Граф Калиостро и его слуга в России XVIII века.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Граф Калиостро и его слуга в России XVIII века.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.58
+    },
+    "Форрест Гамп|1994": {
+      "primary_intent": "support_hope",
+      "intent_label": "Поддержка и «всё наладится»",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "children_animation"
+      ],
+      "intent_query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение Честный и добрый парень проживает полвека истории Америки — на скамейке с коробкой шоколада. Про доброту, которая сильнее обстоятельств. Монолог на скамейке про коробку конфет и доброту",
+      "intent_query_en": "hang in there it gets better you can do this i am here dont give up hope keep going Forrest Gump run running chocolates box of chocolates mama feather bus stop lieutenant dan jenny shrimp",
+      "curated_anchor": "Монолог на скамейке про коробку конфет и доброту",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Форрест Гамп: повтор|1994": {
+      "primary_intent": "family_parents",
+      "intent_label": "Семья, мама, отец, ребёнок",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "children_animation"
+      ],
+      "intent_query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой Мама рассказывает сыну историю его необычной жизни. Мудрая история о доброте. Эпизод: Мама рассказывает сыну историю его необычной жизни.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "intent_query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "curated_anchor": "Эпизод: Мама рассказывает сыну историю его необычной жизни.. Искать: мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "origin": "rule",
+      "confidence": 0.77
+    },
+    "Холодное сердце|2013": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "female_friendship",
+        "love_confession"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Сёстры: одна прячет силу льда, другая ищет её по всему королевству. Про сестринскую любовь. «Отпусти и забудь» / разговор сестёр",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Frozen Frozen love friend family home hope dream time life father mother music",
+      "curated_anchor": "«Отпусти и забудь» / разговор сестёр",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Холодное сердце 2|2019": {
+      "primary_intent": "love_confession",
+      "intent_label": "Признание в любви",
+      "fragment_type": "monologue",
+      "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+      "secondary_intents": [
+        "children_animation",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать Сиквел. — Эпизод: Сиквел.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "intent_query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "curated_anchor": "Эпизод: Сиквел.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "origin": "rule",
+      "confidence": 0.57
+    },
+    "Холоп|2019": {
+      "primary_intent": "just_laugh",
+      "intent_label": "Юмор «просто так»",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот Мажор перевоспитывается в деревне. Комедия о перерождении. Эпизод: Мажор перевоспитывается в деревне.. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "intent_query_en": "funny joke laugh comedy gag thats hilarious",
+      "curated_anchor": "Эпизод: Мажор перевоспитывается в деревне.. Искать: смешной гэг шутка реприза посмеяться комедия анекдот",
+      "origin": "rule",
+      "confidence": 0.64
+    },
+    "Чародеи|1982": {
+      "primary_intent": "holiday_comedy",
+      "intent_label": "Праздничный комедийный эпизод",
+      "fragment_type": "song_music",
+      "fragment_type_label": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+      "secondary_intents": [
+        "inspiration_dream",
+        "love_confession"
+      ],
+      "intent_query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост Волшебная канцелярия в НИИ. Новогодняя сказка с юмором. Эпизод: Волшебная канцелярия в НИИ.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "intent_query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "curated_anchor": "Эпизод: Волшебная канцелярия в НИИ.. Искать: новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "origin": "rule",
+      "confidence": 0.8
+    },
+    "Человек-паук: Нет пути домой|2021": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "family_parents",
+        "inspiration_dream"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Мультивселенная и паучье чутьё. — Эпизод: Мультивселенная и паучье чутьё.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Spider-Man: No Way Home Spider Man Way Home love friend family home hope dream time life",
+      "curated_anchor": "Эпизод: Мультивселенная и паучье чутьё.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.67
+    },
+    "Человек-паук: Через вселенные|2023": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Майлз Моралес встречает других Человеков-пауков из других вселенных. Самый стильный мультфильм про выбор. Эпизод: Майлз Моралес встречает других Человеков-пауков из других вселенных.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one",
+      "curated_anchor": "Эпизод: Майлз Моралес встречает других Человеков-пауков из других вселенных.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.85
+    },
+    "Шрек|2001": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "comic_gag",
+      "fragment_type_label": "Комедийный гэг / реприза",
+      "secondary_intents": [
+        "male_friendship"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Огр спасает принцессу — и находит друга в осле. Сказка, которую пересматривают и дети, и взрослые. Первая встреча Шрека и Осла: комедия, а не признание в любви",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Shrek Shrek love friend family home hope dream time life father mother music",
+      "curated_anchor": "Первая встреча Шрека и Осла: комедия, а не признание в любви",
+      "origin": "manual",
+      "confidence": 0.95
+    },
+    "Шрек 2|2004": {
+      "primary_intent": "children_animation",
+      "intent_label": "Детский / мультфильм",
+      "fragment_type": "dialogue",
+      "fragment_type_label": "Живой диалог, 4+ коротких реплики, быстрая смена",
+      "secondary_intents": [
+        "love_confession",
+        "holiday_comedy"
+      ],
+      "intent_query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе Шрек едет к тёще. — Эпизод: Шрек едет к тёще.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "intent_query_en": "cartoon kid friend adventure song magic together be brave little one Shrek 2 Shrek love friend family home hope dream time life father mother music",
+      "curated_anchor": "Эпизод: Шрек едет к тёще.. Искать: мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "origin": "rule",
+      "confidence": 0.55
+    }
+  }
+}

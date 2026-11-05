@@ -11,6 +11,8 @@ SEED_SCENES_MORE_PATH = os.path.join(BASE_DIR, "db", "seed_scenes_more.sql")
 SEED_CATALOG_PATH = os.path.join(BASE_DIR, "db", "seed_catalog.sql")
 SEED_BOUQUETS_PATH = os.path.join(BASE_DIR, "db", "seed_bouquets.sql")
 
+from .intent_taxonomy import backfill_intents  # noqa: E402
+
 # Миграции для уже существующей dev-БД: (таблица, колонка, определение)
 MIGRATIONS = [
     ("scenes", "imdb_id", "TEXT"),
@@ -53,6 +55,17 @@ MIGRATIONS = [
     ("timecode_candidates", "confidence", "REAL DEFAULT 0"),
     ("timecode_candidates", "consensus", "INTEGER DEFAULT 1"),
     ("timecode_candidates", "auto", "INTEGER DEFAULT 0"),
+    ("scenes", "primary_intent", "TEXT"),
+    ("scenes", "fragment_type", "TEXT"),
+    ("scenes", "intent_query", "TEXT"),
+    ("scenes", "curated_anchor", "TEXT"),
+    ("scenes", "intent_confidence", "REAL DEFAULT 0"),
+    ("scenes", "intent_source", "TEXT"),
+    ("timecode_candidates", "category", "TEXT"),
+    ("timecode_candidates", "fragment_type", "TEXT"),
+    ("timecode_candidates", "evidence_features", "TEXT"),
+    ("timecode_candidates", "reason", "TEXT"),
+    ("timecode_candidates", "intent_score", "REAL DEFAULT 0"),
 ]
 
 
@@ -96,6 +109,11 @@ def _migrate(conn: sqlite3.Connection) -> None:
       confidence REAL DEFAULT 0,
       consensus INTEGER DEFAULT 1,
       auto INTEGER DEFAULT 0,
+      category TEXT,
+      fragment_type TEXT,
+      evidence_features TEXT,
+      reason TEXT,
+      intent_score REAL DEFAULT 0,
       status TEXT NOT NULL DEFAULT 'pending',
       created_at TEXT NOT NULL,
       reviewed_at TEXT,
@@ -154,6 +172,8 @@ def init_db(db_path: str, with_seed: bool = True) -> None:
         "UPDATE scenes SET timecode_label=NULL, timecode_seconds=NULL "
         " WHERE timecode_label='0:00:00' AND timecode_seconds IS NULL AND verified=0"
     )
+    # Таксономия интентов — источник истины в JSON, в БД только проекция.
+    backfill_intents(conn)
     conn.commit()
     conn.close()
 

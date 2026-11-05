@@ -39,6 +39,12 @@ CREATE TABLE IF NOT EXISTS scenes (
   why_fits         TEXT,                 -- одна строка «почему эта сцена подходит под повод»
   source           TEXT,                 -- откуда запись: manual / user_suggestion / partner
   source_license   TEXT,                 -- лицензия источника данных (для аудита)
+  primary_intent   TEXT,                 -- основной интент из intent_taxonomy.json
+  fragment_type    TEXT,                 -- ожидаемый тип фрагмента: monologue / dialogue / song_music / ...
+  intent_query     TEXT,                 -- поисковый запрос под эту пару (без текста субтитров)
+  curated_anchor   TEXT,                 -- конкретный эпизод, который ищем, НЕ таймкод
+  intent_confidence REAL DEFAULT 0,
+  intent_source    TEXT,                 -- manual / rule / fallback
   status           TEXT NOT NULL DEFAULT 'draft',  -- draft / approved / rejected
   suggested_by     INTEGER REFERENCES users(id),
   verified         INTEGER NOT NULL DEFAULT 0,     -- таймкод проверен вручную в плеере
@@ -244,7 +250,12 @@ CREATE TABLE IF NOT EXISTS timecode_candidates (
   confidence REAL DEFAULT 0,                        -- уверенность: семантический скор × консенсус версий субтитров
   consensus INTEGER DEFAULT 1,                      -- сколько независимых файлов субтитров agree по этому моменту (±10 сек)
   auto INTEGER DEFAULT 0,                           -- 1 = консенсус высокий, можно авто-одобрить
-  status TEXT NOT NULL DEFAULT 'pending',           -- pending / approved / rejected
+  category TEXT,                                    -- интент, под который найден фрагмент
+  fragment_type TEXT,                               -- фактический тип фрагмента из структуры SRT-окна
+  evidence_features TEXT,                           -- JSON признаков (БЕЗ текста реплик)
+  reason TEXT,                                      -- человекочитаемое «почему этот момент»
+  intent_score REAL DEFAULT 0,                      -- итоговый скор категории+структуры
+  status TEXT NOT NULL DEFAULT 'pending',           -- pending / approved / rejected / archived
   created_at TEXT NOT NULL,
   reviewed_at TEXT,
   reviewed_by TEXT

@@ -79,6 +79,6 @@ python3 -m pip install yt-dlp   # только на локальной маши�
 - Кинопоиск/ivi/Okko могут требовать подписку — это ожидаемо; локальная копия и официальные бесплатные загрузки дают путь без неё.
 - `watch_links` по-прежнему поисковые; автоматический `?t=` делается только там, где провайдер имеет стабильный публичный формат (YouTube, Vimeo).
 
-Основной экран модерации теперь описан в [16-moderation-board.md](16-moderation-board.md): все 146 сцен, готовый отрезок и открытие на моменте. Здесь — только алгоритм построения ссылок.
+Основной экран модерации теперь описан в [16-moderation-board.md](16-moderation-board.md): все 146 сцен с gate по категориям. Сама систематизация — [17-intent-taxonomy.md](17-intent-taxonomy.md). Здесь — только алгоритм построения ссылок.
 
-Связанные документы: [13-timecode-verification.md](13-timecode-verification.md), [14-timecode-library-scale.md](14-timecode-library-scale.md), [06-timecode-sources.md](06-timecode-sources.md), [16-moderation-board.md](16-moderation-board.md).
+Связанные документы: [13-timecode-verification.md](13-timecode-verification.md), [14-timecode-library-scale.md](14-timecode-library-scale.md), [06-timecode-sources.md](06-timecode-sources.md), [16-moderation-board.md](16-moderation-board.md), [17-intent-taxonomy.md](17-intent-taxonomy.md).

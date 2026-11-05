@@ -1,0 +1,180 @@
+{
+  "version": "1.0",
+  "comment": "Две оси систематизации: основной интент подарка + тип фрагмента. Таймкод попадает в модерацию только если SRT-окно набрало порог по этой категории. Текст субтитров не сохраняется.",
+  "gate_threshold": 0.45,
+  "min_lexicon_hits": 2,
+  "min_clip_seconds": 25,
+  "max_clip_seconds": 75,
+  "min_gap_between_candidates_seconds": 60,
+  "negative_markers": [
+    "subtitles by", "subtitle by", "www.", "http", "previously on", "trailer", "official trailer",
+    "сubtitles", "титры", "реклама", "трейлер", "продолжение следует", "music playing", "♪", "♫"
+  ],
+  "fragment_types": {
+    "monologue": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
+    "dialogue": "Живой диалог, 4+ коротких реплики, быстрая смена",
+    "song_music": "Песня или музыкальный эпизод (по маркерам в субтитрах)",
+    "letter_voiceover": "Письмо, дневник, закадровый голос",
+    "silent_gesture": "Сцена без слов: взгляд, жест, объятие (SRT сам не найдёт — только кураторский якорь)",
+    "toast": "Тост, застолье, поздравление",
+    "comic_gag": "Комедийный гэг / реприза",
+    "reunion": "Встреча, примирение, объятие",
+    "farewell": "Прощание, светлая грусть"
+  },
+  "categories": [
+    {
+      "id": "love_confession",
+      "label": "Признание в любви",
+      "definition": "Прямой монолог или диалог, где герой говорит о своих чувствах: «я люблю», «ты мне нужен», объяснение, первое признание. Не любая романтическая сцена и не просто свидание.",
+      "fragment_types": ["monologue", "dialogue", "letter_voiceover"],
+      "query_ru": "признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
+      "query_en": "i love you love confession feelings i need you i have feelings for you tell you how i feel",
+      "lexicon_ru": ["люблю", "любить", "любовь", "признаюсь", "признание", "чувств", "влюблён", "влюблена", "нужен", "нужна", "сердце", "поцелуй", "останься", "не могу без", "ты мне"],
+      "lexicon_en": ["love", "loved", "lover", "feelings", "confess", "admit", "need you", "stay with me", "my heart", "marry me", "kiss me", "i care about you"],
+      "examples": ["Служебный роман", "Когда Гарри встретил Салли", "Ноттинг Хилл", "Дневник памяти", "Красотка"]
+    },
+    {
+      "id": "female_friendship",
+      "label": "Женская дружба / сестринство",
+      "definition": "Разговор двух подруг, взаимная поддержка, общие планы, женская солидарность. Романтическая линия с мужчиной не должна попадать сюда.",
+      "fragment_types": ["dialogue", "monologue", "reunion", "toast"],
+      "query_ru": "подруги девчонки женская дружба сестринство поддержим друг друга поговорим по душам мы с тобой",
+      "query_en": "girlfriends best friends women friendship sisterhood we are together you are not alone girls talk",
+      "lexicon_ru": ["подруг", "подруга", "девчонк", "девушк", "сестр", "вместе", "по душам", "поддерж", "поговорим", "не одна", "мы с тобой", "женск"],
+      "lexicon_en": ["girlfriend", "best friend", "girls", "sisters", "together", "you are not alone", "we have each other", "talk", "support you", "friendship"],
+      "examples": ["Девчата", "Москва слезам не верит", "Барби", "Ешь, молись, люби"]
+    },
+    {
+      "id": "male_friendship",
+      "label": "Мужская дружба / братство",
+      "definition": "Брат, друг, товарищ: выручка, верность, разговор «по-мужски», клятва, защита своих.",
+      "fragment_types": ["dialogue", "monologue", "toast", "reunion"],
+      "query_ru": "брат друг товарищ мужская дружба выручим верность защитим своих поговорим по-мужски",
+      "query_en": "brother friend buddy brotherhood loyalty got your back i will help you we stick together",
+      "lexicon_ru": ["брат", "друг", "товарищ", "мужик", "выруч", "верност", "защит", "своих", "вместе", "клятв", "по-мужски"],
+      "lexicon_en": ["brother", "friend", "buddy", "brotherhood", "loyalty", "got your back", "help you", "stick together", "my friend", "count on me"],
+      "examples": ["Брат", "Брат 2", "1+1", "Зелёная книга", "В бой идут одни «старики»"]
+    },
+    {
+      "id": "support_hope",
+      "label": "Поддержка и «всё наладится»",
+      "definition": "Наставление, утешение, «держись», «ты справишься», надежда, когда близкому тяжело.",
+      "fragment_types": ["monologue", "dialogue", "letter_voiceover"],
+      "query_ru": "держись всё наладится ты справишься я рядом не сдавайся надежда поддержка утешение",
+      "query_en": "hang in there it gets better you can do this i am here dont give up hope keep going",
+      "lexicon_ru": ["держись", "наладится", "справишь", "рядом", "не сдавайся", "надежд", "поддерж", "утеш", "всё будет", "хорошо", "верить", "сильн"],
+      "lexicon_en": ["hang in there", "get better", "you can do", "i am here", "dont give up", "hope", "believe", "strong", "keep going", "its going to be ok", "proud of you"],
+      "examples": ["Побег из Шоушенка", "Форрест Гамп", "Москва слезам не верит", "Вверх"]
+    },
+    {
+      "id": "apology_reconciliation",
+      "label": "Извинение и примирение",
+      "definition": "Просьба прощения, объяснение вины, примирение, «прости меня».",
+      "fragment_types": ["dialogue", "monologue", "reunion"],
+      "query_ru": "прости извини виноват помириться объяснение прощение обнимемся",
+      "query_en": "im sorry forgive me my fault apologize make peace lets talk",
+      "lexicon_ru": ["прости", "извини", "виноват", "виновата", "помирим", "прощени", "обидел", "обидела", "вернись", "поговорим"],
+      "lexicon_en": ["sorry", "forgive", "my fault", "apologize", "i was wrong", "make peace", "come back", "lets talk"],
+      "examples": ["Операция «Ы»", "Афоня", "Красотка"]
+    },
+    {
+      "id": "family_parents",
+      "label": "Семья, мама, отец, ребёнок",
+      "definition": "Разговор родителя и ребёнка, семейный тост, забота, дом, возвращение к своим.",
+      "fragment_types": ["dialogue", "monologue", "toast", "letter_voiceover"],
+      "query_ru": "мама папа отец сын дочь семья дом забота родители ребёнок вернись домой",
+      "query_en": "mom dad father mother son daughter family home take care come back home my child",
+      "lexicon_ru": ["мам", "пап", "отец", "сын", "дочь", "семь", "дом", "забот", "родител", "ребён", "бабушк", "дедушк"],
+      "lexicon_en": ["mom", "dad", "father", "mother", "son", "daughter", "family", "home", "take care", "my child", "grandma", "grandpa"],
+      "examples": ["Начало", "Тайна Коко", "В поисках Немо", "Любовь и голуби"]
+    },
+    {
+      "id": "inspiration_dream",
+      "label": "Мечта и вдохновение",
+      "definition": "Мечта, призвание, творчество, «ты можешь», выбор пути, спорт/сцена/искусство.",
+      "fragment_types": ["monologue", "dialogue", "song_music"],
+      "query_ru": "мечта вдохновение ты можешь поверь в себя призвание цель талант путь",
+      "query_en": "dream believe in yourself you can do it talent purpose choose your path inspiration",
+      "lexicon_ru": ["мечт", "вдохнов", "можешь", "поверь", "призван", "цел", "талант", "пут", "твор", "спорт", "сцен"],
+      "lexicon_en": ["dream", "believe", "you can", "talent", "purpose", "inspiration", "goal", "choose", "create", "never stop"],
+      "examples": ["Ла-Ла Ленд", "Рататуй", "Легенда №17", "Движение вверх"]
+    },
+    {
+      "id": "memory_war",
+      "label": "Память, война, поколения",
+      "definition": "Фронт, письма, память, песня между вылетами, 9 мая, история отцов и дедов.",
+      "fragment_types": ["monologue", "dialogue", "song_music", "letter_voiceover"],
+      "query_ru": "война фронт память письмо погибшим отцы деды 9 мая песня между боями",
+      "query_en": "war front memory letter fallen fathers grandfathers song between battles never forget",
+      "lexicon_ru": ["войн", "фронт", "памят", "письм", "погиб", "отц", "дед", "бо", "сраж", "песн", "знам", "побед"],
+      "lexicon_en": ["war", "front", "remember", "letter", "fallen", "fathers", "battle", "song", "victory", "never forget", "soldiers"],
+      "examples": ["В бой идут одни «старики»", "Семнадцать мгновений весны", "Saving Private Ryan", "Список Шиндлера"]
+    },
+    {
+      "id": "anniversary_long_love",
+      "label": "Годовщина / любовь на всю жизнь",
+      "definition": "Пара вместе спустя годы, клятва, тост, «мы прожили», семейная хроника. Отдельно от первого признания.",
+      "fragment_types": ["monologue", "dialogue", "toast", "letter_voiceover"],
+      "query_ru": "годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
+      "query_en": "anniversary all these years together forever vow toast remember when we met",
+      "lexicon_ru": ["годовщин", "лет вместе", "всю жизнь", "клятв", "тост", "прожили", "помнишь", "стар", "вместе", "супруг", "жена", "муж"],
+      "lexicon_en": ["anniversary", "all these years", "forever", "vow", "toast", "remember when", "husband", "wife", "still love you", "together"],
+      "examples": ["Дневник памяти", "Война и мир", "Утомлённые солнцем"]
+    },
+    {
+      "id": "holiday_comedy",
+      "label": "Праздничный комедийный эпизод",
+      "definition": "Новый год, день рождения, застолье, ёлка, карнавал, узнаваемый праздничный гэг или песня.",
+      "fragment_types": ["comic_gag", "dialogue", "song_music", "toast"],
+      "query_ru": "новый год день рождения ёлка застолье поздравление карнавал праздник тост",
+      "query_en": "new year birthday party christmas toast celebrate holiday happy birthday",
+      "lexicon_ru": ["новый год", "новогод", "ёлк", "день рождения", "поздрав", "застоль", "праздник", "тост", "карнавал", "гост", "торт"],
+      "lexicon_en": ["new year", "birthday", "party", "celebrate", "toast", "holiday", "christmas", "happy birthday", "guests", "cake"],
+      "examples": ["Ирония судьбы", "Карнавальная ночь", "Один дома", "Ёлки"]
+    },
+    {
+      "id": "children_animation",
+      "label": "Детский / мультфильм",
+      "definition": "Понятный ребёнку эпизод: друг, приключение, песня, добрый поступок. Не «взрослая» романтика.",
+      "fragment_types": ["dialogue", "song_music", "comic_gag", "reunion"],
+      "query_ru": "мультфильм ребёнок друг приключение песня добрый волшебство вместе",
+      "query_en": "cartoon kid friend adventure song magic together be brave little one",
+      "lexicon_ru": ["ребён", "малыш", "мульт", "друг", "приключ", "волшеб", "песн", "добр", "вместе", "страшн", "храбр"],
+      "lexicon_en": ["kid", "friend", "adventure", "magic", "song", "together", "brave", "little one", "dont be scared", "lets go"],
+      "examples": ["Король Лев", "Вверх", "Холодное сердце", "Шрек"]
+    },
+    {
+      "id": "nostalgia_classic",
+      "label": "Ностальгия / классика для старших",
+      "definition": "Узнаваемый эпизод советского/старого кино, который старшее поколение цитирует наизусть.",
+      "fragment_types": ["dialogue", "monologue", "comic_gag", "song_music"],
+      "query_ru": "классика советское кино ностальгия помнишь как раньше узнаваемая цитата",
+      "query_en": "classic old movie remember the good old days we used to",
+      "lexicon_ru": ["классик", "советск", "ностальг", "помнишь", "раньше", "как в молодости", "стар", "квартир", "коммунал", "гараж", "дача"],
+      "lexicon_en": ["classic", "old days", "remember", "used to", "years ago", "back then"],
+      "examples": ["Гараж", "Покровские ворота", "Бриллиантовая рука", "Девчата"]
+    },
+    {
+      "id": "just_laugh",
+      "label": "Юмор «просто так»",
+      "definition": "Гэг, реприза, смешной диалог без конкретного повода.",
+      "fragment_types": ["comic_gag", "dialogue", "song_music"],
+      "query_ru": "смешной гэг шутка реприза посмеяться комедия анекдот",
+      "query_en": "funny joke laugh comedy gag thats hilarious",
+      "lexicon_ru": ["смешн", "шутк", "гэг", "реприз", "посме", "комед", "анекдот", "хохот", "умора"],
+      "lexicon_en": ["funny", "joke", "laugh", "hilarious", "comedy", "thats ridiculous", "are you kidding"],
+      "examples": ["Иван Васильевич меняет профессию", "Бриллиантовая рука", "Кавказская пленница"]
+    },
+    {
+      "id": "quiet_farewell",
+      "label": "Светлая грусть / прощание",
+      "definition": "Прощание, принятие, тихая сцена без пафоса, любовь сильнее расстояния/смерти.",
+      "fragment_types": ["monologue", "dialogue", "farewell", "letter_voiceover"],
+      "query_ru": "прощай не прощайся помни я всегда рядом светлая грусть принятие до встречи",
+      "query_en": "goodbye dont forget me i will always be with you see you again let go",
+      "lexicon_ru": ["проща", "до встречи", "помни", "всегда рядом", "груст", "уход", "отпуст", "не забывай", "памят"],
+      "lexicon_en": ["goodbye", "dont forget", "always with you", "see you again", "let go", "miss you", "remember me"],
+      "examples": ["Привидение", "Виноваты звёзды", "Унесённые призраками"]
+    }
+  ]
+}

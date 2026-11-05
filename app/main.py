@@ -21,6 +21,7 @@ from . import bot as bot_module
 from . import config, payments, scheduler, search as semantic
 from .db import connect, init_db, new_code, row_to_dict, enqueue_notification
 from .flowwow import watch_links, order_link
+from .intent_taxonomy import intent_for
 from .moderation_board import build_board
 from .moderation_links import (
     build_moderation_links, load_official_videos, moderation_coverage, moderation_targets,
@@ -1849,6 +1850,7 @@ def admin_timecode_manual(request: Request, body: ManualTimecodeCandidate):
     if not scene:
         conn.close()
         raise HTTPException(404, "Сцена не найдена в каталоге")
+    intent = intent_for(body.movie_title.strip(), body.movie_year)
     source = body.source_url or "manual-legal-player"
     license_note = ("Официальная бесплатная публикация правообладателя; таймкод указан "
                     "оператором вручную, текст субтитров не хранится")
@@ -1858,11 +1860,13 @@ def admin_timecode_manual(request: Request, body: ManualTimecodeCandidate):
     cur = conn.execute(
         "INSERT INTO timecode_candidates (scene_id, service, timecode_label, timecode_seconds,"
         " timecode_end_label, timecode_end_seconds, source, source_license, evidence_sha1,"
-        " line_index, match_score, moment_label, confidence, consensus, auto, status, created_at)"
-        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
+        " line_index, match_score, moment_label, confidence, consensus, auto,"
+        " category, fragment_type, reason, intent_score, status, created_at)"
+        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
         (scene["id"], "manual", body.timecode_label, start, body.timecode_end_label, end,
          source, license_note, digest, 0, 0.0, body.moment_label or "момент найден вручную",
-         0.0, 1, 0, now_iso()),
+         0.0, 1, 0, intent["primary_intent"], intent["fragment_type"],
+         intent.get("curated_anchor", "")[:180], 0.0, now_iso()),
     )
     conn.commit()
     cid = cur.lastrowid
@@ -1872,8 +1876,9 @@ def admin_timecode_manual(request: Request, body: ManualTimecodeCandidate):
 
 @app.get("/api/admin/moderation")
 def admin_moderation_board(request: Request):
-    """ВСЕ approved-сцены одной очередью: у каждой есть предложенный отрезок
-    и ссылка/команда, открывающая фильм на этом времени."""
+    """Все approved-сцены одной очередью. Таймкод и кнопка открытия есть
+    только у сцен с доказательным категорийным фрагментом; остальные —
+    `needs_curator` с якорем эпизода, без случайного времени."""
     require_admin(request)
     conn = connect(config.DB_PATH)
     board = build_board(conn, load_official_videos())
@@ -1903,6 +1908,9 @@ def admin_moderation_confirm(request: Request, body: ModerationConfirm):
     if not scene:
         conn.close()
         raise HTTPException(404, "Сцена не найдена")
+    intent = intent_for(scene["movie_title"], scene["movie_year"])
+    cat_id = intent["primary_intent"]
+    frag_type = intent["fragment_type"]
     if body.action == "skip":
         conn.close()
         return {"ok": True, "action": "skip", "scene_id": body.scene_id}
@@ -1934,21 +1942,25 @@ def admin_moderation_confirm(request: Request, body: ModerationConfirm):
         conn.execute(
             "UPDATE timecode_candidates SET status='approved', reviewed_at=?, reviewed_by='admin',"
             " timecode_label=?, timecode_seconds=?, timecode_end_label=?, timecode_end_seconds=?,"
-            " moment_label=COALESCE(?, moment_label), service=? WHERE id=?",
+            " moment_label=COALESCE(?, moment_label), service=?,"
+            " category=COALESCE(category, ?), fragment_type=COALESCE(fragment_type, ?) WHERE id=?",
             (now_iso(), body.timecode_label, start, body.timecode_end_label, end,
-             body.moment_label, scene["service"] or "manual", cand["id"]),
+             body.moment_label, scene["service"] or "manual", cat_id, frag_type, cand["id"]),
         )
         cid = cand["id"]
     else:
         cur = conn.execute(
             "INSERT INTO timecode_candidates (scene_id, service, timecode_label, timecode_seconds,"
             " timecode_end_label, timecode_end_seconds, source, source_license, evidence_sha1,"
-            " line_index, match_score, moment_label, confidence, consensus, auto, status,"
+            " line_index, match_score, moment_label, confidence, consensus, auto,"
+            " category, fragment_type, reason, intent_score, status,"
             " created_at, reviewed_at, reviewed_by)"
-            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'approved',?,?,'admin')",
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'approved',?,?,'admin')",
             (body.scene_id, scene["service"] or "manual", body.timecode_label, start,
              body.timecode_end_label, end, source, license_note, digest, 0, 0.0,
-             body.moment_label or scene["description"], 0.0, 1, 0, now_iso(), now_iso()),
+             body.moment_label or scene["description"], 0.0, 1, 0,
+             cat_id, frag_type, intent.get("curated_anchor", "")[:180], 0.0,
+             now_iso(), now_iso()),
         )
         cid = cur.lastrowid
     conn.execute(
