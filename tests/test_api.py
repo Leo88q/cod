@@ -426,7 +426,9 @@ def test_scenes_filters_and_sort(client):
         assert "романтика" in [t.lower() for t in s["mood_tags"]]
 
 
-def test_bulk_approve_consensus_and_moments(client):
+def test_bulk_approve_consensus_and_moments(client, monkeypatch):
+    # эндпоинт авто-одобрения по умолчанию отключён; тест включает его явно
+    monkeypatch.setenv("ALLOW_BULK_AUTO_APPROVE", "1")
     from app.db import connect
     from app import config
     conn = connect(config.DB_PATH)
@@ -491,8 +493,9 @@ def test_gift_timecode_snapshot_is_fixed(client):
     assert r.json()["scenes"][0]["timecode_label"] == "0:11:11"
 
 
-def test_timecode_segment_has_start_and_end(client):
+def test_timecode_segment_has_start_and_end(client, monkeypatch):
     """Таймкод — это ОТРЕЗОК (начало+конец): кандидат из субтитров, auto-approve, момент, снапшот подарка."""
+    monkeypatch.setenv("ALLOW_BULK_AUTO_APPROVE", "1")
     from app.db import connect
     from app import config
     import datetime
@@ -645,3 +648,38 @@ def test_admin_timecode_library_coverage_endpoint(client):
     assert d["manifests"]["full"]["catalog_scenes"] == 140
     assert any(f["name"] == "full_manifest.json" for f in d["files"])
     assert "pending" in d["note"]
+
+
+def test_bulk_auto_approve_disabled_and_manual_review_requires_version(client):
+    """Авто-консенсус больше не может поставить verified=1 без ручной проверки."""
+    r = client.post("/api/admin/timecodes/bulk-approve", headers={"X-Admin-Token": "test-admin"},
+                    json={"min_confidence": 0.8, "min_consensus": 2, "only_auto": True})
+    assert r.status_code == 403
+    assert "отключено" in r.json()["detail"]
+
+    import datetime
+    from app import config
+    from app.db import connect
+    conn = connect(config.DB_PATH)
+    sid = conn.execute("SELECT id FROM scenes WHERE movie_title='Форрест Гамп' AND movie_year=1994").fetchone()["id"]
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    conn.execute(
+        "INSERT INTO timecode_candidates (scene_id, service, timecode_label, timecode_seconds,"
+        " source, source_license, evidence_sha1, line_index, confidence, consensus, auto,"
+        " status, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
+        (sid, "kinopoisk", "0:32:56", 1976, "test-src", "test-lic", "v" * 40, 1,
+         1.2, 2, 1, now))
+    conn.commit()
+    cid = conn.execute("SELECT id FROM timecode_candidates ORDER BY id DESC LIMIT 1").fetchone()["id"]
+    conn.close()
+    r = client.post(f"/api/admin/timecodes/{cid}/review", headers={"X-Admin-Token": "test-admin"},
+                    json={"action": "approve"})
+    assert r.status_code == 400
+    assert "version_note" in r.json()["detail"]
+    r = client.post(f"/api/admin/timecodes/{cid}/review", headers={"X-Admin-Token": "test-admin"},
+                    json={"action": "approve", "version_note": "театральная, Okko 2024"})
+    assert r.status_code == 200 and r.json()["ok"]
+    conn = connect(config.DB_PATH)
+    row = conn.execute("SELECT verified, version_note FROM scenes WHERE id=?", (sid,)).fetchone()
+    conn.close()
+    assert row["verified"] == 1 and row["version_note"] == "театральная, Okko 2024"

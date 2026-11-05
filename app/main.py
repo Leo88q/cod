@@ -1865,10 +1865,15 @@ class BulkApprove(BaseModel):
 
 @app.post("/api/admin/timecodes/bulk-approve")
 def admin_timecodes_bulk_approve(request: Request, body: BulkApprove):
-    """Авто-одобрение консенсусных кандидатов: несколько независимых версий субтитров сошлись
-    на одном моменте (±10 сек) и высокая уверенность → verified=1 без ручного клика.
-    Все остальные остаются в ручной очереди. Текст субтитров по-прежнему нигде не хранится."""
+    """Экспериментальный авто-одобрение консенсуса. По умолчанию ОТКЛЮЧЕНО:
+    `verified=1` ставится только вручную через `/review` с `version_note`.
+    Включить можно только явным `ALLOW_BULK_AUTO_APPROVE=1` в окружении."""
     require_admin(request)
+    if os.getenv("ALLOW_BULK_AUTO_APPROVE", "").strip().lower() not in ("1", "true", "yes", "on"):
+        raise HTTPException(
+            403,
+            "Авто-одобрение отключено: проверяй каждый момент в легальном плеере и жми "
+            "«✓ Подтвердить». Для экспериментов задай ALLOW_BULK_AUTO_APPROVE=1.")
     conn = connect(config.DB_PATH)
     sql = ("SELECT * FROM timecode_candidates WHERE status='pending' AND consensus>=? AND confidence>=?")
     args = [body.min_consensus, body.min_confidence]
@@ -1941,6 +1946,10 @@ def admin_timecode_review(request: Request, cand_id: int, body: TimecodeReview):
         conn.close()
         raise HTTPException(404, "Кандидат не найден")
     if body.action == "approve":
+        version_note = (body.version_note or "").strip()
+        if not version_note:
+            conn.close()
+            raise HTTPException(400, "Укажи version_note: версия издания обязательна при ручной проверке")
         label = body.timecode_label or c["timecode_label"]
         end_label = body.timecode_end_label or c["timecode_end_label"]
         if tc_label_to_seconds(label) is None or (end_label and tc_label_to_seconds(end_label) is None):
@@ -1951,7 +1960,7 @@ def admin_timecode_review(request: Request, cand_id: int, body: TimecodeReview):
             " service=?, verified=1, version_note=?, watch_url=COALESCE(?, watch_url) WHERE id=?",
             (label, tc_label_to_seconds(label), end_label, tc_label_to_seconds(end_label) if end_label else None,
              body.service or c["service"],
-             body.version_note or f"проверено по субтитрам {c['source']}", body.watch_url,
+             version_note, body.watch_url,
              c["scene_id"]))
         conn.execute("UPDATE timecode_candidates SET status='approved', reviewed_at=?, reviewed_by='admin', "
                      "timecode_label=?, timecode_seconds=?, timecode_end_label=?, timecode_end_seconds=?, "

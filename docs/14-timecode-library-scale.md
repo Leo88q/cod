@@ -15,7 +15,8 @@
 | разовый манифест | `build_srt_index.py` → `srt_index.json` → `build_full_manifest.py` → `full_manifest.json` |
 | нет OPUS-адаптера | `import_opus_timecodes.py` для локальных XML-zip OpenSubtitles v2024 |
 | нет сводки покрытия | `GET /api/admin/timecode-library` + панель «📚 Библиотека таймкодов» |
-| 89 `pending` на 20 сцен | **124 `pending` на 62 сцены** при `--max-per-scene 2` на временной БД; по умолчанию 3 на сцену |
+| 89 `pending` на 20 сцен | **186 `pending` на 62 сцены** при `--max-per-scene 3` на чистой БД; `--max-per-scene 2` даёт 124 |
+| кнопка ⚡ могла поставить `verified=1` без просмотра | ⚡ заблокирована, `bulk-approve` → 403 без `ALLOW_BULK_AUTO_APPROVE=1`, `version_note` обязателен при «✓ Подтвердить» |
 
 ## 2. Реестр источников
 
@@ -172,13 +173,13 @@ curl -s -H 'X-Admin-Token: local-admin' \
 - Реальных `verified=1` таймкодов пока **0**: это и есть работа оператора, ради которой всё строилось.
 - 78 сцен без SRT в GitHub-зеркалах; 7 сцен без IMDb ID; `tmdb_id` не заполнен.
 - Прямые `?t=` deep links не генерируются автоматически: `watch_url` вставляется вручную, кнопки плееров остаются поисковыми.
-- Разные издания фильма дают разный таймкод — поэтому `version_note` обязателен при подтверждении, а `ambiguous` кандидаты нужно проверять особенно внимательно.
+- Разные издания фильма дают разный таймкод — поэтому `version_note` обязателен при подтверждении (и на бэкенде, и в UI), а `ambiguous` кандидаты нужно проверять особенно внимательно. Авто-одобрение консенсуса отключено по умолчанию: `bulk-approve` → 403 без `ALLOW_BULK_AUTO_APPROVE=1`, кнопка ⚡ заблокирована.
 - Перед коммерческим запуском нужна юридическая проверка: `ODC-BY` у OPUS не отменяет прав правообладателей на тексты субтитров; CineSubBench — NC-лицензия.
 
 ## 9. Проверки
 
-- `99 passed` pytest, `13 passed` Node/jsdom.
+- `100 passed` pytest, `13 passed` Node/jsdom.
 - `bash scripts/check.sh` с живым сервером: 5/5 шагов, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - `git diff --exit-code db/seed_catalog.sql` — чисто.
 - `full_manifest.json` / `imdb_map_full.json` / OPUS-адаптер / admin coverage endpoint / raw→API fallback загрузчика покрыты отдельными тестами.
-- Полный импорт на временной БД: 124 `pending` кандидата, 62 сцены, 133 IMDb ID, `verified=0`.
+- Полный импорт на чистой БД: **186 `pending` кандидатов** на 62 сцены, 133 IMDb ID, `verified=0` (с `--max-per-scene 2` — 124).

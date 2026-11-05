@@ -1253,8 +1253,8 @@
           </div>
           <div class="panel"><h3>📥 Таймкоды из библиотек субтитров (ожидают проверки: ${tcs.candidates.length})</h3>
             <div class="row" style="margin-bottom:8px">
-              <button id="tc-bulk" class="btn ghost small">⚡ Одобрить авто-консенсусные БЕЗ ручной проверки</button>
-              <span class="muted">обычно не нажимай: сначала открой момент в плеере и подтверди вручную</span>
+              <button id="tc-bulk" class="btn ghost small" disabled>⚡ Авто-одобрение отключено</button>
+              <span class="muted">verified=1 ставится только вручную: открой момент в легальном плеере, укажи версию издания и нажми «✓ Подтвердить»</span>
             </div>
             <p class="muted">Кандидаты получены из SRT-зеркал OpenSubtitles на GitHub: сохранены только время, sha1, источник и лицензия — текста реплик нет. Открой фильм в легальном плеере, найди описанный ниже момент, при необходимости поправь начало/конец и нажми «✓ Подтвердить». Только после этого сцена получит verified=1.</p>
             ${tcs.candidates.map((c) => {
@@ -1275,7 +1275,7 @@
                 <div class="row" style="margin-top:6px">
                   <input class="search-input tc-start" style="max-width:95px" placeholder="начало 1:23:45" value="${esc(c.timecode_label || "")}">
                   <input class="search-input tc-end" style="max-width:95px" placeholder="конец 1:24:10" value="${esc(c.timecode_end_label || "")}">
-                  <input class="search-input tc-version" style="max-width:140px" placeholder="версия издания" value="">
+                  <input class="search-input tc-version" style="max-width:140px" placeholder="версия издания *" value="" required>
                   <input class="search-input tc-url" placeholder="watch_url (deep link, если есть)" value="">
                 </div>
                 <div class="row" style="margin-top:6px">
@@ -1309,16 +1309,6 @@
           await adminApi(`/api/admin/scenes/${b.dataset.id}/status`, { method: "POST", body: { status: "rejected" } });
           toast("Rejected"); document.getElementById("adm-load").click();
         }));
-        const bulk = document.getElementById("tc-bulk");
-        if (bulk) bulk.onclick = async () => {
-          if (!window.confirm("Одобрить консенсусные кандидаты БЕЗ ручной проверки в плеере? Рекомендуется сначала проверить каждый момент вручную.")) return;
-          try {
-            const r = await adminApi("/api/admin/timecodes/bulk-approve", { method: "POST",
-              body: { min_confidence: 0.8, min_consensus: 2, only_auto: true } });
-            toast(`Авто-одобрено: ${r.approved} кандидатов, сцен обновлено: ${r.scenes_updated ?? "?"} ✅`);
-            document.getElementById("adm-load").click();
-          } catch (e) { toast(e.message); }
-        };
         body.querySelectorAll(".tc-open").forEach((b) => (b.onclick = () => {
           const box = b.closest(".tl-item");
           const service = box.querySelector(".tc-service").value;
@@ -1332,13 +1322,15 @@
         }));
         body.querySelectorAll(".tc-approve").forEach((b) => (b.onclick = async () => {
           const box = b.closest(".tl-item");
+          const version = (box.querySelector(".tc-version").value || "").trim();
+          if (!version) { toast("Укажи версию издания перед подтверждением"); return; }
           try {
             await adminApi(`/api/admin/timecodes/${b.dataset.id}/review`, { method: "POST", body: {
               action: "approve",
               service: box.querySelector(".tc-service").value || null,
               timecode_label: box.querySelector(".tc-start").value || null,
               timecode_end_label: box.querySelector(".tc-end").value || null,
-              version_note: box.querySelector(".tc-version").value || null,
+              version_note: version,
               watch_url: box.querySelector(".tc-url").value || null,
               moment_label: box.querySelector(".tc-label").value || null,
             } });

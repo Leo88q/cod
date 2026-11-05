@@ -14,12 +14,12 @@
 ## Как устроены таймкоды (главное)
 
 - Источник: OpenSubtitles/OPUS (ODC-BY) и др. — см. `docs/06-timecode-sources.md`. **Текст реплик не храним**: только факт отрезка времени + sha1 + source/license.
-- Авто-пайплайн `scripts/fetch_timecodes.py`: семантический матчинг по смыслу (RU TF-IDF+стемминг; EN keywords) + **консенсус** нескольких версий субтитров (±10 сек) → `confidence/auto` → `POST /api/admin/timecodes/bulk-approve` авто-ставит `verified=1`; остальное — ручная очередь в `#/admin` с меткой момента нашими словами.
+- Пайплайн `scripts/fetch_timecodes.py`: семантический матчинг по смыслу (RU TF-IDF+стемминг; EN keywords) + **консенсус** нескольких версий субтитров (±10 сек) → только `pending`-кандидаты с `confidence/auto`. `verified=1` ставится исключительно вручную в `#/admin` с обязательным `version_note`; авто-одобрение отключено по умолчанию.
 - Таймкод привязан к версии издания (`service` + `version_note`); в подарке — снапшот навсегда.
 
 ## Инвентарь фичей приложения
 
 - Mini App: каталог+фильтры+семантика+подборки+закладки, создание подарка (текст/голос/фото/тема/отложенное открытие/серии), просмотр открытки (конфетти, таймлайн, ответы, заметки), таймлайн «ваш фильм» + экспорт, важные даты + напоминания + **.ics**, букеты и заказы, кабинет студии, админка (модерация сцен, очередь таймкодов, статистика), оплата (ЮKassa/dev).
-- API: см. README «Основные API» + `GET /api/scenes/meta`, `POST /api/scenes/semantic`, `GET /api/scenes/daily`, `GET /api/scenes/{id}/moments`, `GET /api/lists`, `POST /api/admin/timecodes/bulk-approve`, `GET /api/dates/{tg}/ics`, `GET /api/cards/{code}/preview`, `GET /api/users/me`, `/api/cities`, `/api/shops/{id}/orders(+confirm)`.
+- API: см. README «Основные API» + `GET /api/scenes/meta`, `POST /api/scenes/semantic`, `GET /api/scenes/daily`, `GET /api/scenes/{id}/moments`, `GET /api/lists`, `POST /api/admin/timecodes/{id}/review` (обязателен `version_note`), `POST /api/admin/timecodes/bulk-approve` (отключён по умолчанию), `GET /api/dates/{tg}/ics`, `GET /api/cards/{code}/preview`, `GET /api/users/me`, `/api/cities`, `/api/shops/{id}/orders(+confirm)`.
 - Бот: webhook, deeplink `?startapp=g_{code}`, очередь уведомлений (напоминания о датах, `gift_opened`).
 - Право: 152-ФЗ (согласие при создании, `consents`), только факты title+year+таймкод, легальные плееры, per-record source/license.

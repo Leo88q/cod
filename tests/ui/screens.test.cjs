@@ -114,7 +114,8 @@ test('admin operational view renders failed notifications, audit and timecode qu
     await new Promise(resolve => setTimeout(resolve, 40));
     assert.ok(dom.window.document.querySelector('.notification-retry'));
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /notification_retry/);
-    assert.ok(dom.window.document.querySelector('#tc-bulk'));
+    assert.ok(dom.window.document.querySelector('#tc-bulk').disabled);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Авто-одобрение отключено/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Библиотека таймкодов/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /полный манифест: 62 из 140/);
   } finally { dom.window.close(); }
@@ -170,12 +171,17 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.ok(opened && opened.includes('kinopoisk'));
     doc.querySelector('.tc-start').value = '0:50:20';
     doc.querySelector('.tc-approve').click();
+    await new Promise(resolve => setTimeout(resolve, 20));
+    assert.equal(posted, null, 'без версии издания запрос не должен уходить');
+    doc.querySelector('.tc-version').value = 'театральная, Kinopoisk 2024';
+    doc.querySelector('.tc-approve').click();
     await new Promise(resolve => setTimeout(resolve, 40));
     assert.ok(posted, 'Approve должен отправить POST');
     assert.equal(posted.body.action, 'approve');
     assert.equal(posted.body.timecode_label, '0:50:20');
     assert.equal(posted.body.timecode_end_label, '0:50:56');
     assert.equal(posted.body.service, 'kinopoisk');
+    assert.equal(posted.body.version_note, 'театральная, Kinopoisk 2024');
     assert.equal(posted.body.moment_label, 'момент, где Форрест бежит');
   } finally { dom.window.close(); }
 });
