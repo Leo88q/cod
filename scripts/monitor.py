@@ -18,6 +18,8 @@ def evaluate(metrics, previous_5xx=0, max_pending=200, max_pending_age=3600):
         reasons.append('database_not_ready')
     if metrics.get('worker', {}).get('status') != 'ok':
         reasons.append('worker_unhealthy')
+    if metrics.get('stuck_payment_creations', 0):
+        reasons.append('stuck_payment_creations')
     if metrics.get('failed_notifications', 0):
         reasons.append('dead_letter_notifications')
     pending = metrics.get('pending_notifications', 0)

@@ -50,12 +50,14 @@ def semantic_search(conn, query: str, limit: int = 10) -> list[dict]:
         n = len(ids)
         if n == 0:
             return []
-        if _cache["n"] != n or _cache["mat"] is None:
+        fingerprint = (tuple(ids), tuple(texts))
+        if _cache.get("fingerprint") != fingerprint or _cache["mat"] is None:
             vec = TfidfVectorizer(stop_words=RU_STOPWORDS, ngram_range=(1, 2), min_df=1)
             _cache["mat"] = vec.fit_transform(texts)
             _cache["vec"] = vec
             _cache["ids"] = ids
             _cache["n"] = n
+            _cache["fingerprint"] = fingerprint
         vec = _cache["vec"]
         q = vec.transform([query])
         sims = cosine_similarity(q, _cache["mat"]).flatten()

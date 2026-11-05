@@ -129,6 +129,8 @@ def init_db(db_path: str, with_seed: bool = True) -> None:
     with open(SCHEMA_PATH, encoding="utf-8") as f:
         conn.executescript(f.read())
     _migrate(conn)
+    # Reconcile balances from the actual issued, unused cards, including older databases.
+    conn.execute("UPDATE shops SET card_balance=(SELECT COUNT(*) FROM cards WHERE cards.shop_id=shops.id AND cards.status<>'used')")
     if with_seed:
         if conn.execute("SELECT COUNT(*) AS c FROM scenes").fetchone()["c"] == 0:
             with open(SEED_SCENES_PATH, encoding="utf-8") as f:

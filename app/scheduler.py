@@ -35,11 +35,22 @@ def _remind_dates(conn) -> None:
     rows = conn.execute("SELECT * FROM important_dates").fetchall()
     for r in rows:
         try:
-            mm, dd = r["date"].split("-")
-            d = datetime(int(year), int(mm), int(dd)).date()
-        except ValueError:
+            mm, dd = map(int, r["date"].split("-"))
+            # Find the next occurrence, including leap-day anniversaries.
+            d = None
+            for occurrence_year in range(year, year + 9):
+                try:
+                    candidate = datetime(occurrence_year, mm, dd).date()
+                except ValueError:
+                    continue
+                if candidate >= today:
+                    d = candidate
+                    break
+            if d is None:
+                continue
+        except (ValueError, TypeError):
             continue
-        if r["notify_year"] == year:
+        if r["notify_year"] == d.year:
             continue
         delta = (d - today).days
         if 0 <= delta <= r["remind_days"]:
@@ -51,7 +62,7 @@ def _remind_dates(conn) -> None:
                     f"Пора подумать о подарке — подберём сцену из фильма 🎬",
                     url=f"/app/#/dates", conn=conn,
                 )
-            conn.execute("UPDATE important_dates SET notify_year=? WHERE id=?", (year, r["id"]))
+            conn.execute("UPDATE important_dates SET notify_year=? WHERE id=?", (d.year, r["id"]))
 
 
 async def _send_notifications(bot) -> None:
@@ -94,7 +105,7 @@ def _gift_soon(conn) -> None:
             enqueue_notification(
                 g["giver_tg"], "gift_soon",
                 f"⏳ Завтра откроется ваш подарок для {g['recipient_name']} — сцена из фильма уже ждёт!",
-                url=f"/g/{g['id']}", conn=conn)
+                url=f"/app/#/g/{g['id']}", conn=conn)
         conn.execute("UPDATE gifts SET soon_notified=1 WHERE id=?", (g["id"],))
 
 
@@ -170,6 +181,9 @@ async def run(bot=None) -> None:
     while True:
         try:
             await asyncio.to_thread(tick, bot is not None)
+            if config.YUKASSA_SHOP_ID and config.YUKASSA_SECRET_KEY:
+                from .payments import recover_creating_payments
+                await recover_creating_payments()
             if bot is not None:
                 await _send_notifications(bot)
         except Exception:

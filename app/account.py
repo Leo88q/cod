@@ -31,7 +31,7 @@ def erase_account(request: Request, body: Erasure):
         conn.execute("BEGIN IMMEDIATE")
         if conn.execute("SELECT 1 FROM shops WHERE owner_user_id=?", (uid,)).fetchone():
             raise HTTPException(409, "Сначала передайте студии другому владельцу через поддержку")
-        if conn.execute("SELECT 1 FROM payments WHERE user_id=? AND status='pending'", (uid,)).fetchone():
+        if conn.execute("SELECT 1 FROM payments WHERE user_id=? AND status IN ('pending','creating','verifying_succeeded','verifying_canceled')", (uid,)).fetchone():
             raise HTTPException(409, "Сначала завершите или отмените ожидающие платежи через поддержку")
         owned = "SELECT id FROM gifts WHERE giver_id=?"
         conn.execute(f"DELETE FROM replies WHERE gift_id IN ({owned}) OR respondent_user_id=?", (uid, uid))
