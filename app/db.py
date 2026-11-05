@@ -13,6 +13,8 @@ SEED_BOUQUETS_PATH = os.path.join(BASE_DIR, "db", "seed_bouquets.sql")
 
 # Миграции для уже существующей dev-БД: (таблица, колонка, определение)
 MIGRATIONS = [
+    ("scenes", "imdb_id", "TEXT"),
+    ("scenes", "tmdb_id", "TEXT"),
     ("consents", "policy_version", "TEXT"),
     ("connections", "status", "TEXT NOT NULL DEFAULT 'pending'"),
     ("connections", "requested_by", "INTEGER REFERENCES users(id)"),
@@ -145,6 +147,13 @@ def init_db(db_path: str, with_seed: bool = True) -> None:
         if conn.execute("SELECT COUNT(*) AS c FROM bouquets").fetchone()["c"] == 0:
             with open(SEED_BOUQUETS_PATH, encoding="utf-8") as f:
                 conn.executescript(f.read())
+    # Ранний сид хранил строку '0:00:00' как ЗАГЛУШКУ, а не реальный таймкод.
+    # Не показываем её пользователю и не считаем «с таймкодом»: реальное время появляется
+    # только после одобрения кандидата в админке (timecode_seconds + verified=1).
+    conn.execute(
+        "UPDATE scenes SET timecode_label=NULL, timecode_seconds=NULL "
+        " WHERE timecode_label='0:00:00' AND timecode_seconds IS NULL AND verified=0"
+    )
     conn.commit()
     conn.close()
 

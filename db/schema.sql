@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS scenes (
   id               INTEGER PRIMARY KEY AUTOINCREMENT,
   movie_title      TEXT NOT NULL,
   movie_year       INTEGER,
+  imdb_id          TEXT,                 -- tt0111161 и т.п. — точное сопоставление с библиотеками субтитров
+  tmdb_id          TEXT,                 -- запасной идентификатор для постеров/метаданных
   service          TEXT,                 -- на каком сервисе проверен таймкод: kinopoisk / ivi / okko / youtube
   version_note     TEXT,                 -- версия издания, для которой верен таймкод (иначе он «плывёт»)
   timecode_seconds INTEGER,              -- позиция в секундах

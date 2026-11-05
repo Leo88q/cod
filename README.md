@@ -20,7 +20,7 @@
 - `app/scheduler.py` — отложенные открытия, «сгорание» подарков, напоминания о датах, рассылка уведомлений
 - `app/payments.py` — оплаты (ЮKassa в проде, dev-подтверждение локально): пачки карточек, подписки студий, премиум «ваш фильм»; идемпотентные эффекты
 - `app/security.py` — валидация Telegram initData (HMAC), админ-токен
-- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (19 тестов)
+- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (88 тестов) + `tests/ui/` (Node/jsdom): `npm test` (13 тестов)
 - `Dockerfile` — прод-образ: `docker build -t scena . && docker run -p 8000:8000 -e BOT_TOKEN=... scena`
 - `app/static/landing.html` — лендинг продукта на `/`
 - `scripts/import_scenes.py` / `scripts/export_scenes.py` — импорт/экспорт каталога сцен в CSV (`db/scenes_template.csv` — шаблон)
@@ -59,6 +59,17 @@ BOT_TOKEN=... .venv/bin/python -m app.bot   # бот отдельным проц
 Библиотека таймкодов, автономная (подробнее — `docs/06-timecode-sources.md`): `scripts/fetch_timecodes.py` извлекает кандидатов из субтитров OpenSubtitles/OPUS семантически (RU: TF-IDF по смыслу нашего описания; EN: keyword-группы) + **консенсус** нескольких версий субтитров (±10 сек) → `timecode_candidates` с `confidence/consensus/auto` (только факт таймкода + sha1 + source/license, без текста реплик). `POST /api/admin/timecodes/bulk-approve` авто-одобряет консенсусные (verified=1); остальное — ручная очередь `GET /api/admin/timecodes` + `POST /api/admin/timecodes/{id}/review {action, moment_label}` (метка нашими словами). Клиент выбирает момент: `GET /api/scenes/{id}/moments` + чипы ⏱ в форме создания (`moments` в `POST /api/gifts`); таймкод **фиксируется снапшотом** в `gift_scenes` — открытка неизменна навсегда, `open_at` тоже задаётся один раз.
 
 Каталог сцен как «система находок» (`#/catalog`): `GET /api/scenes/meta` отдаёт категории с подсчётами (поводы, настроения, жанры, эпохи, возраст, всего/проверено); фильтры — повод, настроение, жанр, эпоха, возраст, «✓ только проверенные», «⏱ с таймкодом», «⭐ закладки», сортировка (популярность/год/название), чипы подборок; текстовый запрос — семантический `POST /api/scenes/semantic`; состояние фильтров — в hash URL (шарable ссылка). `POST /api/scenes/search` принимает `genre/era/age/verified_only/has_timecode/sort`.
+
+## Пилотная ручная сверка таймкодов
+
+Большой каталог (146 сцен) исторически был без реальных таймкодов: сиды содержали заглушки `"0:00:00"`, а SRT-образцы не коммитились. Теперь есть рабочий мост к библиотекам субтитров:
+
+```bash
+.venv/bin/python scripts/import_timecode_library.py   # 20 сцен, 38 SRT с GitHub -> candidates, status=pending
+bash scripts/dev.sh                                    # затем #/admin с ADMIN_TOKEN
+```
+
+Подробная инструкция оператора, поля подтверждения и список пилотных фильмов — [docs/13-timecode-verification.md](docs/13-timecode-verification.md). Импорт **не** ставит `verified=1`: таймкод становится официальным только после ручного просмотра момента в легальном плеере.
 
 ## Юридические рамки
 

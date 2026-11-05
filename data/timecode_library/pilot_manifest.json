@@ -1,0 +1,840 @@
+{
+  "comment": "Пилотный набор из 20 сцен каталога: точные GitHub-ссылки на SRT-зеркала OpenSubtitles. Импортёр скачивает файлы в gitignored-кэш, извлекает ТОЛЬКО таймкоды-кандидаты (start/end + sha1 + source/license), не сохраняя текст реплик. Кандидаты остаются status=pending: финальная сверка — вручную в легальном плеере через #/admin.",
+  "generated_by": "scripts/import_timecode_library.py",
+  "license_note": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+  "entries": [
+    {
+      "movie_title": "Forrest Gump",
+      "movie_year": 1994,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Forrest%20Gump.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Forrest%20Gump.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Forrest%20Gump.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Forrest%20Gump.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Форрест Гамп",
+          "keywords": [
+            "run",
+            "running",
+            "chocolates",
+            "box of chocolates",
+            "mama",
+            "feather",
+            "bus stop",
+            "lieutenant dan",
+            "jenny",
+            "shrimp"
+          ],
+          "keywords_ru": [
+            "бежать",
+            "коробка конфет",
+            "мама",
+            "перо",
+            "Дженни",
+            "креветки"
+          ],
+          "moment_label": "момент, где Форрест бежит через страну и вспоминает маму"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Godfather",
+      "movie_year": 1972,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Godfather.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Godfather.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Godfather.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Крёстный отец",
+          "keywords": [
+            "offer",
+            "refuse",
+            "godfather",
+            "family",
+            "horse",
+            "leave the gun",
+            "cannoli",
+            "baptism",
+            "don corleone",
+            "wedding"
+          ],
+          "keywords_ru": [
+            "предложение",
+            "отказ",
+            "семья",
+            "крестный отец",
+            "лошадь",
+            "свадьба"
+          ],
+          "moment_label": "момент, где семья обсуждает предложение, от которого нельзя отказаться"
+        }
+      ]
+    },
+    {
+      "movie_title": "Inception",
+      "movie_year": 2010,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Action/Inception.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Inception.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Action/Inception.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Inception.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Начало",
+          "keywords": [
+            "dream",
+            "kick",
+            "totem",
+            "spinning top",
+            "limbo",
+            "inception",
+            "deeper",
+            "subconscious",
+            "cobb",
+            "mal"
+          ],
+          "keywords_ru": [
+            "сон",
+            "толчок",
+            "волчок",
+            "время",
+            "глубже",
+            "подсознание"
+          ],
+          "moment_label": "момент, где команда погружается в сон внутри сна"
+        }
+      ]
+    },
+    {
+      "movie_title": "Spirited Away",
+      "movie_year": 2001,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/fosskers/subtitles/blob/0511f2fc68839443ec885eda250c0d65ee15b735/Spirited%20Away.en.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Spirited%20Away.srt"
+      ],
+      "sources": [
+        "https://github.com/fosskers/subtitles/blob/0511f2fc68839443ec885eda250c0d65ee15b735/Spirited%20Away.en.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Spirited%20Away.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Унесённые призраками",
+          "keywords": [
+            "spirits",
+            "bathhouse",
+            "parents",
+            "pigs",
+            "dragon",
+            "haku",
+            "no face",
+            "train",
+            "chihiro",
+            "river"
+          ],
+          "keywords_ru": [
+            "духи",
+            "родители",
+            "дракон",
+            "поезд",
+            "Тихиро",
+            "река"
+          ],
+          "moment_label": "момент, где Тихиро впервые попадает в мир духов"
+        }
+      ]
+    },
+    {
+      "movie_title": "Titanic",
+      "movie_year": 1997,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Titanic.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Titanic.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Titanic.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Titanic.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Титаник",
+          "keywords": [
+            "jack",
+            "rose",
+            "ship",
+            "iceberg",
+            "ocean",
+            "flying",
+            "bow",
+            "draw me",
+            "heart",
+            "promise"
+          ],
+          "keywords_ru": [
+            "Джек",
+            "Роза",
+            "корабль",
+            "айсберг",
+            "океан",
+            "лететь",
+            "нос корабля"
+          ],
+          "moment_label": "момент на носу корабля, где Джек и Роза «летят»"
+        }
+      ]
+    },
+    {
+      "movie_title": "Back to the Future",
+      "movie_year": 1985,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Back%20to%20the%20Future.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Back%20to%20the%20Future.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Back%20to%20the%20Future.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Back%20to%20the%20Future.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Назад в будущее",
+          "keywords": [
+            "delorean",
+            "time machine",
+            "flux capacitor",
+            "1985",
+            "1955",
+            "marty",
+            "doc",
+            "clock tower",
+            "lightning",
+            "future"
+          ],
+          "keywords_ru": [
+            "Делоран",
+            "машина времени",
+            "Док",
+            "Марти",
+            "часы",
+            "молния",
+            "будущее"
+          ],
+          "moment_label": "момент, где Делоран впервые отправляется в прошлое"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Lion King",
+      "movie_year": 1994,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/The%20Lion%20King.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Lion%20King%20%281994%29.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/The%20Lion%20King.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Lion%20King%20%281994%29.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Король Лев",
+          "keywords": [
+            "simba",
+            "mufasa",
+            "hakuna matata",
+            "circle of life",
+            "pride rock",
+            "remember",
+            "father",
+            "scar",
+            "pumbaa",
+            "timon"
+          ],
+          "keywords_ru": [
+            "Симба",
+            "Муфаса",
+            "Хакуна Матата",
+            "круг жизни",
+            "отец",
+            "Шрам"
+          ],
+          "moment_label": "момент, где Муфаса говорит Симбе помнить, кто он"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Shawshank Redemption",
+      "movie_year": 1994,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Shawshank%20Redemption.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Shawshank%20Redemption.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Shawshank%20Redemption.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Shawshank%20Redemption.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Побег из Шоушенка",
+          "keywords": [
+            "hope",
+            "freedom",
+            "andy",
+            "red",
+            "prison",
+            "escape",
+            "rain",
+            "library",
+            "brooks",
+            "zihuatanejo"
+          ],
+          "keywords_ru": [
+            "надежда",
+            "свобода",
+            "Энди",
+            "Ред",
+            "тюрьма",
+            "побег",
+            "дождь",
+            "библиотека"
+          ],
+          "moment_label": "момент, где Энди выходит под дождь после побега"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Green Mile",
+      "movie_year": 1999,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Green%20Mile.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Green%20Mile.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Crime/The%20Green%20Mile.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Green%20Mile.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Зелёная миля",
+          "keywords": [
+            "john coffey",
+            "miracle",
+            "mouse",
+            "electric chair",
+            "healing",
+            "death row",
+            "paul",
+            "mr jingles",
+            "gentle",
+            "gift"
+          ],
+          "keywords_ru": [
+            "Джон Коффи",
+            "чудо",
+            "мышь",
+            "исцеление",
+            "электрический стул",
+            "мистер Джинглс"
+          ],
+          "moment_label": "момент, где Джон Коффи исцеляет и говорит о боли мира"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Matrix",
+      "movie_year": 1999,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Action/The%20Matrix.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Matrix.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Action/The%20Matrix.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Matrix.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Матрица",
+          "keywords": [
+            "neo",
+            "morpheus",
+            "red pill",
+            "blue pill",
+            "wake up",
+            "matrix",
+            "rabbit hole",
+            "choice",
+            "trinity",
+            "agents"
+          ],
+          "keywords_ru": [
+            "Нео",
+            "Морфеус",
+            "красная таблетка",
+            "синяя таблетка",
+            "выбор",
+            "проснись",
+            "кроличья нора"
+          ],
+          "moment_label": "момент, где Нео выбирает красную таблетку"
+        }
+      ]
+    },
+    {
+      "movie_title": "When Harry Met Sally",
+      "movie_year": 1989,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/When%20Harry%20Met%20Sally....srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/When%20Harry%20Met%20Sally....srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/When%20Harry%20Met%20Sally....srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/When%20Harry%20Met%20Sally....srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Когда Гарри встретил Салли",
+          "keywords": [
+            "orgasm",
+            "deli",
+            "katz",
+            "new year",
+            "love",
+            "friendship",
+            "harry",
+            "sally",
+            "restaurant",
+            "coffee"
+          ],
+          "keywords_ru": [
+            "Гарри",
+            "Салли",
+            "кафе",
+            "Новый год",
+            "дружба",
+            "любовь",
+            "ресторан"
+          ],
+          "moment_label": "момент в кафе, где Салли доказывает, что умеет притворяться"
+        }
+      ]
+    },
+    {
+      "movie_title": "Amelie",
+      "movie_year": 2001,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Amelie.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Amelie%20.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Amelie.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Amelie%20.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Амели",
+          "keywords": [
+            "amelie",
+            "montmartre",
+            "cafe",
+            "photobooth",
+            "gnome",
+            "kindness",
+            "lonely",
+            "love",
+            "nino",
+            "water"
+          ],
+          "keywords_ru": [
+            "Амели",
+            "Монмартр",
+            "кафе",
+            "гном",
+            "доброта",
+            "одиночество",
+            "Нино"
+          ],
+          "moment_label": "момент, где Амели решает тайно помогать людям"
+        }
+      ]
+    },
+    {
+      "movie_title": "Notting Hill",
+      "movie_year": 1999,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Notting%20Hill.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/Subtitles/Romance/Notting%20Hill%20%28IMPAIRED%29.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Notting%20Hill.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/Subtitles/Romance/Notting%20Hill%20%28IMPAIRED%29.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Ноттинг Хилл",
+          "keywords": [
+            "bookshop",
+            "william",
+            "anna",
+            "famous",
+            "actress",
+            "love",
+            "press",
+            "door",
+            "travel",
+            "just a girl"
+          ],
+          "keywords_ru": [
+            "книжный магазин",
+            "Уильям",
+            "Анна",
+            "актриса",
+            "любовь",
+            "я просто девушка",
+            "пресса"
+          ],
+          "moment_label": "момент, где Анна говорит, что она просто девушка перед парнем"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Notebook",
+      "movie_year": 2004,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Notebook.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Notebook%20.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Notebook.srt",
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Notebook%20.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Дневник памяти",
+          "keywords": [
+            "noah",
+            "allie",
+            "rain",
+            "kiss",
+            "letter",
+            "house",
+            "memory",
+            "love",
+            "ferris wheel",
+            "promise"
+          ],
+          "keywords_ru": [
+            "Ной",
+            "Элли",
+            "дождь",
+            "поцелуй",
+            "письмо",
+            "дом",
+            "память",
+            "колесо обозрения"
+          ],
+          "moment_label": "момент под дождём, где Ной и Элли снова вместе"
+        }
+      ]
+    },
+    {
+      "movie_title": "Dirty Dancing",
+      "movie_year": 1987,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Dirty%20Dancing.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Dirty%20Dancing.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Грязные танцы",
+          "keywords": [
+            "baby",
+            "johnny",
+            "lift",
+            "watermelon",
+            "dance",
+            "summer",
+            "kellerman",
+            "nobody puts baby",
+            "corner",
+            "music"
+          ],
+          "keywords_ru": [
+            "Бэби",
+            "Джонни",
+            "танец",
+            "подъём",
+            "лето",
+            "арбуз",
+            "угол"
+          ],
+          "moment_label": "момент финального танца с подъёмом"
+        }
+      ]
+    },
+    {
+      "movie_title": "Psycho",
+      "movie_year": 1960,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/Psycho.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/Psycho.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Психо",
+          "keywords": [
+            "marion",
+            "shower",
+            "bates",
+            "motel",
+            "mother",
+            "knife",
+            "curtain",
+            "room",
+            "norman",
+            "crime"
+          ],
+          "keywords_ru": [
+            "Мэрион",
+            "душ",
+            "Бейтс",
+            "мотель",
+            "мама",
+            "нож",
+            "занавеска"
+          ],
+          "moment_label": "момент в душе у мотеля Бейтса"
+        }
+      ]
+    },
+    {
+      "movie_title": "The Shining",
+      "movie_year": 1980,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/The%20Shining.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Shining.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Horror/The%20Shining.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/The%20Shining.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Сияние",
+          "keywords": [
+            "jack",
+            "overlook",
+            "typewriter",
+            "redrum",
+            "twins",
+            "maze",
+            "snow",
+            "wendy",
+            "hotel",
+            "heres johnny"
+          ],
+          "keywords_ru": [
+            "Джек",
+            "Оверлук",
+            "редрум",
+            "близнецы",
+            "лабиринт",
+            "снег",
+            "гостиница"
+          ],
+          "moment_label": "момент, где Джек ломает дверь в ванной"
+        }
+      ]
+    },
+    {
+      "movie_title": "Home Alone",
+      "movie_year": 1990,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Home%20Alone.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Home%20Alone.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Home%20Alone.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Home%20Alone.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Один дома",
+          "keywords": [
+            "kevin",
+            "family",
+            "christmas",
+            "burglars",
+            "booby traps",
+            "house",
+            "alone",
+            "paint cans",
+            "tarantula",
+            "scream"
+          ],
+          "keywords_ru": [
+            "Кевин",
+            "Рождество",
+            "грабители",
+            "ловушки",
+            "дом",
+            "один",
+            "банки с краской"
+          ],
+          "moment_label": "момент, где Кевин ставит ловушки грабителям"
+        }
+      ]
+    },
+    {
+      "movie_title": "Toy Story",
+      "movie_year": 1995,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Toy%20Story.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Toy%20Story.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Toy%20Story.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Toy%20Story.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "История игрушек",
+          "keywords": [
+            "woody",
+            "buzz",
+            "andy",
+            "toys",
+            "space ranger",
+            "falling with style",
+            "friendship",
+            "moving",
+            "sid",
+            "rocket"
+          ],
+          "keywords_ru": [
+            "Вуди",
+            "Базз",
+            "Энди",
+            "игрушки",
+            "дружба",
+            "падение со стилем",
+            "ракета"
+          ],
+          "moment_label": "момент, где Базз впервые «летает», а Вуди ревнует"
+        }
+      ]
+    },
+    {
+      "movie_title": "Ratatouille",
+      "movie_year": 2007,
+      "lang": "en",
+      "service": "kinopoisk",
+      "source_license": "OpenSubtitles community subtitles via GitHub mirror; only timecodes + sha1 are stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
+      "file": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Ratatouille.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Ratatouille.srt"
+      ],
+      "sources": [
+        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Ratatouille.srt",
+        "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/Ratatouille.srt"
+      ],
+      "scenes": [
+        {
+          "match_title": "Рататуй",
+          "keywords": [
+            "remy",
+            "rat",
+            "cooking",
+            "kitchen",
+            "linguini",
+            "food",
+            "ratatouille",
+            "anton ego",
+            "flavour",
+            "chef"
+          ],
+          "keywords_ru": [
+            "Реми",
+            "крыса",
+            "кухня",
+            "Лингвини",
+            "еда",
+            "вкус",
+            "шеф",
+            "Антон Эго"
+          ],
+          "moment_label": "момент, где Антон Эго пробует рататуй и вспоминает детство"
+        }
+      ]
+    }
+  ]
+}

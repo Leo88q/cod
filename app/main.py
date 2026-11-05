@@ -122,10 +122,10 @@ def gift_deeplink(code: str) -> str:
 
 
 def public_scene(conn, scene_id: int, full: bool = False) -> Optional[dict]:
-    cols = ("id, movie_title, movie_year, service, version_note, timecode_label, timecode_seconds,"
+    cols = ("id, movie_title, movie_year, imdb_id, tmdb_id, service, version_note, timecode_label, timecode_seconds,"
             " timecode_end_label, timecode_end_seconds, watch_url, poster_url, genre, era, age_rating,"
             " mood_tags, occasion_tags, description, why_fits, verified") if full else (
-        "id, movie_title, movie_year, service, version_note, timecode_label, timecode_seconds,"
+        "id, movie_title, movie_year, imdb_id, tmdb_id, service, version_note, timecode_label, timecode_seconds,"
         " timecode_end_label, timecode_end_seconds, watch_url, poster_url, genre, era, age_rating,"
         " mood_tags, occasion_tags, description, why_fits")
     row = conn.execute(
@@ -158,6 +158,8 @@ class SceneSearch(BaseModel):
 class SceneSuggest(BaseModel):
     movie_title: str
     movie_year: Optional[int] = None
+    imdb_id: Optional[str] = None
+    tmdb_id: Optional[str] = None
     service: Optional[str] = None
     timecode_label: Optional[str] = None
     occasion_tags: list[str] = Field(default_factory=list)
@@ -484,7 +486,7 @@ def search_scenes(body: SceneSearch):
             continue
         if body.verified_only and not d.get("verified"):
             continue
-        if body.has_timecode and not d.get("timecode_label"):
+        if body.has_timecode and not (d.get("timecode_seconds") is not None and d.get("timecode_label")):
             continue
         if q:
             hay = (d["movie_title"] + " " + d["description"] + " " + (d["why_fits"] or "") + " " +
@@ -493,8 +495,10 @@ def search_scenes(body: SceneSearch):
                 continue
         out.append({
             "id": d["id"], "movie_title": d["movie_title"], "movie_year": d["movie_year"],
+            "imdb_id": d.get("imdb_id"), "tmdb_id": d.get("tmdb_id"),
             "popularity": d["popularity"],
-            "timecode_label": d["timecode_label"], "timecode_end_label": d.get("timecode_end_label"),
+            "timecode_label": d["timecode_label"], "timecode_seconds": d.get("timecode_seconds"),
+            "timecode_end_label": d.get("timecode_end_label"),
             "service": d["service"], "verified": d.get("verified", 0),
             "watch_url": d.get("watch_url"), "poster_url": d.get("poster_url"),
             "genre": d["genre"], "era": d["era"], "age_rating": d["age_rating"],
@@ -519,7 +523,7 @@ def scenes_meta():
     import json as _json
     from collections import Counter
     conn = connect(config.DB_PATH)
-    rows = conn.execute("SELECT genre, era, age_rating, verified, timecode_label, mood_tags, occasion_tags"
+    rows = conn.execute("SELECT genre, era, age_rating, verified, timecode_seconds, timecode_label, mood_tags, occasion_tags"
                         " FROM scenes WHERE status='approved'").fetchall()
     conn.close()
     genres, eras, ages, occ, mood = Counter(), Counter(), Counter(), Counter(), Counter()
@@ -533,7 +537,8 @@ def scenes_meta():
             ages[r["age_rating"]] += 1
         if r["verified"]:
             verified += 1
-        if r["timecode_label"]:
+        # Считаем только РЕАЛЬНЫЕ таймкоды: раньше здесь лежали строки-заглушки '0:00:00'.
+        if r["timecode_seconds"] is not None and r["timecode_label"]:
             with_tc += 1
         for t in _json.loads(r["mood_tags"] or "[]"):
             mood[t] += 1
@@ -572,7 +577,9 @@ def scenes_semantic(body: SemanticSearch):
             continue
         out.append({
             "id": d["id"], "movie_title": d["movie_title"], "movie_year": d["movie_year"],
-            "timecode_label": d["timecode_label"], "timecode_end_label": d.get("timecode_end_label"),
+            "imdb_id": d.get("imdb_id"), "tmdb_id": d.get("tmdb_id"),
+            "timecode_label": d["timecode_label"], "timecode_seconds": d.get("timecode_seconds"),
+            "timecode_end_label": d.get("timecode_end_label"),
             "service": d["service"], "verified": d.get("verified", 0),
             "genre": d["genre"], "era": d["era"], "age_rating": d["age_rating"],
             "mood_tags": d["mood_tags"], "occasion_tags": d["occasion_tags"],
@@ -644,9 +651,9 @@ def suggest_scene(request: Request, body: SceneSuggest):
     user = request_user(request, body.telegram_id)
     conn = connect(config.DB_PATH)
     cur = conn.execute(
-        "INSERT INTO scenes (movie_title, movie_year, service, timecode_label, occasion_tags, mood_tags,"
-        " description, source, status, suggested_by) VALUES (?,?,?,?,?,?,?, 'user_suggestion', 'draft', ?)",
-        (body.movie_title, body.movie_year, body.service, body.timecode_label,
+        "INSERT INTO scenes (movie_title, movie_year, imdb_id, tmdb_id, service, timecode_label, occasion_tags, mood_tags,"
+        " description, source, status, suggested_by) VALUES (?,?,?,?,?,?,?,?,?, 'user_suggestion', 'draft', ?)",
+        (body.movie_title, body.movie_year, body.imdb_id, body.tmdb_id, body.service, body.timecode_label,
          json.dumps(body.occasion_tags, ensure_ascii=False),
          json.dumps(body.mood_tags, ensure_ascii=False),
          body.description, user["id"] if user else None),
@@ -1743,6 +1750,8 @@ def admin_overview(request: Request):
 class SceneVerify(BaseModel):
     service: Optional[str] = None        # kinopoisk / ivi / okko / youtube
     version_note: Optional[str] = None   # версия издания, для которой верен таймкод
+    imdb_id: Optional[str] = None
+    tmdb_id: Optional[str] = None
     timecode_label: Optional[str] = None
     timecode_seconds: Optional[int] = None
     timecode_end_label: Optional[str] = None   # конец отрезка сцены
@@ -1766,11 +1775,22 @@ def admin_timecodes(request: Request, status: str = "pending"):
     require_admin(request)
     conn = connect(config.DB_PATH)
     rows = conn.execute(
-        "SELECT tc.*, s.movie_title, s.movie_year, s.genre, s.description, s.why_fits"
+        "SELECT tc.*, s.movie_title, s.movie_year, s.genre, s.description, s.why_fits, s.imdb_id"
         " FROM timecode_candidates tc JOIN scenes s ON s.id=tc.scene_id"
         " WHERE tc.status=? ORDER BY tc.created_at", (status,)).fetchall()
     conn.close()
-    return {"candidates": [dict(r) for r in rows]}
+    out = []
+    for r in rows:
+        d = dict(r)
+        # Кнопки поиска в легальных плеерах — чтобы оператору не набирать название вручную.
+        d["watch_links"] = watch_links({
+            "movie_title": d.get("movie_title"),
+            "movie_year": d.get("movie_year"),
+            "service": d.get("service"),
+            "watch_url": None,
+        })
+        out.append(d)
+    return {"candidates": out}
 
 
 class BulkApprove(BaseModel):
@@ -1790,28 +1810,38 @@ def admin_timecodes_bulk_approve(request: Request, body: BulkApprove):
     args = [body.min_consensus, body.min_confidence]
     if body.only_auto:
         sql += " AND auto=1"
-    rows = conn.execute(sql, args).fetchall()
-    n = 0
+    rows = conn.execute(sql + " ORDER BY confidence DESC, id ASC", args).fetchall()
+    # У одной сцены может быть несколько консенсусных кандидатов. Раньше последний
+    # перезаписывал основной таймкод сцены; теперь берём лучший и не трогаем уже
+    # вручную проверенные сцены (verified=1).
+    best_by_scene = {}
     for c in rows:
+        best_by_scene.setdefault(c["scene_id"], c)
+    updated_scenes = 0
+    for scene_id, c in best_by_scene.items():
+        already = conn.execute("SELECT verified FROM scenes WHERE id=?", (scene_id,)).fetchone()
+        if already and already["verified"]:
+            continue
+        updated_scenes += 1
         conn.execute(
             "UPDATE scenes SET timecode_label=?, timecode_seconds=?, timecode_end_label=?, timecode_end_seconds=?,"
             " service=?, verified=1, version_note=? WHERE id=?",
             (c["timecode_label"], c["timecode_seconds"], c["timecode_end_label"], c["timecode_end_seconds"],
              c["service"],
-             f"auto-consensus({c['consensus']} версии субтитров), {c['source']}", c["scene_id"]))
+             f"auto-consensus({c['consensus']} версии субтитров), {c['source']}", scene_id))
+    for c in rows:
         conn.execute("UPDATE timecode_candidates SET status='approved', reviewed_at=?, reviewed_by='auto-consensus' WHERE id=?",
                      (now_iso(), c["id"]))
-        n += 1
     conn.commit()
     conn.close()
-    return {"ok": True, "approved": n}
+    return {"ok": True, "approved": len(rows), "scenes_updated": updated_scenes}
 
 
 @app.get("/api/scenes/{scene_id}/moments")
 def scene_moments(scene_id: int):
     """Одобренные моменты (таймкоды) сцены — клиент выбирает, какой момент дарить."""
     conn = connect(config.DB_PATH)
-    s = conn.execute("SELECT id, movie_title, movie_year, timecode_label, timecode_end_label, verified FROM scenes WHERE id=?",
+    s = conn.execute("SELECT id, movie_title, movie_year, timecode_label, timecode_seconds, timecode_end_label, verified FROM scenes WHERE id=?",
                      (scene_id,)).fetchone()
     if not s or s["id"] is None:
         conn.close()
@@ -1823,7 +1853,10 @@ def scene_moments(scene_id: int):
         (scene_id,)).fetchall()
     conn.close()
     moments = [dict(c) for c in cands]
-    if s["timecode_label"] and not any(m["timecode_label"] == s["timecode_label"] for m in moments):
+    # Заглушку '0:00:00' без timecode_seconds не превращаем в «момент для выбора».
+    real_primary = bool(s["timecode_label"] and s["timecode_label"] != "0:00:00" and
+                        (s["verified"] or s["timecode_seconds"] is not None))
+    if real_primary and not any(m["timecode_label"] == s["timecode_label"] for m in moments):
         moments.insert(0, {"id": 0, "timecode_label": s["timecode_label"],
                            "timecode_end_label": s["timecode_end_label"],
                            "timecode_seconds": None, "timecode_end_seconds": None,
@@ -1898,10 +1931,12 @@ def admin_verify_scene(request: Request, scene_id: int, body: SceneVerify):
         raise HTTPException(404, "Сцена не найдена")
     conn.execute(
         "UPDATE scenes SET service=COALESCE(?, service), version_note=COALESCE(?, version_note),"
+        " imdb_id=COALESCE(?, imdb_id), tmdb_id=COALESCE(?, tmdb_id),"
         " timecode_label=COALESCE(?, timecode_label), timecode_seconds=COALESCE(?, timecode_seconds),"
         " timecode_end_label=COALESCE(?, timecode_end_label), timecode_end_seconds=COALESCE(?, timecode_end_seconds),"
         " watch_url=COALESCE(?, watch_url), verified=1, verified_at=?, status='approved' WHERE id=?",
-        (body.service, body.version_note, body.timecode_label, body.timecode_seconds,
+        (body.service, body.version_note, body.imdb_id, body.tmdb_id,
+         body.timecode_label, body.timecode_seconds,
          body.timecode_end_label, body.timecode_end_seconds, body.watch_url, now_iso(), scene_id),
     )
     conn.commit()

@@ -4,7 +4,7 @@
     .venv/bin/python scripts/import_scenes.py db/scenes_template.csv
 
 Колонки CSV (см. db/scenes_template.csv):
-    movie_title,movie_year,service,timecode_label,timecode_seconds,genre,era,age_rating,
+    movie_title,movie_year,imdb_id,tmdb_id,service,timecode_label,timecode_seconds,genre,era,age_rating,
     mood_tags,occasion_tags,description,why_fits,status
 Теги — через точку с запятой ("романтика; юмор"). status по умолчанию draft (на модерацию).
 Описание — только наш пересказ, без дословных реплик (авторское право).
@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app import config  # noqa: E402
 from app.db import connect, init_db  # noqa: E402
 
-FIELDS = ["movie_title", "movie_year", "service", "timecode_label", "timecode_seconds",
+FIELDS = ["movie_title", "movie_year", "imdb_id", "tmdb_id", "service", "timecode_label", "timecode_seconds",
           "genre", "era", "age_rating", "mood_tags", "occasion_tags", "description",
           "why_fits", "status"]
 
@@ -38,12 +38,14 @@ def import_scenes(csv_path: str, db_path: str | None = None) -> int:
             if not (row.get("movie_title") or "").strip():
                 continue
             conn.execute(
-                "INSERT INTO scenes (movie_title, movie_year, service, timecode_label,"
+                "INSERT INTO scenes (movie_title, movie_year, imdb_id, tmdb_id, service, timecode_label,"
                 " timecode_seconds, genre, era, age_rating, mood_tags, occasion_tags, description,"
-                " why_fits, source, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, 'import_csv', ?)",
+                " why_fits, source, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'import_csv', ?)",
                 (
                     row["movie_title"].strip(),
                     int(row["movie_year"]) if (row.get("movie_year") or "").strip() else None,
+                    (row.get("imdb_id") or "").strip() or None,
+                    (row.get("tmdb_id") or "").strip() or None,
                     (row.get("service") or "").strip() or None,
                     (row.get("timecode_label") or "").strip() or None,
                     int(row["timecode_seconds"]) if (row.get("timecode_seconds") or "").strip() else None,

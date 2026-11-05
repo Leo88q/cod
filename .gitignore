@@ -5,6 +5,7 @@ media/
 __pycache__/
 *.pyc
 data/subtitles_samples/*.srt
+data/timecode_library/cache/
 backups/
 storage/
 *.db-shm

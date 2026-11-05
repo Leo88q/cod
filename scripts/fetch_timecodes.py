@@ -227,7 +227,8 @@ def main():
                 else:
                     cands = keyword_moments(fblocks, sc.get("keywords", []), lang="en")
                 for c in cands:
-                    per_file.append({"file": fpath, "source": src, "scene": row, "cand": c})
+                    per_file.append({"file": fpath, "source": src, "scene": row, "cand": c,
+                                     "moment_label": sc.get("moment_label")})
         # группируем по сцене и считаем консенсус
         by_scene = {}
         for e in per_file:
@@ -243,16 +244,19 @@ def main():
                     print(f"   [dry] «{scene['movie_title']}» ⏱ {label}–{fmt_tc(m['end'])} score={m['score']:.3f} "
                           f"consensus={m['consensus']} confidence={m['confidence']:.3f} auto={auto}")
                 else:
+                    # moment_label — наша короткая метка момента СВОИМИ словами (из манифеста),
+                    # а не текст субтитров. Админ может уточнить её при ручной сверке.
+                    moment_label = (entries[0].get("moment_label") or "").strip() or None
                     conn.execute(
                         "INSERT OR IGNORE INTO timecode_candidates"
                         " (scene_id, service, timecode_label, timecode_seconds, timecode_end_label,"
                         "  timecode_end_seconds, source, source_license,"
-                        "  evidence_sha1, line_index, match_score, confidence, consensus, auto, status, created_at)"
-                        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
+                        "  evidence_sha1, line_index, match_score, moment_label, confidence, consensus, auto, status, created_at)"
+                        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
                         (scene_id, entry.get("service", "opensubtitles"), label, int(round(m["start"])),
                          fmt_tc(m["end"]), int(round(m["end"])),
                          m["source"], entry["source_license"], sha, m["line"], round(m["score"], 4),
-                         m["confidence"], m["consensus"], auto, now))
+                         moment_label, m["confidence"], m["consensus"], auto, now))
                 total += 1
     if not args.dry_run:
         conn.commit()

@@ -360,7 +360,8 @@ def test_timecode_importer_and_review(client, tmp_path):
         "file": str(srt), "movie_title": "The Godfather", "movie_year": 1972,
         "service": "opensubtitles", "source": "https://example.com/demo.srt",
         "source_license": "test-license",
-        "scenes": [{"match_title": "Крёстный отец", "keywords": ["truth", "dreams"]}],
+        "scenes": [{"match_title": "Крёстный отец", "keywords": ["truth", "dreams"],
+                    "moment_label": "момент, где говорят правду"}],
     }]}
     mpath = tmp_path / "manifest.json"
     mpath.write_text(json.dumps(manifest), encoding="utf-8")
@@ -374,6 +375,7 @@ def test_timecode_importer_and_review(client, tmp_path):
     conn.close()
     assert cands, "кандидаты должны появиться"
     assert all(len(c["evidence_sha1"]) == 40 for c in cands)  # sha1, а не текст
+    assert all(c["moment_label"] == "момент, где говорят правду" for c in cands)
     # текст субтитров нигде не лежит в БД
     blob = "\n".join(str(v) for c in cands for v in dict(c).values())
     assert "cannot handle the truth" not in blob
@@ -455,9 +457,14 @@ def test_gift_timecode_snapshot_is_fixed(client):
     НЕ меняет уже созданный подарок."""
     from app.db import connect
     from app import config
-    # сцена с таймкодом
+    # Раньше в сидах лежала заглушка '0:00:00'; теперь реальный таймкод появляется
+    # только после проверки. Ставим его сами, чтобы проверить снапшот открытки.
+    conn = connect(config.DB_PATH)
+    conn.execute("UPDATE scenes SET timecode_label='0:10:00', timecode_seconds=600, verified=1 WHERE id=12")
+    conn.commit()
+    conn.close()
     r = client.post("/api/scenes/search", json={"has_timecode": True, "limit": 5})
-    sc = r.json()["scenes"][0]
+    sc = next(s for s in r.json()["scenes"] if s["id"] == 12)
     sid, tc = sc["id"], sc["timecode_label"]
     gid = _create_gift(client, scene_ids=[sid])
     r = client.get(f"/api/gifts/{gid}")

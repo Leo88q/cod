@@ -47,6 +47,14 @@
     else window.open(parsed.href, "_blank", "noopener,noreferrer");
   };
 
+  // Поиск фильма в легальном плеере для ручной сверки таймкода.
+  const PLAYER_SEARCH = {
+    kinopoisk: q => `https://www.kinopoisk.ru/index.php?kp_query=${encodeURIComponent(q)}`,
+    ivi: q => `https://www.ivi.ru/search/?q=${encodeURIComponent(q)}`,
+    okko: q => `https://okko.tv/search?query=${encodeURIComponent(q)}`,
+    youtube: q => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,
+  };
+
   // ---------- состояние ----------
   const state = { selected: new Set(), bookmarks: new Set(), gift: null, replyScene: null, replyMode: "message", moments: {} };
 
@@ -107,8 +115,15 @@
     (b.onclick = () => { location.hash = "#" + b.dataset.nav; }));
 
   // ---------- общие блоки ----------
+  function hasRealTimecode(s) {
+    // Раньше в сидах лежала строка-заглушка '0:00:00' без секунд — это НЕ таймкод.
+    if (!s || !s.timecode_label) return false;
+    if (s.timecode_label === "0:00:00" && s.timecode_seconds == null && !s.verified) return false;
+    return true;
+  }
   function tcRange(s) {
-    return s.timecode_end_label ? `${s.timecode_label}–${s.timecode_end_label}` : (s.timecode_label || "—");
+    if (!hasRealTimecode(s)) return "—";
+    return s.timecode_end_label ? `${s.timecode_label}–${s.timecode_end_label}` : s.timecode_label;
   }
 
   function sceneCard(s, { selectable } = {}) {
@@ -444,7 +459,9 @@
             `<button class="btn ${wi === 0 ? "primary" : "ghost"} small watch-btn" data-url="${esc(w.url)}">▶ ${esc(w.service)}</button>`).join("")}
           <button class="btn ghost small copy-tc" data-tc="${esc(tcRange(s))}">⏱ скопировать</button>
         </div>
-        <p class="muted" style="margin-top:8px">Если таймкод не совпал — перемотай на ${esc(tcRange(s))} вручную.</p>
+        ${hasRealTimecode(s)
+          ? `<p class="muted" style="margin-top:8px">Если таймкод не совпал — перемотай на ${esc(tcRange(s))} вручную.</p>`
+          : `<p class="muted" style="margin-top:8px">Таймкод ещё не проверен модератором — момент уточняется.</p>`}
       </div>`).join("");
     app.innerHTML = `
       <section class="view theme-${esc(g.theme || "cinema")}">
@@ -1223,18 +1240,37 @@
           </div>
           <div class="panel"><h3>📥 Таймкоды из библиотек субтитров (ожидают проверки: ${tcs.candidates.length})</h3>
             <div class="row" style="margin-bottom:8px">
-              <button id="tc-bulk" class="btn ok small">⚡ Одобрить все авто-консенсусные</button>
-              <span class="muted">несколько версий субтитров сошлись на одном моменте → verified=1 автоматически</span>
+              <button id="tc-bulk" class="btn ghost small">⚡ Одобрить авто-консенсусные БЕЗ ручной проверки</button>
+              <span class="muted">обычно не нажимай: сначала открой момент в плеере и подтверди вручную</span>
             </div>
-            <p class="muted">Источник: OpenSubtitles/OPUS и др. (время + sha1, без текста). Проверь в легальном плеере по файлу-источнику, затем Approve — таймкод станет официальным (verified=1).</p>
-            ${tcs.candidates.map((c) => `<div class="tl-item" style="margin-top:6px">
-              <b>${esc(c.movie_title)}</b> (${c.movie_year}) · предлагается ⏱ <b>${esc(c.timecode_label)}</b> · сервис: ${esc(c.service)}<br>
-              <span class="muted">источник: ${esc((c.source || "").slice(0, 80))} · лицензия: ${esc((c.source_license || "").slice(0, 50))} · строка #${c.line_index ?? "?"} · консенсус: ${c.consensus ?? 1} · confidence: ${c.confidence ?? 0}${c.auto ? " · ⚡auto" : ""}</span>
-              <div class="row" style="margin-top:6px">
-                <input class="search-input tc-label" style="max-width:220px" placeholder="метка момента (нашими словами, напр. «момент извинения»)" value="${esc(c.moment_label || "")}">
-                <button class="btn ok small tc-approve" data-id="${c.id}">✓ Approve</button>
-                <button class="btn ghost small tc-reject" data-id="${c.id}">✗ Reject</button>
-              </div></div>`).join("") || '<p class="muted">Очередь пуста ✅</p>'}
+            <p class="muted">Кандидаты получены из SRT-зеркал OpenSubtitles на GitHub: сохранены только время, sha1, источник и лицензия — текста реплик нет. Открой фильм в легальном плеере, найди описанный ниже момент, при необходимости поправь начало/конец и нажми «✓ Подтвердить». Только после этого сцена получит verified=1.</p>
+            ${tcs.candidates.map((c) => {
+              const range = c.timecode_end_label ? `${c.timecode_label}–${c.timecode_end_label}` : (c.timecode_label || "—");
+              const src = c.source || "";
+              return `<div class="tl-item" style="margin-top:8px" data-title="${esc(c.movie_title)}" data-year="${esc(c.movie_year ?? "")}">
+                <b>${esc(c.movie_title)}</b> (${esc(c.movie_year ?? "?")})${c.imdb_id ? ` · IMDb ${esc(c.imdb_id)}` : ""} · предлагается ⏱ <b>${esc(range)}</b><br>
+                <span class="muted">Наш момент: ${esc(c.description || "—")}${c.why_fits ? ` — ${esc(c.why_fits)}` : ""}</span><br>
+                <span class="muted">Метка: ${esc(c.moment_label || "без метки")} · строка #${c.line_index ?? "?"} · консенсус: ${c.consensus ?? 1} · confidence: ${c.confidence ?? 0}${c.auto ? " · ⚡auto" : ""}</span><br>
+                <span class="muted">Источник: <a href="${esc(src || "#")}" target="_blank" rel="noopener noreferrer">${esc(src.slice(0, 90) || "—")}</a> · лицензия: ${esc((c.source_license || "").slice(0, 90))}</span>
+                <div class="row" style="margin-top:6px">
+                  <select class="search-input tc-service" style="max-width:110px">
+                    ${["kinopoisk", "ivi", "okko", "youtube"].map((x) => `<option ${x === (c.service || "kinopoisk") ? "selected" : ""}>${x}</option>`).join("")}
+                  </select>
+                  <button class="btn ghost small tc-open">🔍 Найти фильм в плеере</button>
+                  <button class="btn ghost small tc-copy" data-tc="${esc(range)}">⏱ Копировать время</button>
+                </div>
+                <div class="row" style="margin-top:6px">
+                  <input class="search-input tc-start" style="max-width:95px" placeholder="начало 1:23:45" value="${esc(c.timecode_label || "")}">
+                  <input class="search-input tc-end" style="max-width:95px" placeholder="конец 1:24:10" value="${esc(c.timecode_end_label || "")}">
+                  <input class="search-input tc-version" style="max-width:140px" placeholder="версия издания" value="">
+                  <input class="search-input tc-url" placeholder="watch_url (deep link, если есть)" value="">
+                </div>
+                <div class="row" style="margin-top:6px">
+                  <input class="search-input tc-label" style="max-width:280px" placeholder="метка момента НАШИМИ словами" value="${esc(c.moment_label || "")}">
+                  <button class="btn ok small tc-approve" data-id="${c.id}">✓ Подтвердить</button>
+                  <button class="btn ghost small tc-reject" data-id="${c.id}">✗ Отклонить</button>
+                </div></div>`;
+            }).join("") || '<p class="muted">Очередь пуста ✅</p>'}
           </div>`;
         body.querySelectorAll('.notification-retry').forEach(button => button.onclick = async () => {
           if (!window.confirm('Вернуть уведомление в очередь? Сначала устраните причину ошибки. Если Telegram уже принял сообщение до сбоя, возможен дубль.')) return;
@@ -1262,14 +1298,39 @@
         }));
         const bulk = document.getElementById("tc-bulk");
         if (bulk) bulk.onclick = async () => {
-          const r = await adminApi("/api/admin/timecodes/bulk-approve", { method: "POST",
-            body: { min_confidence: 0.8, min_consensus: 2, only_auto: true } });
-          toast(`Авто-одобрено: ${r.approved} таймкодов ✅`);
-          document.getElementById("adm-load").click();
+          if (!window.confirm("Одобрить консенсусные кандидаты БЕЗ ручной проверки в плеере? Рекомендуется сначала проверить каждый момент вручную.")) return;
+          try {
+            const r = await adminApi("/api/admin/timecodes/bulk-approve", { method: "POST",
+              body: { min_confidence: 0.8, min_consensus: 2, only_auto: true } });
+            toast(`Авто-одобрено: ${r.approved} кандидатов, сцен обновлено: ${r.scenes_updated ?? "?"} ✅`);
+            document.getElementById("adm-load").click();
+          } catch (e) { toast(e.message); }
         };
+        body.querySelectorAll(".tc-open").forEach((b) => (b.onclick = () => {
+          const box = b.closest(".tl-item");
+          const service = box.querySelector(".tc-service").value;
+          const q = `${box.dataset.title || ""} ${box.dataset.year || ""}`.trim();
+          const make = PLAYER_SEARCH[service] || PLAYER_SEARCH.kinopoisk;
+          openLink(make(q));
+        }));
+        body.querySelectorAll(".tc-copy").forEach((b) => (b.onclick = async () => {
+          try { await navigator.clipboard.writeText(b.dataset.tc || ""); toast("Время скопировано ⏱"); }
+          catch (e) { toast("Скопируй время вручную"); }
+        }));
         body.querySelectorAll(".tc-approve").forEach((b) => (b.onclick = async () => {
-          await adminApi(`/api/admin/timecodes/${b.dataset.id}/review`, { method: "POST", body: { action: "approve", moment_label: b.closest(".tl-item").querySelector(".tc-label").value || null } });
-          toast("Таймкод одобрен ✅ verified=1"); document.getElementById("adm-load").click();
+          const box = b.closest(".tl-item");
+          try {
+            await adminApi(`/api/admin/timecodes/${b.dataset.id}/review`, { method: "POST", body: {
+              action: "approve",
+              service: box.querySelector(".tc-service").value || null,
+              timecode_label: box.querySelector(".tc-start").value || null,
+              timecode_end_label: box.querySelector(".tc-end").value || null,
+              version_note: box.querySelector(".tc-version").value || null,
+              watch_url: box.querySelector(".tc-url").value || null,
+              moment_label: box.querySelector(".tc-label").value || null,
+            } });
+            toast("Таймкод подтверждён ✅ verified=1"); document.getElementById("adm-load").click();
+          } catch (e) { toast(e.message); }
         }));
         body.querySelectorAll(".tc-reject").forEach((b) => (b.onclick = async () => {
           await adminApi(`/api/admin/timecodes/${b.dataset.id}/review`, { method: "POST", body: { action: "reject" } });

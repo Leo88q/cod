@@ -113,6 +113,61 @@ test('admin operational view renders failed notifications, audit and timecode qu
   } finally { dom.window.close(); }
 });
 
+test('admin timecode queue supports manual verification fields', async () => {
+  const dom = await screen('/admin', {
+    '/api/admin/overview': {users:1,scenes:1,gifts:0,shops:0,cards:0,revenue_rub:0},
+    '/api/admin/reports': {reports:[]},
+    '/api/admin/metrics': {worker:{status:'ok',age_seconds:0},pending_notifications:0,failed_notifications:0},
+    '/api/admin/notifications/failed': {notifications:[]},
+    '/api/admin/audit': {entries:[]},
+    '/api/admin/analytics': {funnel:{}},
+    '/api/admin/scenes?status=draft': {scenes:[]},
+    '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
+    '/api/admin/timecodes?status=pending': {candidates:[{
+      id:7, movie_title:'Форрест Гамп', movie_year:1994, imdb_id:'tt0109830',
+      timecode_label:'0:50:19', timecode_end_label:'0:50:56', service:'kinopoisk',
+      description:'Форрест бежит через страну', why_fits:'для поддержки',
+      source:'https://github.com/o/r/blob/sha/Forrest.srt',
+      source_license:'OpenSubtitles community subtitles, GitHub mirror',
+      line_index:512, confidence:1.25, consensus:2, auto:1,
+      moment_label:'момент, где Форрест бежит', watch_links:[]
+    }]}
+  });
+  try {
+    dom.window.localStorage.setItem('scena_admin_token', 'test-admin');
+    let opened = null, posted = null;
+    dom.window.open = (url) => { opened = url; };
+    const originalFetch = dom.window.fetch;
+    dom.window.fetch = async (path, opts) => {
+      if (opts && opts.method === 'POST' && String(path).includes('/review')) {
+        posted = { path, body: JSON.parse(opts.body) };
+        return { ok: true, json: async () => ({ok:true}) };
+      }
+      return originalFetch(path, opts);
+    };
+    dom.window.document.querySelector('#adm-load').click();
+    await new Promise(resolve => setTimeout(resolve, 40));
+    const doc = dom.window.document;
+    assert.equal(doc.querySelector('.tc-start').value, '0:50:19');
+    assert.equal(doc.querySelector('.tc-end').value, '0:50:56');
+    assert.equal(doc.querySelector('.tc-label').value, 'момент, где Форрест бежит');
+    assert.equal(doc.querySelector('.tc-service').value, 'kinopoisk');
+    assert.equal(doc.querySelector('.tc-copy').dataset.tc, '0:50:19–0:50:56');
+    assert.match(doc.querySelector('#adm-body').textContent, /Наш момент: Форрест бежит через страну/);
+    doc.querySelector('.tc-open').click();
+    assert.ok(opened && opened.includes('kinopoisk'));
+    doc.querySelector('.tc-start').value = '0:50:20';
+    doc.querySelector('.tc-approve').click();
+    await new Promise(resolve => setTimeout(resolve, 40));
+    assert.ok(posted, 'Approve должен отправить POST');
+    assert.equal(posted.body.action, 'approve');
+    assert.equal(posted.body.timecode_label, '0:50:20');
+    assert.equal(posted.body.timecode_end_label, '0:50:56');
+    assert.equal(posted.body.service, 'kinopoisk');
+    assert.equal(posted.body.moment_label, 'момент, где Форрест бежит');
+  } finally { dom.window.close(); }
+});
+
 test('landing escapes untrusted approved scene fields', async () => {
   const dom = new JSDOM(readFileSync('app/static/landing.html', 'utf8'), {
     url:'https://scena.test/', runScripts:'outside-only'

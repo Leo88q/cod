@@ -1,0 +1,125 @@
+{
+  "comment": "IMDb ID проставлены по метаданным CondensedMovies (m-bain/CondensedMovies, movies.csv); пустые значения заполняются вручную при сверке.",
+  "scenes": {
+    "Форрест Гамп": {
+      "original_title": "Forrest Gump",
+      "movie_year": 1994,
+      "imdb_id": "tt0109830",
+      "tmdb_id": null
+    },
+    "Крёстный отец": {
+      "original_title": "The Godfather",
+      "movie_year": 1972,
+      "imdb_id": "tt0068646",
+      "tmdb_id": null
+    },
+    "Начало": {
+      "original_title": "Inception",
+      "movie_year": 2010,
+      "imdb_id": "tt1375666",
+      "tmdb_id": null
+    },
+    "Унесённые призраками": {
+      "original_title": "Spirited Away",
+      "movie_year": 2001,
+      "imdb_id": "tt0245429",
+      "tmdb_id": null
+    },
+    "Титаник": {
+      "original_title": "Titanic",
+      "movie_year": 1997,
+      "imdb_id": null,
+      "tmdb_id": null
+    },
+    "Назад в будущее": {
+      "original_title": "Back to the Future",
+      "movie_year": 1985,
+      "imdb_id": "tt0088763",
+      "tmdb_id": null
+    },
+    "Король Лев": {
+      "original_title": "The Lion King",
+      "movie_year": 1994,
+      "imdb_id": null,
+      "tmdb_id": null
+    },
+    "Побег из Шоушенка": {
+      "original_title": "The Shawshank Redemption",
+      "movie_year": 1994,
+      "imdb_id": "tt0111161",
+      "tmdb_id": null
+    },
+    "Зелёная миля": {
+      "original_title": "The Green Mile",
+      "movie_year": 1999,
+      "imdb_id": "tt0120689",
+      "tmdb_id": null
+    },
+    "Матрица": {
+      "original_title": "The Matrix",
+      "movie_year": 1999,
+      "imdb_id": "tt0133093",
+      "tmdb_id": null
+    },
+    "Когда Гарри встретил Салли": {
+      "original_title": "When Harry Met Sally",
+      "movie_year": 1989,
+      "imdb_id": "tt0098635",
+      "tmdb_id": null
+    },
+    "Амели": {
+      "original_title": "Amelie",
+      "movie_year": 2001,
+      "imdb_id": null,
+      "tmdb_id": null
+    },
+    "Ноттинг Хилл": {
+      "original_title": "Notting Hill",
+      "movie_year": 1999,
+      "imdb_id": "tt0125439",
+      "tmdb_id": null
+    },
+    "Дневник памяти": {
+      "original_title": "The Notebook",
+      "movie_year": 2004,
+      "imdb_id": "tt0332280",
+      "tmdb_id": null
+    },
+    "Грязные танцы": {
+      "original_title": "Dirty Dancing",
+      "movie_year": 1987,
+      "imdb_id": "tt0092890",
+      "tmdb_id": null
+    },
+    "Психо": {
+      "original_title": "Psycho",
+      "movie_year": 1960,
+      "imdb_id": "tt0054215",
+      "tmdb_id": null
+    },
+    "Сияние": {
+      "original_title": "The Shining",
+      "movie_year": 1980,
+      "imdb_id": "tt0081505",
+      "tmdb_id": null
+    },
+    "Один дома": {
+      "original_title": "Home Alone",
+      "movie_year": 1990,
+      "imdb_id": "tt0099785",
+      "tmdb_id": null
+    },
+    "История игрушек": {
+      "original_title": "Toy Story",
+      "movie_year": 1995,
+      "imdb_id": null,
+      "tmdb_id": null
+    },
+    "Рататуй": {
+      "original_title": "Ratatouille",
+      "movie_year": 2007,
+      "imdb_id": null,
+      "tmdb_id": null
+    }
+  }
+}
