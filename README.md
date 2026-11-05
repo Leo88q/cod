@@ -20,7 +20,7 @@
 - `app/scheduler.py` — отложенные открытия, «сгорание» подарков, напоминания о датах, рассылка уведомлений
 - `app/payments.py` — оплаты (ЮKassa в проде, dev-подтверждение локально): пачки карточек, подписки студий, премиум «ваш фильм»; идемпотентные эффекты
 - `app/security.py` — валидация Telegram initData (HMAC), админ-токен
-- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (95 тестов) + `tests/ui/` (Node/jsdom): `npm test` (13 тестов)
+- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (99 тестов) + `tests/ui/` (Node/jsdom): `npm test` (13 тестов)
 - `Dockerfile` — прод-образ: `docker build -t scena . && docker run -p 8000:8000 -e BOT_TOKEN=... scena`
 - `app/static/landing.html` — лендинг продукта на `/`
 - `scripts/import_scenes.py` / `scripts/export_scenes.py` — импорт/экспорт каталога сцен в CSV (`db/scenes_template.csv` — шаблон)
@@ -69,6 +69,8 @@ BOT_TOKEN=... .venv/bin/python -m app.bot   # бот отдельным проц
 .venv/bin/python scripts/import_timecode_library.py --pilot   # 20 кураторских сцен / 38 SRT
 bash scripts/dev.sh                                    # затем #/admin с ADMIN_TOKEN
 ```
+
+Импортёр сначала берёт файлы с `raw.githubusercontent.com` — это **не расходует лимит GitHub REST API**; если raw-хост закрыт, уходит в `api.github.com`. При повторном `HTTP 403 rate limit exceeded` задай `GITHUB_TOKEN`/`GH_TOKEN` в терминале (например `export GITHUB_TOKEN=$(gh auth token)`), токен в чат не передавай.
 
 `source_registry.json` + `srt_index.json` описывают 4 GitHub-зеркала (39 861 + 1 300 + 14 SRT и 1 305 CSV), `imdb_map_full.json` даёт 133 IMDb ID на 140 сцен каталога. Для OPUS / OpenSubtitles v2024 на локальной машине есть `scripts/import_opus_timecodes.py`. Сводка покрытия — `GET /api/admin/timecode-library` и панель «📚 Библиотека таймкодов» в админке.
 

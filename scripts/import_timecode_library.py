@@ -9,7 +9,7 @@
 
 Скрипт:
 
-1. скачивает SRT/CSV через `api.github.com` в gitignored-кэш `data/timecode_library/cache/`;
+1. скачивает SRT/CSV с `raw.githubusercontent.com` (без лимита REST API), а при недоступности raw-хоста — через `api.github.com` с `GITHUB_TOKEN`/`GH_TOKEN`, в gitignored-кэш `data/timecode_library/cache/`;
 2. CSV из `jblinder/subtext` конвертирует во временный SRT (startTime/endTime в мс);
 3. строит локальный манифест с путями к кэшу;
 4. зовёт `scripts/fetch_timecodes.py`, который извлекает ТОЛЬКО факт времени
@@ -32,6 +32,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -65,6 +66,25 @@ def github_blob_to_api(url: str) -> str:
     # Путь уже может быть процент-закодирован; нормализуем, чтобы не получить двойное кодирование.
     path = urllib.parse.quote(urllib.parse.unquote(raw_path), safe="/")
     return f"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={sha}"
+
+
+def github_blob_to_raw(url: str) -> str:
+    """https://github.com/<o>/<r>/blob/<sha>/<path> -> raw.githubusercontent.com.
+
+    raw.githubusercontent.com НЕ расходует лимит GitHub REST API (60/час без
+    токена), поэтому для публичных SRT это основной канал; api.github.com
+    остаётся fallback для сетей, где raw-хост закрыт.
+    """
+    parsed = urllib.parse.urlparse(url)
+    if parsed.netloc not in ("github.com", "www.github.com"):
+        raise ValueError(f"Ожидалась ссылка на github.com: {url}")
+    parts = parsed.path.strip("/").split("/")
+    if len(parts) < 5 or parts[2] != "blob":
+        raise ValueError(f"Не распознана ссылка на blob: {url}")
+    owner, repo, _, sha = parts[:4]
+    raw_path = "/".join(parts[4:])
+    path = urllib.parse.quote(urllib.parse.unquote(raw_path), safe="/")
+    return f"https://raw.githubusercontent.com/{owner}/{repo}/{sha}/{path}"
 
 
 def cache_name(url: str) -> str:
@@ -105,28 +125,57 @@ def csv_to_srt(csv_path: str, srt_path: str) -> str:
 
 
 def download_srt(url: str, dest: str, refresh: bool = False) -> str:
-    """Скачивает SRT по GitHub blob URL в dest. Возвращает путь к файлу."""
+    """Скачивает SRT по GitHub blob URL в dest. Возвращает путь к файлу.
+
+    Порядок: raw.githubusercontent.com (без квоты REST API) → api.github.com с
+    GITHUB_TOKEN/GH_TOKEN → api.github.com без токена. Так 105 файлов не упираются
+    в анонимный лимит 60 запросов/час, а песочница с закрытым raw-хостом всё ещё
+    работает через API.
+    """
     if os.path.exists(dest) and not refresh and os.path.getsize(dest) > 0:
         return dest
-    api_url = github_blob_to_api(url)
-    headers = {
-        "Accept": "application/vnd.github.raw",
-        "User-Agent": "scena-timecode-importer",
-    }
     token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
+    ua = {"User-Agent": "scena-timecode-importer"}
+    candidates: list[tuple[str, str, dict[str, str]]] = [
+        ("raw", github_blob_to_raw(url), {**ua, "Accept": "text/plain"}),
+    ]
+    api_headers = {**ua, "Accept": "application/vnd.github.raw"}
     if token:
-        headers["Authorization"] = f"Bearer {token}"
-    req = urllib.request.Request(api_url, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=60) as response:
-            data = response.read()
-    except urllib.error.HTTPError as exc:
+        candidates.append(("api+token", github_blob_to_api(url),
+                           {**api_headers, "Authorization": f"Bearer {token}"}))
+    candidates.append(("api", github_blob_to_api(url), api_headers))
+
+    errors: list[str] = []
+    data = b""
+    for label, fetch_url, headers in candidates:
+        try:
+            req = urllib.request.Request(fetch_url, headers=headers)
+            with urllib.request.urlopen(req, timeout=60) as response:
+                data = response.read()
+            if data and len(data) >= 20:
+                break
+            errors.append(f"{label}: пустой или слишком короткий ответ")
+            data = b""
+        except urllib.error.HTTPError as exc:
+            hint = ""
+            if exc.code == 403 and "api.github.com" in fetch_url:
+                reset = exc.headers.get("X-RateLimit-Reset")
+                if reset and str(reset).isdigit():
+                    minutes = max(0, int((int(reset) - time.time()) / 60))
+                    hint = f" Лимит GitHub API исчерпан, сброс примерно через {minutes} мин."
+                else:
+                    hint = " Лимит GitHub API исчерпан."
+                hint += (" Задай GITHUB_TOKEN/GH_TOKEN и повтори: "
+                         "export GITHUB_TOKEN=$(gh auth token) — если GitHub CLI уже залогинен.")
+            errors.append(f"{label}: HTTP {exc.code}.{hint}")
+        except (urllib.error.URLError, OSError) as exc:
+            errors.append(f"{label}: {exc}")
+    else:
         raise RuntimeError(
-            f"Не удалось скачать {url}: HTTP {exc.code}. "
-            "Проверь сеть/лимит GitHub API; при 403 поможет GITHUB_TOKEN."
-        ) from exc
-    if not data or len(data) < 20:
-        raise RuntimeError(f"Пустой или подозрительно маленький SRT: {url}")
+            f"Не удалось скачать {url}.\n" + "\n".join("  " + e for e in errors) +
+            "\nПроверь сеть. Для api.github.com при 403 поможет GITHUB_TOKEN/GH_TOKEN "
+            "(не присылай токен в чат, задай его только в терминале)."
+        )
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, "wb") as f:
         f.write(data)
@@ -224,6 +273,9 @@ def main() -> int:
 
     print(f"== Манифест: {manifest_path}")
     print(f"== Кэш SRT: {args.cache_dir}")
+    token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
+    print("== Загрузка: raw.githubusercontent.com → api.github.com" +
+          (" (токен найден)" if token else " (токена нет; при 403 задай GITHUB_TOKEN)"))
     local = build_local_manifest(manifest, args.cache_dir, refresh=args.refresh)
     local_manifest_path = os.path.join(args.cache_dir, "_local_manifest.json")
     with open(local_manifest_path, "w", encoding="utf-8") as f:

@@ -147,3 +147,87 @@ def test_build_local_manifest_converts_csv_to_srt(monkeypatch, tmp_path):
     assert local.endswith(".srt")
     assert "hello world" in open(local, encoding="utf-8").read()
     assert "formats" not in out["entries"][0]
+
+
+def test_github_blob_urls_raw_and_api():
+    url = ("https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/"
+           "blob/7ebe351e15ff8220cb8432747902002e5904e349/"
+           "NonImpairedSubtitles/Adventure/The%20Incredibles.srt")
+    assert lib.github_blob_to_raw(url) == (
+        "https://raw.githubusercontent.com/mesutgurlek/"
+        "Movie-Category-Classification-from-Subtitles/7ebe351e15ff8220cb8432747902002e5904e349/"
+        "NonImpairedSubtitles/Adventure/The%20Incredibles.srt")
+    assert lib.github_blob_to_api(url).startswith(
+        "https://api.github.com/repos/mesutgurlek/Movie-Category-Classification-from-Subtitles/contents/")
+    assert "ref=7ebe351e" in lib.github_blob_to_api(url)
+
+
+def test_download_srt_uses_raw_first_without_api_quota(monkeypatch, tmp_path):
+    import urllib.error
+    calls = []
+
+    class Resp:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self): return b"1\n00:00:01,000 --> 00:00:03,000\nhello world\n\n"
+
+    def fake_urlopen(req, timeout=60):
+        calls.append(req.full_url)
+        assert req.full_url.startswith("https://raw.githubusercontent.com/"), \
+            "первый запрос должен идти на raw, а не в REST API"
+        return Resp()
+
+    monkeypatch.setattr(lib.urllib.request, "urlopen", fake_urlopen)
+    url = "https://github.com/o/r/blob/sha123/Example.srt"
+    dest = str(tmp_path / "x.srt")
+    assert lib.download_srt(url, dest) == dest
+    assert len(calls) == 1
+    assert "hello world" in open(dest, encoding="utf-8").read()
+
+
+def test_download_srt_falls_back_to_api_with_token(monkeypatch, tmp_path):
+    import urllib.error
+    calls = []
+
+    class Resp:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self): return b"1\n00:00:01,000 --> 00:00:03,000\nfallback ok\n\n"
+
+    def fake_urlopen(req, timeout=60):
+        calls.append(req.full_url)
+        if req.full_url.startswith("https://raw.githubusercontent.com/"):
+            raise urllib.error.URLError("raw host blocked in sandbox")
+        assert req.get_header("Authorization") == "Bearer test-token"
+        return Resp()
+
+    monkeypatch.setenv("GITHUB_TOKEN", "test-token")
+    monkeypatch.setattr(lib.urllib.request, "urlopen", fake_urlopen)
+    dest = str(tmp_path / "x.srt")
+    assert lib.download_srt("https://github.com/o/r/blob/sha123/Example.srt", dest) == dest
+    assert len(calls) == 2, "должны быть raw + api+token, без анонимного api"
+    assert "fallback ok" in open(dest, encoding="utf-8").read()
+
+
+def test_download_srt_rate_limit_error_has_actionable_hint(monkeypatch, tmp_path):
+    import urllib.error
+
+    def fake_urlopen(req, timeout=60):
+        if req.full_url.startswith("https://raw.githubusercontent.com/"):
+            raise urllib.error.URLError("raw blocked")
+        raise urllib.error.HTTPError(req.full_url, 403, "rate limit exceeded",
+                                    {"X-RateLimit-Remaining": "0",
+                                     "X-RateLimit-Reset": str(int(lib.time.time()) + 1800)}, None)
+
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    monkeypatch.setattr(lib.urllib.request, "urlopen", fake_urlopen)
+    try:
+        lib.download_srt("https://github.com/o/r/blob/sha123/Example.srt", str(tmp_path / "x.srt"))
+    except RuntimeError as exc:
+        msg = str(exc)
+        assert "GITHUB_TOKEN" in msg
+        assert "Лимит GitHub API исчерпан" in msg
+        assert "сброс примерно через" in msg
+    else:
+        raise AssertionError("ожидался RuntimeError с подсказкой про токен")

@@ -102,6 +102,29 @@ GITHUB_TOKEN=... .venv/bin/python scripts/build_srt_index.py
 
 Импортёр скачивает SRT/CSV в gitignored `data/timecode_library/cache/`, конвертирует CSV в SRT, зовёт `fetch_timecodes.py` и пишет только `start/end + sha1 + source + source_license + confidence/consensus + moment_label`. Текст реплик не сохраняется. Уникальный индекс `idx_tc_candidates_dedup` защищает от дублей при повторном запуске.
 
+### GitHub 403 / rate limit
+
+Анонимный `api.github.com` даёт всего **60 запросов в час**, а полный манифест — 105 файлов. Поэтому загрузчик теперь работает в три шага:
+
+1. `raw.githubusercontent.com` — основной канал для публичных blob, **не тратит REST-квоту**;
+2. `api.github.com` с `GITHUB_TOKEN`/`GH_TOKEN` — 5000 запросов/час;
+3. `api.github.com` без токена — fallback для сетей, где raw закрыт.
+
+Если на Mac всё равно появилось `HTTP Error 403: rate limit exceeded`:
+
+```bash
+# вариант 1: GitHub CLI уже залогинен
+export GITHUB_TOKEN=$(gh auth token)
+.venv/bin/python scripts/import_timecode_library.py
+
+# вариант 2: ввести токен вручную, без вывода на экран
+read -rs GITHUB_TOKEN
+export GITHUB_TOKEN
+.venv/bin/python scripts/import_timecode_library.py
+```
+
+Достаточно fine-grained token без дополнительных прав: он только поднимает лимит на чтение публичных репозиториев. Не присылай токен в чат и не коммить его; `.env` и кэш уже в `.gitignore`. Уже скачанные файлы берутся из кэша, поэтому повторный запуск не делает 105 сетевых запросов.
+
 ## 6. OPUS / OpenSubtitles v2024 на Mac
 
 Песочница не имеет доступа к `object.pouta.csc.fi`, поэтому корпус скачивается на локальной машине:
@@ -154,8 +177,8 @@ curl -s -H 'X-Admin-Token: local-admin' \
 
 ## 9. Проверки
 
-- `95 passed` pytest, `13 passed` Node/jsdom.
+- `99 passed` pytest, `13 passed` Node/jsdom.
 - `bash scripts/check.sh` с живым сервером: 5/5 шагов, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - `git diff --exit-code db/seed_catalog.sql` — чисто.
-- `full_manifest.json` / `imdb_map_full.json` / OPUS-адаптер / admin coverage endpoint покрыты отдельными тестами.
+- `full_manifest.json` / `imdb_map_full.json` / OPUS-адаптер / admin coverage endpoint / raw→API fallback загрузчика покрыты отдельными тестами.
 - Полный импорт на временной БД: 124 `pending` кандидата, 62 сцены, 133 IMDb ID, `verified=0`.

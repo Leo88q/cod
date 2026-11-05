@@ -24,7 +24,14 @@ printf 'PUBLIC_URL=http://localhost:8000\nADMIN_TOKEN=local-admin\n' > .env
 bash scripts/dev.sh
 ```
 
-`import_timecode_library.py` при первом запуске скачает ~105 SRT/CSV через `api.github.com` в `data/timecode_library/cache/` (папка в `.gitignore`). Повторный запуск использует кэш; `--refresh` перекачивает заново. Если GitHub вернёт 403 из-за лимита, задай `GITHUB_TOKEN`. CSV из `jblinder/subtext` автоматически превращаются во временный SRT.
+`import_timecode_library.py` при первом запуске скачает ~105 SRT/CSV в `data/timecode_library/cache/` (папка в `.gitignore`). Основной канал — `raw.githubusercontent.com`, который **не расходует лимит GitHub REST API**; если raw-хост закрыт, скрипт сам уходит в `api.github.com`. Повторный запуск использует кэш; `--refresh` перекачивает заново. Если всё равно получил `403 rate limit exceeded`, задай `GITHUB_TOKEN`/`GH_TOKEN` в терминале:
+
+```bash
+export GITHUB_TOKEN=$(gh auth token)   # если GitHub CLI залогинен
+.venv/bin/python scripts/import_timecode_library.py
+```
+
+CSV из `jblinder/subtext` автоматически превращаются во временный SRT.
 
 Проверить, не записывая в БД:
 
