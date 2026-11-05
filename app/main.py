@@ -32,6 +32,8 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from aiogram import Bot
+    if config.WEBHOOK_URL and not config.WEBHOOK_SECRET:
+        raise RuntimeError("WEBHOOK_SECRET is required when WEBHOOK_URL is configured")
     if config.BOT_TOKEN:
         bot_module.bot = Bot(config.BOT_TOKEN)
         if config.WEBHOOK_URL:
@@ -68,7 +70,7 @@ app.add_middleware(
 @app.post("/tg/webhook", include_in_schema=False)
 async def tg_webhook(request: Request):
     """Webhook от Telegram (prod-режим бота)."""
-    if config.WEBHOOK_SECRET and \
+    if not config.WEBHOOK_SECRET or \
             request.headers.get("X-Telegram-Bot-Api-Secret-Token") != config.WEBHOOK_SECRET:
         raise HTTPException(403, "bad secret")
     if not bot_module.bot:
@@ -233,7 +235,7 @@ class NoteCreate(BaseModel):
 
 class BouquetOrder(BaseModel):
     bouquet_id: int
-    amount: Optional[float] = None
+    amount: Optional[float] = Field(default=None, ge=0, allow_inf_nan=False)
 
 
 class ShopCreate(BaseModel):
@@ -250,7 +252,7 @@ class CardsOrder(BaseModel):
 
 class OrderRegister(BaseModel):
     shop_id: int
-    amount: float
+    amount: float = Field(ge=0, allow_inf_nan=False)
     flowwow_order_id: Optional[str] = None
     gift_id: Optional[str] = None
 
@@ -323,6 +325,11 @@ def admin_metrics(request: Request):
         pending = conn.execute("SELECT COUNT(*) FROM notifications WHERE sent=0").fetchone()[0]
         failed = conn.execute("SELECT COUNT(*) FROM notifications WHERE sent=-1").fetchone()[0]
         oldest = conn.execute("SELECT MIN(created_at) FROM notifications WHERE sent=0").fetchone()[0]
+        stuck_payments = conn.execute(
+            "SELECT COUNT(*) FROM payments WHERE "
+            "(status='creating' AND datetime(created_at)<datetime('now','-23 hours')) OR "
+            "(status IN ('verifying_succeeded','verifying_canceled') AND datetime(created_at)<datetime('now','-10 minutes'))"
+        ).fetchone()[0]
         oldest_age = max(0, int((now() - parse_db(oldest)).total_seconds())) if oldest else 0
         worker = worker_health(conn)
         conn.execute("SELECT 1").fetchone()
@@ -330,7 +337,7 @@ def admin_metrics(request: Request):
         conn.close()
     return {"requests_this_process": dict(request_counts), "pending_notifications": pending,
             "failed_notifications": failed, "oldest_pending_seconds": oldest_age,
-            "worker": worker, "database": "ok"}
+            "worker": worker, "database": "ok", "stuck_payment_creations": stuck_payments}
 
 
 @app.get("/ready", include_in_schema=False)
@@ -486,6 +493,7 @@ def search_scenes(body: SceneSearch):
                 continue
         out.append({
             "id": d["id"], "movie_title": d["movie_title"], "movie_year": d["movie_year"],
+            "popularity": d["popularity"],
             "timecode_label": d["timecode_label"], "timecode_end_label": d.get("timecode_end_label"),
             "service": d["service"], "verified": d.get("verified", 0),
             "watch_url": d.get("watch_url"), "poster_url": d.get("poster_url"),
@@ -542,7 +550,7 @@ def scenes_meta():
 
 class SemanticSearch(BaseModel):
     query: str
-    limit: int = Field(default=10, le=30)
+    limit: int = Field(default=10, ge=1, le=50)
     occasion: Optional[str] = None
 
 
@@ -699,72 +707,73 @@ def create_gift(request: Request, body: GiftCreate):
         raise HTTPException(400, "format: single | series")
     if body.format == "series":
         body.series_days = max(1, min(body.series_days, 14))
-        if len(body.scene_ids) < body.series_days:
+        if len(body.scene_ids) != body.series_days:
             raise HTTPException(400, "Для серии нужно scene_ids по числу дней")
-    conn = connect(config.DB_PATH)
     user = request_user(request, body.giver_telegram_id)
-    giver_id = user["id"] if user else None
-    card_id = None
-    shop_id = None
-    if body.card_code:
-        card = conn.execute("SELECT * FROM cards WHERE code = ?", (body.card_code,)).fetchone()
-        if not card:
-            conn.close()
-            raise HTTPException(404, "Карточка не найдена")
-        if card["status"] == "used":
-            conn.close()
-            raise HTTPException(409, "Эта карточка уже использована")
-        card_id = card["id"]
-        shop_id = card["shop_id"]
-    for sid in body.scene_ids:
-        if not conn.execute("SELECT id FROM scenes WHERE id=? AND status='approved'", (sid,)).fetchone():
-            conn.close()
-            raise HTTPException(400, f"Сцена {sid} не найдена или не одобрена")
-    gift_id = new_code(8)
-    expires = (now() + timedelta(days=config.GIFT_TTL_DAYS)).isoformat()
-    conn.execute(
-        "INSERT INTO gifts (id, giver_id, card_id, shop_id, recipient_name, recipient_city, title,"
-        " occasion, tone, message_text, message_voice_file_id, message_photo_file_id, format, theme,"
-        " series_days, open_at, expires_at, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'created')",
-        (gift_id, giver_id, card_id, shop_id, body.recipient_name, body.recipient_city, body.title,
-         body.occasion, body.tone, body.message_text, body.message_voice, body.message_photo,
-         body.format, body.theme, body.series_days if body.format == "series" else 1,
-         body.open_at, expires),
-    )
-    for i, sid in enumerate(body.scene_ids):
-        # снапшот таймкода: выбранный клиентом момент (из одобренных кандидатов) или основной
-        # таймкод сцены. Открытка фиксирована: изменения каталога позже не влияют на подарок.
-        sc = conn.execute("SELECT timecode_label, timecode_seconds, timecode_end_label, timecode_end_seconds"
-                          " FROM scenes WHERE id=?", (sid,)).fetchone()
-        snap_label, snap_sec = (sc["timecode_label"], sc["timecode_seconds"]) if sc else (None, None)
-        snap_end_label, snap_end_sec = (sc["timecode_end_label"], sc["timecode_end_seconds"]) if sc else (None, None)
-        chosen = (body.moments or {}).get(str(sid))
-        if chosen:
-            cand = conn.execute(
-                "SELECT timecode_label, timecode_seconds, timecode_end_label, timecode_end_seconds"
-                " FROM timecode_candidates"
-                " WHERE scene_id=? AND status='approved' AND timecode_label=?", (sid, chosen)).fetchone()
-            if cand:
-                snap_label, snap_sec = cand["timecode_label"], cand["timecode_seconds"]
-                snap_end_label, snap_end_sec = cand["timecode_end_label"], cand["timecode_end_seconds"]
-            else:
-                snap_label, snap_sec = chosen, tc_label_to_seconds(chosen)
-                snap_end_label = snap_end_sec = None
-        conn.execute("INSERT INTO gift_scenes (gift_id, scene_id, day_index, timecode_label, timecode_seconds,"
-                     " timecode_end_label, timecode_end_seconds) VALUES (?,?,?,?,?,?,?)",
-                     (gift_id, sid, i, snap_label, snap_sec, snap_end_label, snap_end_sec))
-        conn.execute("UPDATE scenes SET popularity = popularity + 1 WHERE id = ?", (sid,))
-    if card_id:
-        conn.execute("UPDATE cards SET status='used', gift_id=?, used_at=? WHERE id=?",
-                     (gift_id, now_iso(), card_id))
-    conn.commit()
-    conn.close()
-    log_consent(gift_id, giver_id, "pd_processing", request)
+    if not config.ALLOW_ANON and not user:
+        raise HTTPException(401, "Нужен Telegram-аккаунт")
     conn = connect(config.DB_PATH)
-    track_event(conn, "gift_created", gift_id, body.giver_telegram_id,
-                {"occasion": body.occasion, "format": body.format, "theme": body.theme,
-                 "scenes": len(body.scene_ids), "card": bool(card_id)})
-    conn.commit(); conn.close()
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        giver_id = user["id"] if user else None
+        card_id = None
+        shop_id = None
+        if body.card_code:
+            card = conn.execute("SELECT * FROM cards WHERE code = ?", (body.card_code,)).fetchone()
+            if not card:
+                raise HTTPException(404, "Карточка не найдена")
+            if card["status"] == "used":
+                raise HTTPException(409, "Эта карточка уже использована")
+            card_id = card["id"]
+            shop_id = card["shop_id"]
+        for sid in body.scene_ids:
+            if not conn.execute("SELECT id FROM scenes WHERE id=? AND status='approved'", (sid,)).fetchone():
+                raise HTTPException(400, f"Сцена {sid} не найдена или не одобрена")
+        gift_id = new_code(8)
+        expires = (now() + timedelta(days=config.GIFT_TTL_DAYS)).isoformat()
+        conn.execute(
+            "INSERT INTO gifts (id, giver_id, card_id, shop_id, recipient_name, recipient_city, title,"
+            " occasion, tone, message_text, message_voice_file_id, message_photo_file_id, format, theme,"
+            " series_days, open_at, expires_at, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'created')",
+            (gift_id, giver_id, card_id, shop_id, body.recipient_name, body.recipient_city, body.title,
+             body.occasion, body.tone, body.message_text, body.message_voice, body.message_photo,
+             body.format, body.theme, body.series_days if body.format == "series" else 1,
+             body.open_at, expires),
+        )
+        for i, sid in enumerate(body.scene_ids):
+            # снапшот таймкода: выбранный клиентом момент (из одобренных кандидатов) или основной
+            # таймкод сцены. Открытка фиксирована: изменения каталога позже не влияют на подарок.
+            sc = conn.execute("SELECT timecode_label, timecode_seconds, timecode_end_label, timecode_end_seconds"
+                              " FROM scenes WHERE id=?", (sid,)).fetchone()
+            snap_label, snap_sec = (sc["timecode_label"], sc["timecode_seconds"]) if sc else (None, None)
+            snap_end_label, snap_end_sec = (sc["timecode_end_label"], sc["timecode_end_seconds"]) if sc else (None, None)
+            chosen = (body.moments or {}).get(str(sid))
+            if chosen:
+                cand = conn.execute(
+                    "SELECT timecode_label, timecode_seconds, timecode_end_label, timecode_end_seconds"
+                    " FROM timecode_candidates"
+                    " WHERE scene_id=? AND status='approved' AND timecode_label=?", (sid, chosen)).fetchone()
+                if cand:
+                    snap_label, snap_sec = cand["timecode_label"], cand["timecode_seconds"]
+                    snap_end_label, snap_end_sec = cand["timecode_end_label"], cand["timecode_end_seconds"]
+                elif chosen != snap_label:
+                    conn.rollback()
+                    raise HTTPException(400, "Выбранный момент не одобрен")
+            conn.execute("INSERT INTO gift_scenes (gift_id, scene_id, day_index, timecode_label, timecode_seconds,"
+                         " timecode_end_label, timecode_end_seconds) VALUES (?,?,?,?,?,?,?)",
+                         (gift_id, sid, i, snap_label, snap_sec, snap_end_label, snap_end_sec))
+            conn.execute("UPDATE scenes SET popularity = popularity + 1 WHERE id = ?", (sid,))
+        if card_id:
+            conn.execute("UPDATE cards SET status='used', gift_id=?, used_at=? WHERE id=?",
+                         (gift_id, now_iso(), card_id))
+            conn.execute("UPDATE shops SET card_balance = MAX(0, card_balance - 1) WHERE id=?", (shop_id,))
+        log_consent(gift_id, giver_id, "pd_processing", request, conn=conn)
+        track_event(conn, "gift_created", gift_id, user["telegram_id"] if user else None,
+                    {"occasion": body.occasion, "format": body.format, "theme": body.theme,
+                     "scenes": len(body.scene_ids), "card": bool(card_id)})
+        conn.commit()
+    finally:
+        conn.close()
     return {
         "gift_id": gift_id,
         "open_url": app_url(request, f"/g/{gift_id}"),
@@ -787,20 +796,27 @@ def _serialize_gift(conn, g: dict) -> dict:
             "day_index": d["day_index"], "id": d["id"], "movie_title": d["movie_title"],
             "movie_year": d["movie_year"],
             # фиксированный снапшот таймкода открытки (приоритетнее текущего в каталоге)
-            "timecode_label": d.get("snap_tc_label") or d["timecode_label"],
-            "timecode_seconds": d.get("snap_tc_seconds") or d.get("timecode_seconds"),
-            "timecode_end_label": d.get("snap_tc_end_label") or d.get("timecode_end_label"),
-            "timecode_end_seconds": d.get("snap_tc_end_seconds") or d.get("timecode_end_seconds"),
+            "timecode_label": d.get("snap_tc_label"),
+            "timecode_seconds": d.get("snap_tc_seconds"),
+            "timecode_end_label": d.get("snap_tc_end_label"),
+            "timecode_end_seconds": d.get("snap_tc_end_seconds"),
             "service": d["service"], "watch_url": d.get("watch_url"), "poster_url": d.get("poster_url"),
             "genre": d["genre"], "era": d["era"], "description": d["description"],
             "why_fits": d["why_fits"], "mood_tags": d["mood_tags"],
-            "occasion_tags": d["occasion_tags"], "watch_links": watch_links(d),
+            "occasion_tags": d["occasion_tags"],
         }
+        # A direct link can point to a different moment after a catalog edit.
+        link_scene = dict(d)
+        if (s["timecode_label"], s["timecode_seconds"]) != (d["timecode_label"], d["timecode_seconds"]):
+            link_scene["watch_url"] = None
+            s["watch_url"] = None
+        s["watch_links"] = watch_links(link_scene)
         scenes.append(s)
     # серия: открываем по одной сцене в день
     if g["format"] == "series":
         created = parse_db(g["created_at"])
-        days_passed = min((now() - created).days + 1, g["series_days"])
+        start = max(created, parse_db(g["open_at"])) if g["open_at"] else created
+        days_passed = min(max(0, (now() - start).days + 1), max(g["series_days"], len(scenes)))
         visible = [s for s in scenes if s["day_index"] < days_passed]
         locked = len(scenes) - len(visible)
     else:
@@ -827,48 +843,42 @@ def _serialize_gift(conn, g: dict) -> dict:
 @app.get("/api/gifts/{gift_id}")
 def get_gift(gift_id: str):
     conn = connect(config.DB_PATH)
-    g = conn.execute("SELECT * FROM gifts WHERE id = ?", (gift_id,)).fetchone()
-    if not g:
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        g = conn.execute("SELECT * FROM gifts WHERE id = ?", (gift_id,)).fetchone()
+        if not g:
+            raise HTTPException(404, "Подарок не найден")
+        gd = dict(g)
+        if gd["status"] == "expired":
+            raise HTTPException(410, "Срок действия подарка истёк")
+        if gd["status"] == "deleted":
+            raise HTTPException(404, "Подарок удалён")
+        # отложенное открытие
+        if gd["open_at"]:
+            try:
+                if parse_iso(gd["open_at"]) > now():
+                    return {"locked": True, "open_at": gd["open_at"],
+                            "gift": {"id": gd["id"], "recipient_name": gd["recipient_name"],
+                                     "title": gd["title"], "occasion": gd["occasion"]}}
+            except ValueError:
+                pass
+        conn.execute("UPDATE gifts SET view_count = view_count + 1 WHERE id = ?", (gift_id,))
+        gd["view_count"] = (gd["view_count"] or 0) + 1
+        if gd["status"] == "created":
+            conn.execute("UPDATE gifts SET status='opened', opened_at=? WHERE id=?", (now_iso(), gift_id))
+            gd["status"] = "opened"
+            gd["opened_at"] = now_iso()
+            track_event(conn, "gift_opened", gift_id, None, {"views": gd["view_count"]})
+            # Уведомление и переход состояния фиксируются одной транзакцией.
+            if gd["giver_id"]:
+                giver = conn.execute("SELECT telegram_id FROM users WHERE id=?", (gd["giver_id"],)).fetchone()
+                if giver and giver["telegram_id"]:
+                    enqueue_notification(giver["telegram_id"], "gift_opened",
+                                         f"🎉 {gd['recipient_name']} открыл(а) ваш подарок со сценой из фильма!", conn=conn)
+        data = _serialize_gift(conn, gd)
+        conn.commit()
+    finally:
         conn.close()
-        raise HTTPException(404, "Подарок не найден")
-    gd = dict(g)
-    if gd["status"] == "expired":
-        conn.close()
-        raise HTTPException(410, "Срок действия подарка истёк")
-    if gd["status"] == "deleted":
-        conn.close()
-        raise HTTPException(404, "Подарок удалён")
-    # отложенное открытие
-    if gd["open_at"]:
-        try:
-            if parse_iso(gd["open_at"]) > now():
-                conn.close()
-                return {"locked": True, "open_at": gd["open_at"],
-                        "gift": {"id": gd["id"], "recipient_name": gd["recipient_name"],
-                                 "title": gd["title"], "occasion": gd["occasion"]}}
-        except ValueError:
-            pass
-    conn.execute("UPDATE gifts SET view_count = view_count + 1 WHERE id = ?", (gift_id,))
-    gd["view_count"] = (gd["view_count"] or 0) + 1
-    notify_giver = None
-    if gd["status"] == "created":
-        conn.execute("UPDATE gifts SET status='opened', opened_at=? WHERE id=?", (now_iso(), gift_id))
-        gd["status"] = "opened"
-        gd["opened_at"] = now_iso()
-        track_event(conn, "gift_opened", gift_id, None, {"views": gd["view_count"]})
-        # уведомление дарителю: подарок открыт 🎉 (в очередь — после commit)
-        if gd["giver_id"]:
-            giver = conn.execute("SELECT telegram_id FROM users WHERE id=?", (gd["giver_id"],)).fetchone()
-            if giver and giver["telegram_id"]:
-                notify_giver = (giver["telegram_id"],
-                                f"🎉 {gd['recipient_name']} открыл(а) ваш подарок со сценой из фильма!")
-    conn.commit()
-    conn.close()
-    if notify_giver:
-        enqueue_notification(notify_giver[0], "gift_opened", notify_giver[1])
-    conn = connect(config.DB_PATH)
-    data = _serialize_gift(conn, gd)
-    conn.close()
     data["locked"] = False
     return data
 
@@ -946,40 +956,43 @@ def add_reply(request: Request, gift_id: str, body: ReplyCreate):
         raise HTTPException(400, "type: scene | reaction | message")
     if body.type == "scene" and not body.scene_id:
         raise HTTPException(400, "для ответа сценой нужен scene_id")
-    conn = connect(config.DB_PATH)
-    g = conn.execute("SELECT * FROM gifts WHERE id = ?", (gift_id,)).fetchone()
-    if not g:
-        conn.close()
-        raise HTTPException(404, "Подарок не найден")
-    if g["status"] in ("deleted", "expired"):
-        conn.close()
-        raise HTTPException(404, "Подарок недоступен")
-    if g["open_at"] and parse_iso(g["open_at"]) > now():
-        conn.close()
-        raise HTTPException(403, "Подарок ещё не открыт")
     user = request_user(request, body.respondent_telegram_id)
-    conn.execute(
-        "INSERT INTO replies (gift_id, respondent, respondent_user_id, type, scene_id, reaction,"
-        " message_text, voice_file_id, photo_file_id, media_path) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        (gift_id, body.respondent, user["id"] if user else None, body.type, body.scene_id,
-         body.reaction, body.message_text, None, None, body.media_path),
-    )
-    conn.execute("UPDATE gifts SET status='replied' WHERE id=? AND status<>'replied'", (gift_id,))
-    track_event(conn, "gift_replied", gift_id, body.respondent_telegram_id, {"type": body.type})
-    conn.commit()
-    # уведомление дарителю
-    if g["giver_id"]:
-        giver = conn.execute("SELECT telegram_id, first_name FROM users WHERE id=?", (g["giver_id"],)).fetchone()
-        if giver and giver["telegram_id"]:
-            what = {"scene": "сценой из фильма 🎬", "reaction": "реакцией",
-                    "message": "сообщением ✉️"}.get(body.type, "ответом")
-            enqueue_notification(
-                giver["telegram_id"], "reply",
-                f"{body.respondent or 'Получатель'} ответил(а) {what}! Открой таймлайн:",
-                url=None,
-            )
-    conn.close()
-    log_consent(gift_id, user["id"] if user else None, "pd_processing", request)
+    conn = connect(config.DB_PATH)
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        g = conn.execute("SELECT * FROM gifts WHERE id = ?", (gift_id,)).fetchone()
+        if not g:
+            raise HTTPException(404, "Подарок не найден")
+        if g["status"] in ("deleted", "expired"):
+            raise HTTPException(404, "Подарок недоступен")
+        if g["open_at"] and parse_iso(g["open_at"]) > now():
+            raise HTTPException(403, "Подарок ещё не открыт")
+        conn.execute(
+            "INSERT INTO replies (gift_id, respondent, respondent_user_id, type, scene_id, reaction,"
+            " message_text, voice_file_id, photo_file_id, media_path) VALUES (?,?,?,?,?,?,?,?,?,?)",
+            (gift_id, body.respondent, user["id"] if user else None, body.type, body.scene_id,
+             body.reaction, body.message_text, None, None, body.media_path),
+        )
+        if g["status"] == "created":
+            conn.execute("UPDATE gifts SET opened_at=? WHERE id=?", (now_iso(), gift_id))
+            track_event(conn, "gift_opened", gift_id, None, {"views": g["view_count"]})
+        conn.execute("UPDATE gifts SET status='replied' WHERE id=?", (gift_id,))
+        track_event(conn, "gift_replied", gift_id, user["telegram_id"] if user else None, {"type": body.type})
+        if g["giver_id"]:
+            giver = conn.execute("SELECT telegram_id FROM users WHERE id=?", (g["giver_id"],)).fetchone()
+            if giver and giver["telegram_id"]:
+                if g["status"] == "created":
+                    enqueue_notification(giver["telegram_id"], "gift_opened",
+                                         f"🎉 {g['recipient_name']} открыл(а) ваш подарок со сценой из фильма!", conn=conn)
+                what = {"scene": "сценой из фильма 🎬", "reaction": "реакцией",
+                        "message": "сообщением ✉️"}.get(body.type, "ответом")
+                enqueue_notification(giver["telegram_id"], "reply",
+                                     f"{body.respondent or 'Получатель'} ответил(а) {what}! Открой таймлайн:",
+                                     conn=conn)
+        log_consent(gift_id, user["id"] if user else None, "pd_processing", request, conn=conn)
+        conn.commit()
+    finally:
+        conn.close()
     return {"ok": True}
 
 
@@ -987,17 +1000,18 @@ def add_reply(request: Request, gift_id: str, body: ReplyCreate):
 def add_note(request: Request, gift_id: str, body: NoteCreate):
     user = request_user(request, body.author_telegram_id)
     conn = connect(config.DB_PATH)
-    g = conn.execute("SELECT * FROM gifts WHERE id=?", (gift_id,)).fetchone()
-    if not g or g["status"] in ("deleted", "expired"):
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        g = conn.execute("SELECT * FROM gifts WHERE id=?", (gift_id,)).fetchone()
+        if not g or g["status"] in ("deleted", "expired"):
+            raise HTTPException(404, "Подарок не найден")
+        if g["open_at"] and parse_iso(g["open_at"]) > now():
+            raise HTTPException(403, "Подарок ещё не открыт")
+        conn.execute("INSERT INTO gift_notes (gift_id, author_id, text, photo_file_id) VALUES (?,?,?,?)",
+                     (gift_id, user["id"] if user else None, body.text, body.photo))
+        conn.commit()
+    finally:
         conn.close()
-        raise HTTPException(404, "Подарок не найден")
-    if g["open_at"] and parse_iso(g["open_at"]) > now():
-        conn.close()
-        raise HTTPException(403, "Подарок ещё не открыт")
-    conn.execute("INSERT INTO gift_notes (gift_id, author_id, text, photo_file_id) VALUES (?,?,?,?)",
-                 (gift_id, user["id"] if user else None, body.text, body.photo))
-    conn.commit()
-    conn.close()
     return {"ok": True}
 
 
@@ -1409,7 +1423,8 @@ body {{ margin:0; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }}
 
 
 @app.post("/api/orders")
-def register_order(body: OrderRegister):
+def register_order(request: Request, body: OrderRegister):
+    require_shop(request, body.shop_id)
     conn = connect(config.DB_PATH)
     shop = conn.execute("SELECT * FROM shops WHERE id=?", (body.shop_id,)).fetchone()
     if not shop:
@@ -1428,7 +1443,7 @@ def register_order(body: OrderRegister):
 
 class OrderConfirm(BaseModel):
     flowwow_order_id: str
-    amount: Optional[float] = None   # если не передана — берём из нашего заказа по ref/id
+    amount: Optional[float] = Field(default=None, ge=0, allow_inf_nan=False)   # если не передана — берём из нашего заказа по ref/id
     ref_code: Optional[str] = None
 
 
@@ -1511,7 +1526,7 @@ def shop_stats(shop_id: int, request: Request):
 # ---------- платежи (ЮKassa / dev) ----------
 class PaymentCreate(BaseModel):
     kind: str                       # card_pack / subscription / premium_film
-    count: int = 0                  # для card_pack
+    count: int = Field(default=0, ge=0, le=10000)  # для card_pack
     shop_id: Optional[int] = None
     telegram_id: Optional[int] = None
 
@@ -1522,6 +1537,10 @@ async def create_payment(request: Request, body: PaymentCreate):
         raise HTTPException(503, "Оплата временно недоступна")
     if body.kind not in ("card_pack", "subscription", "premium_film"):
         raise HTTPException(400, "kind: card_pack | subscription | premium_film")
+    if body.kind == "card_pack" and body.count < 1:
+        raise HTTPException(400, "Количество карточек должно быть от 1 до 10000")
+    if body.kind == "premium_film" and body.shop_id is not None:
+        raise HTTPException(400, "Для премиума не указывается студия")
     user = request_user(request, body.telegram_id)
     if body.kind == "premium_film" and not user:
         raise HTTPException(401, "Нужен Telegram-аккаунт")
@@ -1533,9 +1552,15 @@ async def create_payment(request: Request, body: PaymentCreate):
         if not shop_id:
             raise HTTPException(400, "для card_pack/subscription нужен shop_id")
         require_shop(request, shop_id)
+        conn = connect(config.DB_PATH)
+        try:
+            if not conn.execute("SELECT 1 FROM shops WHERE id=?", (shop_id,)).fetchone():
+                raise HTTPException(404, "Магазин не найден")
+        finally:
+            conn.close()
     p = await payments.create_payment(
         body.kind, user_id=user["id"] if user else None, shop_id=body.shop_id,
-        count=body.count, base_url=base_url(request))
+        count=body.count, base_url=config.PUBLIC_URL.rstrip("/") if not config.ALLOW_ANON else base_url(request))
     return p
 
 
@@ -1591,7 +1616,7 @@ async def shop_buy_cards(request: Request, shop_id: int, body: CardsOrder):
         raise HTTPException(404, "Магазин не найден")
     conn.close()
     return await payments.create_payment("card_pack", shop_id=shop_id, count=body.count,
-                                         base_url=base_url(request))
+                                         base_url=config.PUBLIC_URL.rstrip("/") if not config.ALLOW_ANON else base_url(request))
 
 
 class ShopOwnerAssignment(BaseModel):
@@ -1821,15 +1846,22 @@ def admin_timecode_review(request: Request, cand_id: int, body: TimecodeReview):
     if body.action == "approve":
         label = body.timecode_label or c["timecode_label"]
         end_label = body.timecode_end_label or c["timecode_end_label"]
+        if tc_label_to_seconds(label) is None or (end_label and tc_label_to_seconds(end_label) is None):
+            conn.close()
+            raise HTTPException(400, "Некорректный таймкод")
         conn.execute(
             "UPDATE scenes SET timecode_label=?, timecode_seconds=?, timecode_end_label=?, timecode_end_seconds=?,"
             " service=?, verified=1, version_note=?, watch_url=COALESCE(?, watch_url) WHERE id=?",
-            (label, c["timecode_seconds"], end_label, c["timecode_end_seconds"],
+            (label, tc_label_to_seconds(label), end_label, tc_label_to_seconds(end_label) if end_label else None,
              body.service or c["service"],
              body.version_note or f"проверено по субтитрам {c['source']}", body.watch_url,
              c["scene_id"]))
-        conn.execute("UPDATE timecode_candidates SET status='approved', reviewed_at=?, reviewed_by='admin' WHERE id=?",
-                     (now_iso(), cand_id))
+        conn.execute("UPDATE timecode_candidates SET status='approved', reviewed_at=?, reviewed_by='admin', "
+                     "timecode_label=?, timecode_seconds=?, timecode_end_label=?, timecode_end_seconds=?, "
+                     "service=?, moment_label=COALESCE(?,moment_label) WHERE id=?",
+                     (now_iso(), label, tc_label_to_seconds(label), end_label,
+                      tc_label_to_seconds(end_label) if end_label else None, body.service or c["service"],
+                      body.moment_label, cand_id))
     elif body.action == "reject":
         conn.execute("UPDATE timecode_candidates SET status='rejected', reviewed_at=?, reviewed_by='admin' WHERE id=?",
                      (now_iso(), cand_id))
@@ -1867,9 +1899,10 @@ def admin_verify_scene(request: Request, scene_id: int, body: SceneVerify):
     conn.execute(
         "UPDATE scenes SET service=COALESCE(?, service), version_note=COALESCE(?, version_note),"
         " timecode_label=COALESCE(?, timecode_label), timecode_seconds=COALESCE(?, timecode_seconds),"
+        " timecode_end_label=COALESCE(?, timecode_end_label), timecode_end_seconds=COALESCE(?, timecode_end_seconds),"
         " watch_url=COALESCE(?, watch_url), verified=1, verified_at=?, status='approved' WHERE id=?",
         (body.service, body.version_note, body.timecode_label, body.timecode_seconds,
-         body.watch_url, now_iso(), scene_id),
+         body.timecode_end_label, body.timecode_end_seconds, body.watch_url, now_iso(), scene_id),
     )
     conn.commit()
     conn.close()

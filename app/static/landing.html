@@ -92,13 +92,14 @@
 <script>
 (async function loadDaily() {
   const box = document.getElementById("daily-scene");
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"})[c]);
   async function load() {
     try {
       const s = await (await fetch("/api/scenes/daily")).json();
-      box.innerHTML = `<div class="movie">🎬 <b>${s.movie_title}</b> (${s.movie_year})</div>
-        <div class="tc">⏱ ${s.timecode_label || "—"}</div>
-        <p>${s.description || ""}</p>
-        <div class="tags">${(s.occasion_tags || []).map(t => `<span class="tag">${t}</span>`).join("")}</div>`;
+      box.innerHTML = `<div class="movie">🎬 <b>${esc(s.movie_title)}</b> (${esc(s.movie_year)})</div>
+        <div class="tc">⏱ ${esc(s.timecode_label || "—")}</div>
+        <p>${esc(s.description || "")}</p>
+        <div class="tags">${(s.occasion_tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>`;
     } catch (e) { box.textContent = "Каталог пока пуст 🎬"; }
   }
   await load();

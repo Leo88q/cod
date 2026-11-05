@@ -40,8 +40,11 @@
   }
 
   const openLink = (url) => {
-    if (TG && TG.openTelegramLink) TG.openTelegramLink(url);
-    else window.open(url, "_blank");
+    const parsed = new URL(url, location.href);
+    if (!["http:", "https:"].includes(parsed.protocol)) return;
+    if (TG && parsed.hostname === "t.me" && TG.openTelegramLink) TG.openTelegramLink(parsed.href);
+    else if (TG && TG.openLink) TG.openLink(parsed.href);
+    else window.open(parsed.href, "_blank", "noopener,noreferrer");
   };
 
   // ---------- состояние ----------
@@ -203,6 +206,7 @@
           <div id="f-moods">${chips(MOODS, createMood, () => {})}</div>
           <div class="muted">Выбрано сцен: <b id="sel-count">0</b></div>
           <div id="scene-list" class="scene-list"></div>
+          <div id="moment-picker"></div>
         </div>
         <label class="field"><span>Ваше сообщение</span>
           <textarea id="f-message" rows="3" maxlength="500" placeholder="Пара тёплых слов…"></textarea></label>
@@ -251,6 +255,7 @@
         : '<div class="muted">Ничего не нашлось — попробуй другой повод или поиск</div>';
       attachSceneListClicks(list, () => {
         document.getElementById("sel-count").textContent = state.selected.size;
+        renderMomentPicker();
       });
     };
     // голосовое сообщение через MediaRecorder
@@ -342,7 +347,8 @@
       if (file) {
         const fd = new FormData(); fd.append("file", file);
         const up = await fetch("/api/upload", { method: "POST", body: fd });
-        if (up.ok) photo = (await up.json()).path;
+        if (!up.ok) { toast("Не удалось загрузить фото. Повторите попытку."); return; }
+        photo = (await up.json()).path;
       }
       const openAt = document.getElementById("f-openat").value;
       const body = {
@@ -351,7 +357,7 @@
         recipient_city: document.getElementById("f-city").value || null,
         title: document.getElementById("f-title").value || null,
         occasion: createOccasion, tone: document.getElementById("f-tone").value,
-        scene_ids: [...state.selected],
+        scene_ids: [...state.selected], moments: state.moments,
         message_text: document.getElementById("f-message").value || null,
         message_photo: photo,
         format: document.getElementById("f-format").value,
@@ -669,7 +675,8 @@
     }
     box.innerHTML = html;
     box.querySelectorAll("[data-moment]").forEach((b) => (b.onclick = () => {
-      const [sid, tc] = b.dataset.moment.split(":");
+      const separator = b.dataset.moment.indexOf(":");
+      const sid = b.dataset.moment.slice(0, separator), tc = b.dataset.moment.slice(separator + 1);
       state.moments[sid] = tc;
       box.querySelectorAll("[data-moment]").forEach((x) => x.classList.toggle("active", x.dataset.moment === b.dataset.moment));
     }));
@@ -781,9 +788,8 @@
         scenes = d.scenes; total = d.scenes.length;
       } else if (st.bookmarks) {
         await loadBookmarks();
-        const ids = [...state.bookmarks];
-        const all = await searchScenes({ limit: 50 });
-        scenes = all.filter((s) => ids.includes(s.id)); total = scenes.length;
+        const bookmarked = await api(`/api/bookmarks?telegram_id=${TG_ID}`);
+        scenes = bookmarked.scenes; total = scenes.length;
       } else if (st.q) {
         const d = await api("/api/scenes/semantic", { method: "POST", body: {
           query: st.q, occasion: st.occasion || null, limit: 50 } });
@@ -1098,11 +1104,15 @@
         <p class="muted" style="margin:8px 0">Статус: <b>${p.status === "paid" ? "✅ оплачено" : esc(p.status)}</b> · провайдер: ${esc(p.provider)}</p>
         ${p.status === "pending"
           ? `<button id="btn-pay" class="btn primary">${p.provider === "dev" ? "Оплатить (dev)" : "Перейти к оплате"}</button>`
-          : `<p class="muted">Эффект применён ✅</p>`}
+          : p.status === "paid" ? `<p class="muted">Эффект применён ✅</p>`
+          : (p.status === "creating" || p.status.startsWith("verifying_")) ? `<p class="muted">Платёж обрабатывается. Обновите статус через несколько секунд.</p><button id="pay-refresh" class="btn ghost">Обновить</button>`
+          : `<p class="muted">Платёж не завершён.</p>`}
         <div class="row" style="justify-content:center;margin-top:10px">
           <button class="btn ghost small" onclick="history.back()">Назад</button>
         </div>
       </div></section>`;
+    const refresh = document.getElementById("pay-refresh");
+    if (refresh) refresh.onclick = () => renderPay(pid);
     const btn = document.getElementById("btn-pay");
     if (btn) btn.onclick = async () => {
       if (p.provider === "dev") {
@@ -1258,7 +1268,7 @@
           document.getElementById("adm-load").click();
         };
         body.querySelectorAll(".tc-approve").forEach((b) => (b.onclick = async () => {
-          await adminApi(`/api/admin/timecodes/${b.dataset.id}/review`, { method: "POST", body: { action: "approve" } });
+          await adminApi(`/api/admin/timecodes/${b.dataset.id}/review`, { method: "POST", body: { action: "approve", moment_label: b.closest(".tl-item").querySelector(".tc-label").value || null } });
           toast("Таймкод одобрен ✅ verified=1"); document.getElementById("adm-load").click();
         }));
         body.querySelectorAll(".tc-reject").forEach((b) => (b.onclick = async () => {
@@ -1314,5 +1324,8 @@
   }
 
   // ---------- старт ----------
+  const startParam = (TG && TG.initDataUnsafe && TG.initDataUnsafe.start_param) || new URLSearchParams(location.search).get("tgWebAppStartParam") || "";
+  if (!location.hash && /^g_[A-Za-z0-9_-]+$/.test(startParam)) location.hash = "#/g/" + startParam.slice(2);
+  else if (!location.hash && /^card_[A-Za-z0-9_-]+$/.test(startParam)) location.hash = "#/card/" + startParam.slice(5);
   loadBookmarks().finally(route);
 })();

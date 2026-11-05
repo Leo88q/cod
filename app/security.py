@@ -3,6 +3,7 @@
 import hashlib
 import hmac
 import json
+import re
 import time
 import urllib.parse
 from typing import Optional
@@ -18,9 +19,12 @@ def validate_init_data(init_data: str, bot_token: str, max_age: int = 24 * 3600)
     Возвращает dict с полями initData (user — JSON-строкой) или None."""
     if not init_data or not bot_token:
         return None
-    parsed = dict(urllib.parse.parse_qsl(init_data, keep_blank_values=True))
+    pairs = urllib.parse.parse_qsl(init_data, keep_blank_values=True)
+    parsed = dict(pairs)
+    if len(parsed) != len(pairs):
+        return None
     received_hash = parsed.pop("hash", None)
-    if not received_hash:
+    if not received_hash or not re.fullmatch(r"[0-9a-f]{64}", received_hash):
         return None
     data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(parsed.items()))
     secret_key = hmac.new(b"WebAppData", bot_token.encode(), hashlib.sha256).digest()
@@ -43,29 +47,29 @@ def upsert_user_from_init_data(init_data: str) -> Optional[dict]:
         return None
     try:
         tg_user = json.loads(parsed.get("user", "{}"))
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, TypeError):
+        return None
+    if not isinstance(tg_user, dict):
         return None
     tg_id = tg_user.get("id")
-    if not tg_id:
+    if type(tg_id) is not int or not 0 < tg_id < 2**63:
+        return None
+    fields = [tg_user.get(key) for key in ("username", "first_name", "language_code")]
+    if any(value is not None and not isinstance(value, str) for value in fields):
         return None
     conn = connect(config.DB_PATH)
-    row = conn.execute("SELECT * FROM users WHERE telegram_id = ?", (tg_id,)).fetchone()
-    if row:
+    try:
         conn.execute(
-            "UPDATE users SET username=?, first_name=?, lang=? WHERE telegram_id=?",
-            (tg_user.get("username"), tg_user.get("first_name"), tg_user.get("language_code"), tg_id),
+            "INSERT INTO users (telegram_id,username,first_name,lang) VALUES (?,?,?,?) "
+            "ON CONFLICT(telegram_id) DO UPDATE SET username=excluded.username, "
+            "first_name=excluded.first_name, lang=excluded.lang",
+            (tg_id, *fields),
         )
+        row = conn.execute("SELECT * FROM users WHERE telegram_id=?", (tg_id,)).fetchone()
         conn.commit()
-        row = conn.execute("SELECT * FROM users WHERE telegram_id = ?", (tg_id,)).fetchone()
-    else:
-        cur = conn.execute(
-            "INSERT INTO users (telegram_id, username, first_name, lang) VALUES (?,?,?,?)",
-            (tg_id, tg_user.get("username"), tg_user.get("first_name"), tg_user.get("language_code")),
-        )
-        conn.commit()
-        row = conn.execute("SELECT * FROM users WHERE id = ?", (cur.lastrowid,)).fetchone()
-    conn.close()
-    return dict(row)
+        return dict(row)
+    finally:
+        conn.close()
 
 
 def request_user(request: Request, body_telegram_id: Optional[int] = None) -> Optional[dict]:
@@ -76,13 +80,13 @@ def request_user(request: Request, body_telegram_id: Optional[int] = None) -> Op
         return upsert_user_from_init_data(init_data)
     if config.ALLOW_ANON and body_telegram_id:
         conn = connect(config.DB_PATH)
-        row = conn.execute("SELECT * FROM users WHERE telegram_id = ?", (body_telegram_id,)).fetchone()
-        if not row:
-            cur = conn.execute("INSERT INTO users (telegram_id) VALUES (?)", (body_telegram_id,))
+        try:
+            conn.execute("INSERT INTO users (telegram_id) VALUES (?) ON CONFLICT(telegram_id) DO NOTHING", (body_telegram_id,))
+            row = conn.execute("SELECT * FROM users WHERE telegram_id = ?", (body_telegram_id,)).fetchone()
             conn.commit()
-            row = conn.execute("SELECT * FROM users WHERE id = ?", (cur.lastrowid,)).fetchone()
-        conn.close()
-        return dict(row)
+            return dict(row)
+        finally:
+            conn.close()
     return None
 
 
@@ -92,16 +96,22 @@ def require_admin(request: Request) -> None:
         raise HTTPException(403, "Нужен X-Admin-Token")
 
 
-def log_consent(gift_id: Optional[str], user_id: Optional[int], consent_type: str, request: Request) -> None:
-    conn = connect(config.DB_PATH)
-    conn.execute(
-        "INSERT INTO consents (user_id, gift_id, consent_type, ip, user_agent, policy_version) VALUES (?,?,?,?,?,?)",
-        (user_id, gift_id, consent_type,
-         request.client.host if request.client else None,
-         request.headers.get("user-agent"), config.POLICY_VERSION),
-    )
-    conn.commit()
-    conn.close()
+def log_consent(gift_id: Optional[str], user_id: Optional[int], consent_type: str, request: Request, conn=None) -> None:
+    owned = conn is None
+    if owned:
+        conn = connect(config.DB_PATH)
+    try:
+        conn.execute(
+            "INSERT INTO consents (user_id, gift_id, consent_type, ip, user_agent, policy_version) VALUES (?,?,?,?,?,?)",
+            (user_id, gift_id, consent_type,
+             request.client.host if request.client else None,
+             request.headers.get("user-agent"), config.POLICY_VERSION),
+        )
+        if owned:
+            conn.commit()
+    finally:
+        if owned:
+            conn.close()
 
 
 def require_self(request: Request, telegram_id: int) -> None:
