@@ -103,6 +103,11 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/scenes?status=draft': {scenes:[]},
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
     '/api/admin/timecodes?status=pending': {candidates:[]},
+    '/api/admin/moderation': {stats:{total:146,pending:62,draft:84,verified:0,with_real_timecode:62,with_draft_timecode:84,with_open_url:10,with_local_command:146},
+      items:[{scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'draft',description:'Новогодняя Москва',why_fits:'',
+        candidate_id:null,candidate_status:null,proposal_kind:'draft',proposal_note:'ЧЕРНОВИК',proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,
+        moment_label:'Женя у двери',open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',open_provider:'youtube_mosfilm',open_kind:'youtube',open_note:'Официальная версия',
+        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''}]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:0},scenes_with_candidates:0,total:0},
       moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
@@ -123,6 +128,10 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные бесплатные версии: 10 сцен/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные полные версии для ручного поиска момента/);
     assert.ok(dom.window.document.querySelector('.md-target'));
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Модерация таймкодов — 146 сцен/);
+    assert.ok(dom.window.document.querySelector('.mod-item'));
+    assert.match(dom.window.document.querySelector('.mod-item').dataset.open, /t=1976s/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ЧЕРНОВИК/);
   } finally { dom.window.close(); }
 });
 
@@ -149,6 +158,11 @@ test('admin timecode queue supports manual verification fields', async () => {
         {kind:'local',priority:3,label:'⏱ Открыть локальный файл на моменте',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
       ]
     }]},
+    '/api/admin/moderation': {stats:{total:146,pending:62,draft:84,verified:0,with_real_timecode:62,with_draft_timecode:84,with_open_url:10,with_local_command:146},
+      items:[{scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'draft',description:'Новогодняя Москва',why_fits:'',
+        candidate_id:null,candidate_status:null,proposal_kind:'draft',proposal_note:'ЧЕРНОВИК',proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,
+        moment_label:'Женя у двери',open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',open_provider:'youtube_mosfilm',open_kind:'youtube',open_note:'Официальная версия',
+        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''}]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:1},scenes_with_candidates:1,total:1},
       moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],

@@ -128,8 +128,8 @@ def test_library_endpoint_exposes_manual_moderation_targets(client):
 
 def test_manual_candidate_is_pending_and_requires_version_note(client):
     payload = {
-        "movie_title": "Ирония судьбы, или С лёгким паром!",
-        "movie_year": 1975,
+        "movie_title": "Белое солнце пустыни",
+        "movie_year": 1969,
         "timecode_label": "0:32:56",
         "timecode_end_label": "0:33:21",
         "moment_label": "Женя у двери",

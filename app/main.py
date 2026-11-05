@@ -21,6 +21,7 @@ from . import bot as bot_module
 from . import config, payments, scheduler, search as semantic
 from .db import connect, init_db, new_code, row_to_dict, enqueue_notification
 from .flowwow import watch_links, order_link
+from .moderation_board import build_board
 from .moderation_links import (
     build_moderation_links, load_official_videos, moderation_coverage, moderation_targets,
 )
@@ -1786,6 +1787,19 @@ class ManualTimecodeCandidate(BaseModel):
     watch_url: Optional[str] = None
 
 
+class ModerationConfirm(BaseModel):
+    """Единое действие на экране модерации: подтвердить / отклонить / пропустить."""
+    scene_id: int
+    action: str  # confirm / reject / skip
+    candidate_id: Optional[int] = None
+    timecode_label: str
+    timecode_end_label: Optional[str] = None
+    version_note: Optional[str] = None
+    moment_label: Optional[str] = None
+    watch_url: Optional[str] = None
+    source_url: Optional[str] = None
+
+
 @app.get("/api/admin/timecodes")
 def admin_timecodes(request: Request, status: str = "pending"):
     """Очередь кандидатов таймкодов из внешних библиотек (OpenSubtitles/OPUS и др.)."""
@@ -1854,6 +1868,101 @@ def admin_timecode_manual(request: Request, body: ManualTimecodeCandidate):
     cid = cur.lastrowid
     conn.close()
     return {"ok": True, "id": cid, "scene_id": scene["id"], "status": "pending"}
+
+
+@app.get("/api/admin/moderation")
+def admin_moderation_board(request: Request):
+    """ВСЕ approved-сцены одной очередью: у каждой есть предложенный отрезок
+    и ссылка/команда, открывающая фильм на этом времени."""
+    require_admin(request)
+    conn = connect(config.DB_PATH)
+    board = build_board(conn, load_official_videos())
+    conn.close()
+    return board
+
+
+@app.post("/api/admin/moderation/confirm")
+def admin_moderation_confirm(request: Request, body: ModerationConfirm):
+    """Оператор посмотрел отрезок и подтвердил/отклонил его.
+
+    `confirm` = ручная проверка, поэтому это ЕДИНСТВЕННОЕ место в этом экране,
+    где ставится `verified=1`. Черновик без candidate_id превращается в
+    одобренного кандидата; готовый кандидат редактируется и апрувится.
+    """
+    require_admin(request)
+    if body.action not in ("confirm", "reject", "skip"):
+        raise HTTPException(400, "action должен быть confirm/reject/skip")
+    start = tc_label_to_seconds(body.timecode_label)
+    end = tc_label_to_seconds(body.timecode_end_label) if body.timecode_end_label else None
+    if start is None or (body.timecode_end_label and end is None):
+        raise HTTPException(400, "Некорректный таймкод: используй формат 0:32:56")
+    if body.action == "confirm" and not (body.version_note or "").strip():
+        raise HTTPException(400, "Укажи version_note: версия издания обязательна")
+    conn = connect(config.DB_PATH)
+    scene = conn.execute("SELECT * FROM scenes WHERE id=? AND status='approved'", (body.scene_id,)).fetchone()
+    if not scene:
+        conn.close()
+        raise HTTPException(404, "Сцена не найдена")
+    if body.action == "skip":
+        conn.close()
+        return {"ok": True, "action": "skip", "scene_id": body.scene_id}
+
+    if body.candidate_id:
+        cand = conn.execute("SELECT * FROM timecode_candidates WHERE id=? AND scene_id=?",
+                            (body.candidate_id, body.scene_id)).fetchone()
+        if not cand:
+            conn.close()
+            raise HTTPException(404, "Кандидат не найден")
+    else:
+        cand = None
+
+    if body.action == "reject":
+        if cand:
+            conn.execute("UPDATE timecode_candidates SET status='rejected', reviewed_at=?, reviewed_by='admin' WHERE id=?",
+                         (now_iso(), cand["id"]))
+        conn.commit()
+        conn.close()
+        return {"ok": True, "action": "reject", "scene_id": body.scene_id}
+
+    source = body.source_url or (cand["source"] if cand else "moderation-board")
+    license_note = (cand["source_license"] if cand else
+                    "Официальная/легальная версия; таймкод подтверждён оператором вручную")
+    digest = hashlib.sha1(
+        f"{scene['movie_title']}|{scene['movie_year']}|{body.timecode_label}|{body.version_note}".encode("utf-8")
+    ).hexdigest()
+    if cand:
+        conn.execute(
+            "UPDATE timecode_candidates SET status='approved', reviewed_at=?, reviewed_by='admin',"
+            " timecode_label=?, timecode_seconds=?, timecode_end_label=?, timecode_end_seconds=?,"
+            " moment_label=COALESCE(?, moment_label), service=? WHERE id=?",
+            (now_iso(), body.timecode_label, start, body.timecode_end_label, end,
+             body.moment_label, scene["service"] or "manual", cand["id"]),
+        )
+        cid = cand["id"]
+    else:
+        cur = conn.execute(
+            "INSERT INTO timecode_candidates (scene_id, service, timecode_label, timecode_seconds,"
+            " timecode_end_label, timecode_end_seconds, source, source_license, evidence_sha1,"
+            " line_index, match_score, moment_label, confidence, consensus, auto, status,"
+            " created_at, reviewed_at, reviewed_by)"
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'approved',?,?,'admin')",
+            (body.scene_id, scene["service"] or "manual", body.timecode_label, start,
+             body.timecode_end_label, end, source, license_note, digest, 0, 0.0,
+             body.moment_label or scene["description"], 0.0, 1, 0, now_iso(), now_iso()),
+        )
+        cid = cur.lastrowid
+    conn.execute(
+        "UPDATE scenes SET timecode_label=?, timecode_seconds=?, timecode_end_label=?,"
+        " timecode_end_seconds=?, service=?, verified=1, verified_at=?, version_note=?,"
+        " watch_url=COALESCE(?, watch_url) WHERE id=?",
+        (body.timecode_label, start, body.timecode_end_label, end,
+         scene["service"] or "manual", now_iso(), (body.version_note or "").strip(),
+         body.watch_url, body.scene_id),
+    )
+    conn.commit()
+    conn.close()
+    return {"ok": True, "action": "confirm", "scene_id": body.scene_id,
+            "candidate_id": cid, "verified": 1, "timecode_label": body.timecode_label}
 
 
 @app.get("/api/admin/timecode-library")

@@ -1193,6 +1193,9 @@
         const unv = await adminApi("/api/admin/scenes?status=approved&verified=0");
         const tcs = await adminApi("/api/admin/timecodes?status=pending");
         const lib = await adminApi("/api/admin/timecode-library");
+        const board = await adminApi("/api/admin/moderation");
+        const boardItems = board && Array.isArray(board.items) ? board.items : [];
+        const boardStats = board && board.stats ? board.stats : {};
         const libCat = lib && lib.catalog ? lib.catalog : {};
         const libCand = lib && lib.candidates ? lib.candidates : {};
         const libMan = lib && lib.manifests ? lib.manifests : {};
@@ -1200,7 +1203,43 @@
         const libTargets = Array.isArray(libMod.targets) ? libMod.targets : [];
         const libFull = libMan.full || {};
         const libStatus = libCand.by_status || {};
-        body.innerHTML = `<section class="panel"><h3>📚 Библиотека таймкодов</h3>
+        body.innerHTML = `<section class="panel" id="moderation-board"><h3>🎬 Модерация таймкодов — ${Number(boardStats.total ?? 0)} сцен</h3>
+          <p class="muted">Все сцены в одном месте. У каждой уже есть <b>конкретный отрезок</b> и кнопка, открывающая фильм на этом времени. Ты не ищешь момент с нуля: открываешь, смотришь, поправляешь при необходимости и жмёшь «✓ Подтвердить».</p>
+          <p class="muted">✅ ${Number(boardStats.with_real_timecode ?? 0)} из субтитров · ✏️ ${Number(boardStats.with_draft_timecode ?? 0)} черновиков (время подставлено, НЕ из субтитров — поправь) · ▶ ${Number(boardStats.with_open_url ?? 0)} с автозапуском · ⏱ ${Number(boardStats.with_local_command ?? 0)} с командой для локального файла · проверено ${Number(boardStats.verified ?? 0)}</p>
+          <div class="row" style="margin-bottom:8px">
+            <input id="mod-search" class="search-input" style="max-width:220px" placeholder="поиск по названию">
+            <select id="mod-filter" class="search-input" style="max-width:180px">
+              <option value="all">Все</option>
+              <option value="pending">С кандидатом</option>
+              <option value="draft">Черновики</option>
+              <option value="verified">Проверенные</option>
+            </select>
+            <span id="mod-visible" class="muted"></span>
+          </div>
+          <div id="mod-list">
+          ${boardItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-cmd="${esc(it.local_command || "")}">
+            <p><b>${esc(it.movie_title)}</b> (${Number(it.movie_year ?? 0)}) ${it.imdb_id ? `· ${esc(it.imdb_id)}` : ""} · <b>${esc(it.status === "verified" ? "проверено" : it.status === "pending" ? "кандидат из SRT" : "черновик")}</b></p>
+            <p class="muted">${esc(it.description || "")}</p>
+            <p>⏱ <b>${esc(it.proposed_label)}–${esc(it.proposed_end_label)}</b> · ${it.proposal_kind === "srt" ? "время из субтитров" : "<b>ЧЕРНОВИК — поправь после просмотра</b>"} · ${esc(it.open_provider)}</p>
+            <p class="muted">${esc(it.proposal_note || "")} ${esc(it.open_note || "")}</p>
+            <div class="row" style="margin-top:4px">
+              ${it.open_url ? `<button class="btn ghost small mod-open">▶ Открыть на ${esc(it.proposed_label)}</button>` : ""}
+              <button class="btn ghost small mod-local">⏱ Локально (mpv)</button>
+              <button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать время</button>
+              <a class="muted" href="${esc(it.search_url || "#")}" target="_blank" rel="noopener noreferrer">🔍 Поиск</a>
+              ${it.imdb_url ? `<a class="muted" href="${esc(it.imdb_url)}" target="_blank" rel="noopener noreferrer">IMDb</a>` : ""}
+            </div>
+            <div class="row" style="margin-top:4px">
+              <input class="search-input mod-start" style="max-width:95px" value="${esc(it.proposed_label)}">
+              <input class="search-input mod-end" style="max-width:95px" value="${esc(it.proposed_end_label)}">
+              <input class="search-input mod-version" style="max-width:150px" placeholder="версия издания *" value="${esc(it.scene_version_note || "")}">
+              <input class="search-input mod-label" style="max-width:220px" placeholder="метка момента" value="${esc(it.moment_label || "")}">
+              <button class="btn ok small mod-confirm">✓ Подтвердить</button>
+              <button class="btn ghost small mod-reject">✗ Отклонить</button>
+            </div>
+          </article>`).join("") || '<p class="muted">Сцены не загрузились.</p>'}
+          </div>
+          </section><details open><summary class="muted">Служебные панели и старые очереди</summary><section class="panel"><h3>📚 Библиотека таймкодов</h3>
           <p>Каталог: ${Number(libCat.total ?? 0)} сцен · IMDb ID: ${Number(libCat.with_imdb ?? 0)} · с реальным таймкодом: ${Number(libCat.with_timecode ?? 0)} · проверено вручную: ${Number(libCat.verified ?? 0)}</p>
           <p>Кандидаты: pending ${Number(libStatus.pending ?? 0)}, approved ${Number(libStatus.approved ?? 0)}, rejected ${Number(libStatus.rejected ?? 0)} · сцен в очереди: ${Number(libCand.scenes_with_candidates ?? 0)}</p>
           <p class="muted">Пилот: ${Number(libMan.pilot_scenes ?? 0)} сцен · полный манифест: ${Number(libFull.matched_scenes ?? 0)} из ${Number(libFull.catalog_scenes ?? 0)} · файлов субтитров: ${Number(libFull.subtitle_files ?? 0)} · сомнительных: ${Number(libMan.ambiguous_count ?? 0)} · исключено ложных: ${Number(libMan.excluded_count ?? 0)}</p>
@@ -1312,7 +1351,70 @@
                   <button class="btn ghost small tc-reject" data-id="${c.id}">✗ Отклонить</button>
                 </div></div>`;
             }).join("") || '<p class="muted">Очередь пуста ✅</p>'}
-          </div>`;
+          </div></details>`;
+        const modSearch = document.getElementById('mod-search');
+        const modFilter = document.getElementById('mod-filter');
+        const modVisible = document.getElementById('mod-visible');
+        const applyModFilter = () => {
+          const q = (modSearch && modSearch.value || '').toLowerCase();
+          const f = modFilter && modFilter.value || 'all';
+          let n = 0;
+          body.querySelectorAll('.mod-item').forEach(el => {
+            const show = (!q || (el.dataset.search || '').includes(q)) && (f === 'all' || el.dataset.status === f);
+            el.style.display = show ? '' : 'none';
+            if (show) n++;
+          });
+          if (modVisible) modVisible.textContent = `Показано: ${n}`;
+        };
+        if (modSearch) modSearch.oninput = applyModFilter;
+        if (modFilter) modFilter.onchange = applyModFilter;
+        applyModFilter();
+        body.querySelectorAll('.mod-open').forEach((b) => (b.onclick = () => {
+          const box = b.closest('.mod-item');
+          if (box && box.dataset.open) openLink(box.dataset.open);
+        }));
+        body.querySelectorAll('.mod-local').forEach((b) => (b.onclick = async () => {
+          const box = b.closest('.mod-item');
+          try { await navigator.clipboard.writeText(box.dataset.cmd || ''); toast('Команда скопирована: замени путь к файлу ⏱'); }
+          catch (e) { toast('Скопируй команду вручную'); }
+        }));
+        body.querySelectorAll('.mod-copy').forEach((b) => (b.onclick = async () => {
+          try { await navigator.clipboard.writeText(b.dataset.tc || ''); toast('Время скопировано ⏱'); }
+          catch (e) { toast('Скопируй время вручную'); }
+        }));
+        body.querySelectorAll('.mod-confirm').forEach((b) => (b.onclick = async () => {
+          const box = b.closest('.mod-item');
+          const payload = {
+            scene_id: Number(box.dataset.scene),
+            action: 'confirm',
+            candidate_id: box.dataset.candidate ? Number(box.dataset.candidate) : null,
+            timecode_label: (box.querySelector('.mod-start').value || '').trim(),
+            timecode_end_label: (box.querySelector('.mod-end').value || '').trim() || null,
+            version_note: (box.querySelector('.mod-version').value || '').trim(),
+            moment_label: (box.querySelector('.mod-label').value || '').trim() || null,
+            source_url: box.dataset.source || null,
+            watch_url: box.dataset.open && box.dataset.open.includes('youtube.com') ? box.dataset.open : null,
+          };
+          if (!payload.version_note) { toast('Укажи версию издания'); return; }
+          try {
+            await adminApi('/api/admin/moderation/confirm', { method: 'POST', body: payload });
+            toast('Таймкод подтверждён ✅ verified=1');
+            document.getElementById('adm-load').click();
+          } catch (e) { toast(e.message); }
+        }));
+        body.querySelectorAll('.mod-reject').forEach((b) => (b.onclick = async () => {
+          const box = b.closest('.mod-item');
+          const payload = {
+            scene_id: Number(box.dataset.scene), action: 'reject',
+            candidate_id: box.dataset.candidate ? Number(box.dataset.candidate) : null,
+            timecode_label: (box.querySelector('.mod-start').value || '').trim(),
+            timecode_end_label: (box.querySelector('.mod-end').value || '').trim() || null,
+          };
+          try {
+            await adminApi('/api/admin/moderation/confirm', { method: 'POST', body: payload });
+            toast('Отклонено'); document.getElementById('adm-load').click();
+          } catch (e) { toast(e.message); }
+        }));
         body.querySelectorAll('.notification-retry').forEach(button => button.onclick = async () => {
           if (!window.confirm('Вернуть уведомление в очередь? Сначала устраните причину ошибки. Если Telegram уже принял сообщение до сбоя, возможен дубль.')) return;
           button.disabled = true;

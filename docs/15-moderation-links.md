@@ -68,7 +68,7 @@ python3 -m pip install yt-dlp   # только на локальной маши�
 
 ## Проверки
 
-- `109 passed` pytest, `13 passed` Node/jsdom; `bash scripts/check.sh` с живым сервером — 5/5, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
+- `112 passed` pytest, `13 passed` Node/jsdom; `bash scripts/check.sh` с живым сервером — 5/5, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - Тесты покрывают парсинг таймкода, YouTube/Vimeo deep link, локальные команды, приоритет официальной ссылки, fallback для неизвестного фильма, выдачу `moderation_links` в админском API и новые кнопки в UI.
 - `official_free_videos.json` намеренно помечен `verified_by_human: false`: автотесты проверяют механику, но не легальный статус и не совпадение издания.
 
@@ -79,4 +79,6 @@ python3 -m pip install yt-dlp   # только на локальной маши�
 - Кинопоиск/ivi/Okko могут требовать подписку — это ожидаемо; локальная копия и официальные бесплатные загрузки дают путь без неё.
 - `watch_links` по-прежнему поисковые; автоматический `?t=` делается только там, где провайдер имеет стабильный публичный формат (YouTube, Vimeo).
 
-Связанные документы: [13-timecode-verification.md](13-timecode-verification.md), [14-timecode-library-scale.md](14-timecode-library-scale.md), [06-timecode-sources.md](06-timecode-sources.md).
+Основной экран модерации теперь описан в [16-moderation-board.md](16-moderation-board.md): все 146 сцен, готовый отрезок и открытие на моменте. Здесь — только алгоритм построения ссылок.
+
+Связанные документы: [13-timecode-verification.md](13-timecode-verification.md), [14-timecode-library-scale.md](14-timecode-library-scale.md), [06-timecode-sources.md](06-timecode-sources.md), [16-moderation-board.md](16-moderation-board.md).
