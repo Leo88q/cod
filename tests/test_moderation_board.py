@@ -54,7 +54,15 @@ def test_board_gates_all_scenes_without_evidence(client):
             assert it["proposed_label"] == "" and it["proposed_seconds"] is None
             assert it["local_command"] is None and it["open_url"] is None
             assert it["film_links"] and it["film_url"]  # ссылки есть даже без таймкода
+            assert it["starting_label"] and it["starting_command"]
+            assert it["starting_kind"] == "estimate"
             assert it["status"] in ("needs_curator", "verified")
+    # у всех 146 сцен свой начальный ориентир, а не один 0:32:56
+    assert board["stats"]["with_starting_timecode"] == board["stats"]["total"]
+    assert board["stats"]["unique_starting_timecodes"] == board["stats"]["total"]
+    starts = [i["starting_seconds"] for i in board["items"]]
+    assert len(set(starts)) == len(starts)
+    assert sum(1 for x in starts if x == 1976) <= 1
     # ни одной случайной минуты / черновика
     assert all(i["proposal_kind"] != "draft" for i in board["items"])
     assert all(i["proposed_label"] or i["proposal_kind"] == "none" for i in board["items"])

@@ -4,9 +4,11 @@
   * у каждой сцены есть один основной интент + ожидаемый тип фрагмента;
   * карточка с таймкодом = либо SRT-окно, прошедшее gate, либо якорь,
     зафиксированный куратором с конкретной минутой;
-  * карточка без таймкода НЕ получает случайного времени, но ВСЕГДА показывает
-    категорию, якорь эпизода и ссылки на фильм + форму добавления минуты;
-  * `verified=1` ставится только оператором через `/api/admin/moderation/confirm`.
+  * у КАЖДОЙ сцены есть уникальный НАЧАЛЬНЫЙ ОРИЕНТИР (не `0:32:56` всем подряд):
+    у 44 он совпадает с кандидатом, у остальных рассчитан по структуре фильма
+    и категории. Это стартовая точка отсмотра, а не проверенный момент;
+  * ссылки/`mpv --start` открывают именноориентир; `verified=1` ставится только
+    оператором через `/api/admin/moderation/confirm`.
 """
 import json
 from urllib.parse import quote
@@ -14,6 +16,7 @@ from urllib.parse import quote
 from .flowwow import SERVICE_SEARCH
 from .intent_taxonomy import (
     categories, category_by_id, fragment_types, intent_for, load_taxonomy,
+    starting_timecode,
 )
 from .moderation_links import (
     LOCAL_PLACEHOLDER, build_moderation_links, load_official_videos,
@@ -64,6 +67,7 @@ def build_board(conn, official: dict | None = None) -> dict:
         "SELECT * FROM scenes WHERE status='approved' ORDER BY movie_title, movie_year"
     ).fetchall()
     items = []
+    seen_starts: set[int] = set()
     for s in rows:
         title = s["movie_title"]
         year = s["movie_year"]
@@ -89,19 +93,35 @@ def build_board(conn, official: dict | None = None) -> dict:
             source = cand["source"]
             intent_score = float(cand["intent_score"] or 0)
             fragment_type = cand["fragment_type"] or intent["fragment_type"]
+            starting_seconds, starting_label = start, start_label
+            starting_kind = "curator" if is_curated else "srt"
+            starting_note = "Старт совпадает с отобранным/кураторским таймкодом."
         else:
             start = end = None
             start_label = end_label = ""
             proposal_kind = "none"
             evidence_kind = "none"
-            proposal_note = ("Таймкода пока нет — время НЕ выдумываем. Ниже якорь эпизода, "
-                             "ссылки на фильм и поле, куда куратор вписывает конкретную минуту.")
+            proposal_note = ("Проверенного таймкода пока нет. Ниже уникальный начальный "
+                             "ориентир, якорь эпизода, ссылки и поле для реальной минуты.")
             reason = ""
             candidate_id = None
             candidate_status = None
             source = None
             intent_score = 0.0
             fragment_type = intent["fragment_type"]
+            starting_label, starting_seconds = starting_timecode(
+                title, year, cat["id"], s["genre"])
+            starting_kind = "estimate"
+            starting_note = ("Начальный ориентир по структуре фильма и категории, "
+                             "НЕ проверенный момент. Поправь после просмотра.")
+
+        # Гарантируем: 146 разных стартов и ни одного надоевшего 0:32:56.
+        if starting_seconds == 1976:
+            starting_seconds += 13
+        while starting_seconds in seen_starts:
+            starting_seconds += 7
+        starting_label = seconds_to_label(starting_seconds)
+        seen_starts.add(starting_seconds)
 
         q = quote(f"{title} {year or ''}".strip())
         q_full = quote(f"{title} {year or ''} полный фильм".strip())
@@ -129,13 +149,23 @@ def build_board(conn, official: dict | None = None) -> dict:
             open_url = None
             open_provider = "no_timecode"
             open_kind = "no_timecode"
-            open_note = "Таймкод не задан: ссылки ниже открывают фильм/поиск, а не конкретный момент."
+            open_note = "Проверенного таймкода нет; ссылки ниже открывают начальный ориентир."
             source_url = None
 
-        # Ссылки есть у ВСЕХ карточек, даже без таймкода.
+        # Ссылка/команда на начальный ориентир есть у ВСЕХ карточек.
+        if video:
+            starting_open_url = youtube_deep_link(video.get("video_id", ""), starting_seconds)
+        elif s["watch_url"]:
+            starting_open_url = normalize_watch_url(s["watch_url"], starting_seconds) or s["watch_url"]
+        else:
+            starting_open_url = None
+        starting_command = f'mpv --start={starting_label} "{LOCAL_PLACEHOLDER}"'
+
+        # Ссылки на фильм тоже есть у всех; для ориентира подставляем его секунду.
         link_candidate = {
             "movie_title": title, "movie_year": year, "imdb_id": imdb,
-            "timecode_label": start_label or None, "timecode_seconds": start,
+            "timecode_label": start_label or starting_label,
+            "timecode_seconds": start if cand else starting_seconds,
             "timecode_end_seconds": end, "watch_url": s["watch_url"],
         }
         film_links = [
@@ -176,21 +206,23 @@ def build_board(conn, official: dict | None = None) -> dict:
             "proposal_note": proposal_note, "reason": reason,
             "proposed_label": start_label, "proposed_seconds": start,
             "proposed_end_label": end_label, "proposed_end_seconds": end,
+            "starting_label": starting_label, "starting_seconds": starting_seconds,
+            "starting_kind": starting_kind, "starting_note": starting_note,
+            "starting_open_url": starting_open_url, "starting_command": starting_command,
             "moment_label": (cand["moment_label"] if cand else None) or intent.get("curated_anchor", "")[:120],
             "open_url": open_url, "open_provider": open_provider, "open_kind": open_kind,
             "open_note": open_note, "source_url": source_url or film_url,
             "film_url": film_url, "film_links": film_links,
             "local_command": local_command,
             "gate_threshold": gate,
-            "curator_instruction": ("Открой фильм по ссылке, найди якорь эпизода, "
-                                   "впиши минуту и нажми «Добавить таймкод в отсмотр». "
-                                   "Карточка сразу получит deep link на этот момент."),
+            "curator_instruction": ("Открой фильм с начального ориентира, найди якорь эпизода, "
+                                   "поправь минуту и нажми «Добавить таймкод в отсмотр». "
+                                   "Карточка получит deep link на исправленный момент."),
             "search_url": SERVICE_SEARCH["kinopoisk"].format(q=q),
             "youtube_search_url": SERVICE_SEARCH["youtube"].format(q=q_full),
             "imdb_url": f"https://www.imdb.com/title/{imdb}/" if imdb else None,
         })
 
-    # Сначала карточки с таймкодом, затем проверенные, затем «нет таймкода».
     items.sort(key=lambda i: (
         i["status"] != "pending",
         not bool(i["open_url"]),
@@ -207,6 +239,9 @@ def build_board(conn, official: dict | None = None) -> dict:
         "needs_curator": sum(1 for i in items if i["status"] == "needs_curator"),
         "with_timecode": with_tc,
         "with_real_timecode": with_tc,
+        "with_starting_timecode": sum(1 for i in items if i["starting_label"]),
+        "unique_starting_timecodes": len({i["starting_seconds"] for i in items}),
+        "with_starting_open_url": sum(1 for i in items if i["starting_open_url"]),
         "with_open_url": sum(1 for i in items if i["open_url"]),
         "with_local_command": sum(1 for i in items if i["local_command"]),
         "with_film_links": sum(1 for i in items if i["film_links"]),

@@ -4,6 +4,7 @@
 `scene_intents.json`. В БД поля дублируются только для удобства SQL/админки;
 текст субтитров здесь не хранится вообще.
 """
+import hashlib
 import json
 import os
 
@@ -84,3 +85,48 @@ def backfill_intents(conn) -> int:
         n += 1
     conn.commit()
     return n
+
+
+def _fmt_start(seconds: int) -> str:
+    h, rem = divmod(int(seconds), 3600)
+    m, s = divmod(rem, 60)
+    return f"{h}:{m:02d}:{s:02d}"
+
+
+def starting_timecode(title: str, year: int | None, category: str,
+                      genre: str | None = None) -> tuple[str, int]:
+    """УНИКАЛЬНЫЙ начальный ориентир, а не повторяющийся `0:32:56`.
+
+    Это НЕ проверенный момент и НЕ результат SRT-скоринга. Старт считается по
+    структуре фильма: типичная длительность жанра/эпохи × доля, характерная для
+    категории (признание — ближе к финалу, праздник — ближе к началу, прощание —
+    почти в конце), плюс детерминированная индивидуальная поправка от названия.
+    Один и тот же фильм всегда получает одну и ту же точку.
+    """
+    tax = load_taxonomy()
+    fractions = tax.get("starting_fractions", {})
+    genre_minutes = tax.get("genre_minutes", {})
+    minutes = float(genre_minutes.get((genre or "").lower(), 112))
+    if year and year < 1980:
+        minutes -= 6
+    if year and year >= 2010:
+        minutes += 10
+    if "война и мир" in title.lower():
+        minutes = 420
+    elif "тихий дон" in title.lower():
+        minutes = 330
+    elif "семнадцать мгновений" in title.lower():
+        minutes = 360
+    minutes = max(80.0, minutes)
+    fraction = float(fractions.get(category, 0.5))
+    digest = hashlib.sha1(f"{title}|{year or ''}|{category}".encode("utf-8")).hexdigest()
+    jitter = (int(digest[:8], 16) % 600) - 300  # ±5 мин, чтобы не было одинаковых стартов
+    start = int(minutes * 60 * fraction) + jitter
+    max_start = int(minutes * 60) - 150
+    if start < 180:
+        start = 180 + int(digest[8:12], 16) % 420
+    if start > max_start:
+        start = max(180, max_start - int(digest[12:16], 16) % 120)
+    if start == 1976:  # не даём снова получить тот же надоевший 0:32:56
+        start += 41
+    return _fmt_start(start), start

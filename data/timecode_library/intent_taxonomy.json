@@ -3,6 +3,27 @@
   "comment": "Две оси систематизации: основной интент подарка + тип фрагмента. Таймкод попадает в модерацию только если SRT-окно набрало порог по этой категории. Текст субтитров не сохраняется.",
   "gate_threshold": 0.45,
   "min_lexicon_hits": 2,
+  "starting_fractions": {
+    "love_confession": 0.78,
+    "female_friendship": 0.42,
+    "male_friendship": 0.50,
+    "support_hope": 0.82,
+    "apology_reconciliation": 0.68,
+    "family_parents": 0.45,
+    "inspiration_dream": 0.60,
+    "memory_war": 0.55,
+    "anniversary_long_love": 0.72,
+    "holiday_comedy": 0.18,
+    "children_animation": 0.28,
+    "nostalgia_classic": 0.35,
+    "just_laugh": 0.38,
+    "quiet_farewell": 0.88
+  },
+  "genre_minutes": {
+    "мультфильм": 92, "комедия": 96, "драма": 125, "фантастика": 130,
+    "фэнтези": 140, "ромком": 106, "триллер": 116, "мюзикл": 115,
+    "боевик": 125, "приключения": 120, "ужасы": 100, "детектив": 110
+  },
   "min_clip_seconds": 25,
   "max_clip_seconds": 75,
   "min_gap_between_candidates_seconds": 60,

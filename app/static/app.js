@@ -1209,12 +1209,12 @@
             <span class="btn ok small">▶ К отсмотру: ${Number(boardStats.pending ?? 0)}</span>
             <span class="btn ghost small">📌 Нет таймкода — куратор: ${Number(boardStats.needs_curator ?? 0)}</span>
             <span class="btn ghost small">✅ Проверено: ${Number(boardStats.verified ?? 0)}</span>
-            <span class="muted">Таймкодов сейчас: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)}</span>
+            <span class="muted">Таймкодов: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · начальных ориентиров: ${Number(boardStats.with_starting_timecode ?? 0)} (уникальных ${Number(boardStats.unique_starting_timecodes ?? 0)}) · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)}</span>
           </div>
           <section class="panel" style="background:rgba(127,127,127,.06)"><h3>Как куратору отбирать — коротко</h3>
             <p><b>1. Карточки «▶ К отсмотру»</b>: таймкод и кнопка «Открыть на …» уже в карточке. Открой момент, поправь начало/конец, укажи <b>версию издания *</b>, жми «✓ Подтвердить».</p>
-            <p><b>2. Карточки «📌 Нет таймкода»</b>: время не выдумано. В карточке есть <b>якорь эпизода</b> и <b>ссылки на фильм</b>. Открой фильм, найди этот якорь, впиши минуту в поле и жми «➕ Добавить таймкод в отсмотр» — карточка сразу перейдёт в первый блок и получит deep link на момент.</p>
-            <p class="muted">Рандомных минут больше нет. Проверенных таймкодов пока ${Number(boardStats.verified ?? 0)}: «Добавить» ≠ «Подтвердить».</p>
+            <p><b>2. Карточки «📌 Нет таймкода»</b>: у каждой есть <b>свой начальный ориентир</b> (не 0:32:56 всем подряд), <b>якорь эпизода</b> и <b>ссылки на фильм</b>. Кнопка «▶ Открыть с ориентира» и команда mpv --start=… уже ведут на эту уникальную минуту. Поправь её после просмотра и жми «➕ Добавить таймкод в отсмотр» — карточка получит deep link на исправленный момент.</p>
+            <p class="muted">Ориентир — стартовая точка, НЕ проверенный момент. Рандомных минут нет: ориентир считается по категории и структуре фильма. Проверенных таймкодов пока ${Number(boardStats.verified ?? 0)}: «Добавить» ≠ «Подтвердить».</p>
           </section>
           <div class="row" style="margin-bottom:8px">
             <input id="mod-search" class="search-input" style="max-width:190px" placeholder="поиск по названию">
@@ -1231,21 +1231,23 @@
             <span id="mod-visible" class="muted"></span>
           </div>
           <div id="mod-list">
-          ${boardItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-film="${esc(it.film_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}">
+          ${boardItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-film="${esc(it.film_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}" data-starting="${esc(it.starting_label || "")}" data-starting-cmd="${esc(it.starting_command || "")}">
             <p><b>${esc(it.movie_title)}</b> (${Number(it.movie_year ?? 0)}) ${it.imdb_id ? `· ${esc(it.imdb_id)}` : ""} · <span class="muted mod-category">${esc(it.category_label)}</span> · <b>${esc(it.status_label)}</b></p>
             <p class="muted">${esc(it.description || "")}</p>
-            <p><b>ТАЙМКОД:</b> ${it.proposed_label ? `<b>${esc(it.proposed_label)}–${esc(it.proposed_end_label)}</b>` : `<b>— нет таймкода</b>`} · <b>КАТЕГОРИЯ:</b> ${esc(it.category_label)} · <b>ТИП:</b> ${esc(it.fragment_type_label || it.fragment_type || "")}</p>
+            <p><b>ТАЙМКОД:</b> ${it.proposed_label ? `<b>${esc(it.proposed_label)}–${esc(it.proposed_end_label)}</b>` : `<b>— нет проверенного таймкода</b>`} · <b>НАЧАЛЬНЫЙ ОРИЕНТИР:</b> <b>${esc(it.starting_label || "—")}</b> (${esc(it.starting_kind || "")}, не подтверждён) · <b>КАТЕГОРИЯ:</b> ${esc(it.category_label)} · <b>ТИП:</b> ${esc(it.fragment_type_label || it.fragment_type || "")}</p>
+            <p class="muted">${esc(it.starting_note || "")}</p>
             <p class="muted"><b>ПОЧЕМУ:</b> ${esc(it.reason || it.proposal_note || "")} ${esc(it.open_note || "")}</p>
             ${it.curated_anchor ? `<p class="muted"><b>ЯКОРЬ ЭПИЗОДА:</b> ${esc(it.curated_anchor)}</p>` : ""}
             <p class="muted"><b>ССЫЛКИ:</b>
               ${it.open_url ? `<a href="${esc(it.open_url)}" target="_blank" rel="noopener noreferrer">▶ Открыть на ${esc(it.proposed_label)}</a> · ` : ""}
+              ${!it.open_url && it.starting_open_url ? `<a href="${esc(it.starting_open_url)}" target="_blank" rel="noopener noreferrer">▶ Открыть с ориентира ${esc(it.starting_label)}</a> · ` : ""}
               ${(it.film_links || []).slice(0, 4).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.note || "")}">${esc(l.label)}</a>`).join(" · ")}
               ${it.imdb_url ? `· <a href="${esc(it.imdb_url)}" target="_blank" rel="noopener noreferrer">IMDb</a>` : ""}
             </p>
-            ${it.local_command ? `<div class="row" style="margin-top:4px"><button class="btn ghost small mod-local">⏱ mpv --start=${esc(it.proposed_label)}</button><button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать время</button></div>` : ""}
+            <div class="row" style="margin-top:4px"><button class="btn ghost small start-local">⏱ mpv --start=${esc(it.starting_label)} (ориентир)</button><button class="btn ghost small start-copy">⏱ Копироватьориентир ${esc(it.starting_label)}</button>${it.local_command ? `<button class="btn ghost small mod-local">⏱ mpv точного момента ${esc(it.proposed_label)}</button><button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать точное время</button>` : ""}</div>
             ${it.status === 'needs_curator' ? `<div class="row" style="margin-top:6px;flex-wrap:wrap">
-              <span class="muted">${esc(it.curator_instruction || "Впиши минуту под якорь эпизода")}</span>
-              <input class="search-input cur-start" style="max-width:100px" placeholder="0:32:56 *">
+              <span class="muted">${esc(it.curator_instruction || "Поправьориентир под якорь эпизода")} Старт уже подставлен: <b>${esc(it.starting_label || "")}</b>.</span>
+              <input class="search-input cur-start" style="max-width:100px" value="${esc(it.starting_label || "")}" title="Уникальный начальный ориентир — поправь после просмотра">
               <input class="search-input cur-end" style="max-width:100px" placeholder="конец">
               <input class="search-input cur-label" style="max-width:230px" value="${esc(it.moment_label || "")}" placeholder="метка / якорь">
               <button class="btn ok small cur-add">➕ Добавить таймкод в отсмотр</button>
@@ -1413,6 +1415,16 @@
           const box = b.closest('.mod-item');
           try { await navigator.clipboard.writeText(box.dataset.anchor || ''); toast('Якорь эпизода скопирован 📌'); }
           catch (e) { toast('Скопируй якорь вручную'); }
+        }));
+        body.querySelectorAll('.start-local').forEach((b) => (b.onclick = async () => {
+          const box = b.closest('.mod-item');
+          try { await navigator.clipboard.writeText(box.dataset.startingCmd || ''); toast('Команда с начальным ориентиром скопирована ⏱'); }
+          catch (e) { toast('Скопируй команду вручную'); }
+        }));
+        body.querySelectorAll('.start-copy').forEach((b) => (b.onclick = async () => {
+          const box = b.closest('.mod-item');
+          try { await navigator.clipboard.writeText(box.dataset.starting || ''); toast('Начальный ориентир скопирован ⏱'); }
+          catch (e) { toast('Скопируй время вручную'); }
         }));
         body.querySelectorAll('.cur-add').forEach((b) => (b.onclick = async () => {
           const box = b.closest('.mod-item');
