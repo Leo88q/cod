@@ -25,6 +25,7 @@ module.exports = function loveBatchMock() {
       verified: 0,
       srt_evidence: 1,
       starting_orienteers: 1,
+      external_orienteers: 0,
       with_external_refs: 1,
       with_timecode: 2,
       with_open_url: 2,

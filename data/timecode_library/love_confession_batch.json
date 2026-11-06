@@ -3,7 +3,7 @@
   "batch_id": "love_confession_50",
   "label": "Признание в любви и чувства",
   "generated_by": "scripts/build_love_confession_batch.py",
-  "generated_at": "2026-11-06T16:23:04+00:00",
+  "generated_at": "2026-11-06T16:46:13+00:00",
   "comment": "50 подготовленных кандидатов из 50 разных фильмов: окна по локальным SRT и уникальные непроверенные начальные ориентиры. Текст субтитров НЕ сохранён; только время, sha1, источник, лицензия и кураторский контекст.",
   "rules": {
     "verified_by_human": false,
@@ -19,6 +19,7 @@
     "max_per_scene": 1,
     "evidence_modes": [
       "srt_window",
+      "external_orienteer",
       "starting_orienteer"
     ]
   },
@@ -27,6 +28,7 @@
     "unique_scenes": 50,
     "srt_evidence": 24,
     "starting_orienteers": 26,
+    "external_orienteers": 2,
     "primary_love_confession": 16,
     "with_consensus_gt_1": 11
   },
@@ -165,7 +167,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "44ef93d415d78fc0d5f7619e184c506c8a009dd3",
+      "evidence_sha1": "696a894979c23b352109fb0835ae98c9fef1cb7a",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -179,6 +181,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -215,7 +218,8 @@
         "imdb_id": "tt0094683",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 2,
       "batch_id": "love_confession_50"
@@ -256,7 +260,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "205d78856427ff4d7bbbaf3fceecaac0044ef71a",
+      "evidence_sha1": "0be1b9da6d195d8738918cc7105556846ccf1eca",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -270,6 +274,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -306,7 +311,8 @@
         "imdb_id": "tt0072613",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 3,
       "batch_id": "love_confession_50"
@@ -679,25 +685,25 @@
       "fragment_type_label": "Тост, застолье, поздравление",
       "curated_anchor": "Эпизод: Финал эпопеи.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
       "moment_label": "Арагорн и Арвен: выбор смертной жизни ради любви",
-      "context": "В эпическом финале есть тихая романтическая линия: отказ от бессмертия и обещание прожить обычную жизнь вместе.",
+      "context": "В эпическом финале есть тихая романтическая линия: отказ от бессмертия и обещание прожить обычную жизнь вместе. Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
       "emotion_tags": [
         "выбор",
         "верность",
         "долгая любовь",
         "тихая клятва",
         "подготовленный кандидат",
-        "начальный ориентир",
+        "внешний ориентир",
         "не проверено"
       ],
-      "timecode_label": "1:49:27",
-      "timecode_seconds": 6567,
-      "timecode_end_label": "1:50:02",
-      "timecode_end_seconds": 6602,
+      "timecode_label": "1:15:15",
+      "timecode_seconds": 4515,
+      "timecode_end_label": "1:15:50",
+      "timecode_end_seconds": 4550,
       "duration_seconds": 35,
-      "source": "catalog-orienteer|love_confession_50",
-      "evidence_source": "data/timecode_library/scene_intents.json",
-      "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "a96cd7dfce2540bc20d574672a036173d3121537",
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/the-lord-of-the-rings-the-return-of-the-king-2003/arwen-i-choose-a-mortal-life-s1/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "20ae976653277bd8b475e067cd59869d84d3e986",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -706,15 +712,18 @@
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
-      "external_refs": [],
-      "evidence_kind": "starting_orienteer",
-      "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-      "external_note": "",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
+      "external_refs": [
+        "https://clip.cafe/the-lord-of-the-rings-the-return-of-the-king-2003/arwen-i-choose-a-mortal-life-s1/"
+      ],
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
+      "external_note": "Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
+      "external_time": "1:15:15",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "starting_orienteer",
+        "centered_on": "external_orienteer",
         "curated_orienteer": true,
         "strong_hits": 0,
         "lexicon_hits": 0,
@@ -728,13 +737,15 @@
           "долгая любовь",
           "тихая клятва",
           "подготовленный кандидат",
-          "начальный ориентир",
+          "внешний ориентир",
           "не проверено"
         ],
-        "context": "В эпическом финале есть тихая романтическая линия: отказ от бессмертия и обещание прожить обычную жизнь вместе.",
+        "context": "В эпическом финале есть тихая романтическая линия: отказ от бессмертия и обещание прожить обычную жизнь вместе. Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
         "moment_label": "Арагорн и Арвен: выбор смертной жизни ради любви",
         "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
-        "external_refs": [],
+        "external_refs": [
+          "https://clip.cafe/the-lord-of-the-rings-the-return-of-the-king-2003/arwen-i-choose-a-mortal-life-s1/"
+        ],
         "primary_intent": "anniversary_long_love",
         "secondary_intents": [
           "male_friendship"
@@ -745,9 +756,10 @@
         "description": "Финал эпопеи.",
         "why_fits": "—",
         "imdb_id": "tt0167260",
-        "evidence_kind": "starting_orienteer",
-        "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "evidence_kind": "external_orienteer",
+        "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
+        "external_note": "Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
+        "external_time": "1:15:15"
       },
       "batch_rank": 8,
       "batch_id": "love_confession_50"
@@ -869,7 +881,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "55479df7f0d7d44cd1a9f801119ce5ee218cad82",
+      "evidence_sha1": "cb6979de093946b86ac427cec767554cc6e37397",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -883,6 +895,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -917,7 +930,8 @@
         "imdb_id": "tt8060328",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 10,
       "batch_id": "love_confession_50"
@@ -1052,7 +1066,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "26b6454bdce61c3544da33866c48177cae2101ec",
+      "evidence_sha1": "5f1d7ca6b1f56dddc18a98792d2ae057fddd483c",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -1066,6 +1080,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -1103,7 +1118,8 @@
         "imdb_id": "tt0056045",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 12,
       "batch_id": "love_confession_50"
@@ -1145,7 +1161,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "8b0a31ece1ff6b4fa97080f80ef3cef7ea79014a",
+      "evidence_sha1": "019e1750fddd84eb719c47fc992ca3bc77e4becd",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -1159,6 +1175,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -1196,7 +1213,8 @@
         "imdb_id": null,
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 13,
       "batch_id": "love_confession_50"
@@ -1422,7 +1440,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "97b6f41531decec006c8b832986492ab750e023f",
+      "evidence_sha1": "5f0cddbfd2c869469aa6d2303499b836a473d3d4",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -1436,6 +1454,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -1473,7 +1492,8 @@
         "imdb_id": "tt0088175",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 16,
       "batch_id": "love_confession_50"
@@ -1515,7 +1535,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "528b2163a54aedd8db62e65aa377026c5a573e8d",
+      "evidence_sha1": "6b8ae53008d00d6e34a64c5015c1af18b138dcf2",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -1529,6 +1549,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -1566,7 +1587,8 @@
         "imdb_id": "tt0261450",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 17,
       "batch_id": "love_confession_50"
@@ -1883,7 +1905,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "3288fb4b1cec3ec4d9f7b7eb54d7153321e8945c",
+      "evidence_sha1": "47e4010c7c16e2b490284578d936d3b3d4128d83",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -1900,6 +1922,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "Внешний контекст: подборки цитат фильма, без проверенного таймкода.",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -1940,7 +1963,8 @@
         "imdb_id": "tt0073179",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": "Внешний контекст: подборки цитат фильма, без проверенного таймкода."
+        "external_note": "Внешний контекст: подборки цитат фильма, без проверенного таймкода.",
+        "external_time": ""
       },
       "batch_rank": 21,
       "batch_id": "love_confession_50"
@@ -1980,7 +2004,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "d64f22b551f6bdbf8557b622984d93050153b893",
+      "evidence_sha1": "4b940cf30828beab8e7372ed24714a6b682050f6",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -1994,6 +2018,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -2029,7 +2054,8 @@
         "imdb_id": "tt0987918",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 22,
       "batch_id": "love_confession_50"
@@ -2068,7 +2094,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "5a6024b85c9d9fb86d9813f5f54352b8d361d37c",
+      "evidence_sha1": "9fed3e45d47840f9f716320ecf9a85a9e3c286aa",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -2082,6 +2108,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -2116,7 +2143,8 @@
         "imdb_id": "tt0060585",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 23,
       "batch_id": "love_confession_50"
@@ -2342,7 +2370,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "3c0088b9d4dd81aba6564b904126479153ce548e",
+      "evidence_sha1": "8b7981d7b71d1f565024dfe4cf0c9535105627da",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -2356,6 +2384,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -2393,7 +2422,8 @@
         "imdb_id": "tt0091364",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 26,
       "batch_id": "love_confession_50"
@@ -2528,7 +2558,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "75e3c5a42a590c295dbf2f15fb89f57f1bb20603",
+      "evidence_sha1": "b287e62da0034202ac04e6e72cf9019d3dd5b4c4",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -2542,6 +2572,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -2579,7 +2610,8 @@
         "imdb_id": "tt0087650",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 28,
       "batch_id": "love_confession_50"
@@ -2621,7 +2653,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "52a9eeb69983128ac16008692be0dae70cacdd00",
+      "evidence_sha1": "a6195bd001f433c3b64c9a441d781c4602541d54",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -2635,6 +2667,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -2672,7 +2705,8 @@
         "imdb_id": "tt0976209",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 29,
       "batch_id": "love_confession_50"
@@ -2714,7 +2748,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "0d72abcaae7527e8c24f923f87b45919a7bbbb8b",
+      "evidence_sha1": "72ec2c82483f68dec0465a06ddd56cdecc482a2f",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -2728,6 +2762,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -2765,7 +2800,8 @@
         "imdb_id": "tt0079579",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 30,
       "batch_id": "love_confession_50"
@@ -2986,7 +3022,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "3091821cc13db32392d05cbf9261340c9d4a632e",
+      "evidence_sha1": "9264472bacd6c98ad12cdceb661c7fdcde137c39",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3000,6 +3036,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3034,7 +3071,8 @@
         "imdb_id": null,
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 33,
       "batch_id": "love_confession_50"
@@ -3075,7 +3113,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "6ca410a3a229c59949000bb208c55e1f41afb469",
+      "evidence_sha1": "b2f9cd84215561b8816edfb19c5b693a667bf1a9",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3089,6 +3127,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3125,7 +3164,8 @@
         "imdb_id": "tt0813541",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 34,
       "batch_id": "love_confession_50"
@@ -3254,7 +3294,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "6d2d7116a1133e770eb87fa737238728c810112d",
+      "evidence_sha1": "a026149a4656518cafced6c2a987f66cccdfdf2d",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3268,6 +3308,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3305,7 +3346,8 @@
         "imdb_id": null,
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 36,
       "batch_id": "love_confession_50"
@@ -3437,7 +3479,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "2b8a63473a87cfee55cd333bce47faaf8c7d0873",
+      "evidence_sha1": "68d050f5753be0cefa84c6792f70c221367489b2",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3451,6 +3493,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3485,7 +3528,8 @@
         "imdb_id": "tt4731148",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 38,
       "batch_id": "love_confession_50"
@@ -3527,7 +3571,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "4db150a4730f14bbe14234637f7098c61a98668a",
+      "evidence_sha1": "9ebf5c086977d661815a22c240fcf6445e0b94b3",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3541,6 +3585,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3578,7 +3623,8 @@
         "imdb_id": "tt0120138",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 39,
       "batch_id": "love_confession_50"
@@ -3620,7 +3666,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "36377e928c25533343dc04628a47d711e3cebe96",
+      "evidence_sha1": "586f5cbb227d9237cf11dc518a7071f4950d405c",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3636,6 +3682,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "Внешний контекст: статья о лирической линии фильма, без проверенного таймкода.",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3675,7 +3722,8 @@
         "imdb_id": "tt0076727",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": "Внешний контекст: статья о лирической линии фильма, без проверенного таймкода."
+        "external_note": "Внешний контекст: статья о лирической линии фильма, без проверенного таймкода.",
+        "external_time": ""
       },
       "batch_rank": 40,
       "batch_id": "love_confession_50"
@@ -3717,7 +3765,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "06eed1f83064f62dfe538dc1f006436a8457b8ed",
+      "evidence_sha1": "08e9fe2302dad53575d270f704d450fc32427d4d",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3731,6 +3779,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3768,7 +3817,8 @@
         "imdb_id": null,
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 41,
       "batch_id": "love_confession_50"
@@ -3902,7 +3952,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "fce3a5947828d6399e295ef693fea27c4f96a340",
+      "evidence_sha1": "6c707964bb2dfb3d839970a9e18c0da4e62badb2",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -3916,6 +3966,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -3952,7 +4003,8 @@
         "imdb_id": "tt0051082",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 43,
       "batch_id": "love_confession_50"
@@ -3993,7 +4045,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "ee650a73e1a0455c2503d90f01583cf9d40f67fe",
+      "evidence_sha1": "78adff5268aa7486ae283fe9116cc0479c2d522f",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -4007,6 +4059,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -4043,7 +4096,8 @@
         "imdb_id": "tt0216755",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 44,
       "batch_id": "love_confession_50"
@@ -4247,25 +4301,25 @@
       "fragment_type_label": "Одна длинная реплика / монолог, 1–3 субтитровых блока, мало пауз",
       "curated_anchor": "Эпизод: Сиквел.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
       "moment_label": "Кристофф собирается сказать Анне главное",
-      "context": "Сиквел оставляет место для очень робкого, почти сорванного объяснения; трогает именно нерешительность.",
+      "context": "Сиквел оставляет место для очень робкого, почти сорванного объяснения; трогает именно нерешительность. Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
       "emotion_tags": [
         "робкое признание",
         "нерешительность",
         "нежность",
         "сказка",
         "подготовленный кандидат",
-        "начальный ориентир",
+        "внешний ориентир",
         "не проверено"
       ],
-      "timecode_label": "1:19:02",
-      "timecode_seconds": 4742,
-      "timecode_end_label": "1:19:37",
-      "timecode_end_seconds": 4777,
+      "timecode_label": "1:27:02",
+      "timecode_seconds": 5222,
+      "timecode_end_label": "1:27:37",
+      "timecode_end_seconds": 5257,
       "duration_seconds": 35,
-      "source": "catalog-orienteer|love_confession_50",
-      "evidence_source": "data/timecode_library/scene_intents.json",
-      "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "5fe22b919e5f2576fc31ddb9dc25de035788f4e4",
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/frozen-ii-2019/you-are-the-most-extraordinary-person-ive-ever-known/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "442b1597a9d58d441ba92aea6dcd6e21adefc639",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -4274,15 +4328,19 @@
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
-      "external_refs": [],
-      "evidence_kind": "starting_orienteer",
-      "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-      "external_note": "",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
+      "external_refs": [
+        "https://clip.cafe/frozen-ii-2019/you-are-the-most-extraordinary-person-ive-ever-known/",
+        "https://clip.cafe/frozen-ii-2019/anna-i-need-to-ask-you-a-question-s1/"
+      ],
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
+      "external_note": "Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
+      "external_time": "1:27:02",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "starting_orienteer",
+        "centered_on": "external_orienteer",
         "curated_orienteer": true,
         "strong_hits": 0,
         "lexicon_hits": 0,
@@ -4296,13 +4354,16 @@
           "нежность",
           "сказка",
           "подготовленный кандидат",
-          "начальный ориентир",
+          "внешний ориентир",
           "не проверено"
         ],
-        "context": "Сиквел оставляет место для очень робкого, почти сорванного объяснения; трогает именно нерешительность.",
+        "context": "Сиквел оставляет место для очень робкого, почти сорванного объяснения; трогает именно нерешительность. Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
         "moment_label": "Кристофф собирается сказать Анне главное",
         "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
-        "external_refs": [],
+        "external_refs": [
+          "https://clip.cafe/frozen-ii-2019/you-are-the-most-extraordinary-person-ive-ever-known/",
+          "https://clip.cafe/frozen-ii-2019/anna-i-need-to-ask-you-a-question-s1/"
+        ],
         "primary_intent": "love_confession",
         "secondary_intents": [
           "children_animation",
@@ -4314,9 +4375,10 @@
         "description": "Сиквел.",
         "why_fits": "—",
         "imdb_id": "tt4520988",
-        "evidence_kind": "starting_orienteer",
-        "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "evidence_kind": "external_orienteer",
+        "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
+        "external_note": "Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
+        "external_time": "1:27:02"
       },
       "batch_rank": 47,
       "batch_id": "love_confession_50"
@@ -4358,7 +4420,7 @@
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
       "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
-      "evidence_sha1": "bf61141d1f79338ada93b0bc0d3f24abad3c83a6",
+      "evidence_sha1": "d94bf29ad2924e59f9a28aa38c10c5dfb431b3e6",
       "line_index": 0,
       "match_score": 0.0,
       "intent_score": 0.0,
@@ -4372,6 +4434,7 @@
       "evidence_kind": "starting_orienteer",
       "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
       "external_note": "",
+      "external_time": "",
       "curated_orienteer": true,
       "evidence_features": {
         "batch_id": "love_confession_50",
@@ -4409,7 +4472,8 @@
         "imdb_id": "tt0083730",
         "evidence_kind": "starting_orienteer",
         "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
-        "external_note": ""
+        "external_note": "",
+        "external_time": ""
       },
       "batch_rank": 48,
       "batch_id": "love_confession_50"

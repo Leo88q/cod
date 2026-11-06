@@ -38,7 +38,8 @@ def inserted_batch():
     usable = [c for c in data["entries"] if (c["movie_title"], c["movie_year"]) in scene_ids]
     srt = next(c for c in usable if c["evidence_kind"] == "srt_window")
     orienteer = next(c for c in usable if c["evidence_kind"] == "starting_orienteer")
-    selected = [srt, orienteer]
+    external = next(c for c in usable if c["evidence_kind"] == "external_orienteer")
+    selected = [srt, orienteer, external]
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     columns = (
         "scene_id, service, timecode_label, timecode_seconds, timecode_end_label,"
@@ -80,6 +81,9 @@ def test_batch_artifact_is_prepared_not_verified():
     assert data["stats"]["count"] == 50
     assert data["stats"]["unique_scenes"] == 50
     assert data["stats"]["srt_evidence"] + data["stats"]["starting_orienteers"] == 50
+    assert data["stats"]["external_orienteers"] == 2
+    assert sum(1 for c in data["entries"] if c["evidence_kind"] == "external_orienteer"
+               and c.get("external_time")) == 2
     assert data["rules"]["verified_by_human"] is False
     assert data["rules"]["version_note_required"] is True
     assert data["rules"]["status"] == "pending"
@@ -90,7 +94,7 @@ def test_batch_artifact_is_prepared_not_verified():
         assert c["batch_id"] == BATCH_ID and c["verified"] == 0
         assert c["timecode_seconds"] > 0 and c["timecode_label"] != "0:00:00"
         assert c["timecode_end_seconds"] > c["timecode_seconds"]
-        assert c["evidence_kind"] in ("srt_window", "starting_orienteer")
+        assert c["evidence_kind"] in ("srt_window", "external_orienteer", "starting_orienteer")
         assert c["moment_label"] and c["context"] and c["emotion_tags"]
         assert c["source"] and c["source_license"] and c["evidence_sha1"]
         assert c["version_hint"] and "version_note" in c["version_hint"]
@@ -109,10 +113,11 @@ def test_love_batch_endpoint_and_main_board_exclusion(client, inserted_batch):
     batch = r.json()
     assert batch["batch_id"] == BATCH_ID
     assert batch["label"] == "Признание в любви и чувства"
-    assert len(batch["items"]) == 2
-    assert batch["stats"]["total"] == 2
+    assert len(batch["items"]) == 3
+    assert batch["stats"]["total"] == 3
     assert batch["stats"]["srt_evidence"] == 1
-    assert batch["stats"]["starting_orienteers"] == 1
+    assert batch["stats"]["starting_orienteers"] == 2
+    assert batch["stats"]["external_orienteers"] == 1
     assert batch["stats"]["verified"] == 0
     assert batch["stats"]["verified_by_human"] is False
     assert batch["stats"]["version_note_required"] is True
@@ -125,8 +130,8 @@ def test_love_batch_endpoint_and_main_board_exclusion(client, inserted_batch):
         assert item["source_license"] and item["evidence_sha1"]
         assert item["evidence_note"] and item["version_hint"]
         assert item["local_command"].startswith("mpv --start=")
-        assert item["source_label"] in ("Локальный SRT", "Начальный ориентир")
-        assert item["evidence_kind"] in ("srt_window", "starting_orienteer")
+        assert item["source_label"] in ("Локальный SRT", "Начальный ориентир", "Внешний ориентир")
+        assert item["evidence_kind"] in ("srt_window", "external_orienteer", "starting_orienteer")
         assert item["status_label"] in ("есть таймкод — к отсмотру", "есть ориентир — к отсмотру")
         assert item["film_links"] and item["open_url"]
         assert all(urlsplit(l["url"]).netloc.lower() in {"vkvideo.ru", "rutube.ru"}
@@ -136,11 +141,15 @@ def test_love_batch_endpoint_and_main_board_exclusion(client, inserted_batch):
     assert orienteer["curated_orienteer"] is True
     assert orienteer["starting_kind"] == "estimate"
     assert "не проверенный момент" in orienteer["starting_note"].lower()
+    external = next(i for i in batch["items"] if i["evidence_kind"] == "external_orienteer")
+    assert external["source_label"] == "Внешний ориентир"
+    assert external["starting_kind"] == "external"
+    assert external["external_refs"]
 
     conn = connect(config.DB_PATH)
     board = build_board(conn)
     verified_rows = conn.execute(
-        "SELECT verified FROM scenes WHERE id IN (?,?)",
+        f"SELECT verified FROM scenes WHERE id IN ({','.join('?' * len(batch['items']))})",
         tuple(i["scene_id"] for i in batch["items"]),
     ).fetchall()
     conn.close()

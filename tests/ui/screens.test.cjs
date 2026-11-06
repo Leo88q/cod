@@ -150,10 +150,16 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Блок №1/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /2 подготовленных отрывков/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /SRT-окон: 1/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /непроверенных начальных ориентиров: 1/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /непроверенных ориентиров: 1 \(внешних: 0\)/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /ЧТО СМОТРЕТЬ:/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /ВНЕШНЯЯ ПОДСКАЗКА/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /version_note \*/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Таймкоды всех 2 отрывков/);
+    assert.equal(dom.window.document.querySelectorAll('.mod-time-table tbody tr').length, 2);
+    assert.match(dom.window.document.querySelector('.mod-time-table').textContent, /0:43:04–0:43:58/);
+    assert.match(dom.window.document.querySelector('.mod-time-table').textContent, /1:36:55–1:37:30/);
+    assert.ok(dom.window.document.querySelector('.mod-time-badge'));
+    assert.match(dom.window.document.querySelector('.mod-time-badge').textContent, /0:43:04–0:43:58/);
     assert.match(dom.window.document.querySelector('#mod-visible').textContent, /Показано: 2/);
     assert.equal(dom.window.document.querySelectorAll('.mod-item[data-batch="love"]').length, 2);
     const loveCard = dom.window.document.querySelector('.mod-item[data-batch="love"]');

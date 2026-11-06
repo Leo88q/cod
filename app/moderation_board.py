@@ -110,7 +110,8 @@ def build_love_batch(conn, official: dict | None = None) -> dict:
         end_label = seconds_to_label(end)
         feat = _features(cand)
         evidence_kind = feat.get("evidence_kind", "srt_window")
-        is_orienteer = evidence_kind == "starting_orienteer"
+        is_external = evidence_kind == "external_orienteer"
+        is_orienteer = evidence_kind in ("starting_orienteer", "external_orienteer")
         intent = intent_for(title, year)
         q = quote(f"{title} {year or ''}".strip())
         q_full = quote(f"{title} {year or ''} полный фильм".strip())
@@ -169,7 +170,9 @@ def build_love_batch(conn, official: dict | None = None) -> dict:
             "external_note": feat.get("external_note", ""),
             "evidence_kind": evidence_kind,
             "evidence_note": feat.get("evidence_note", ""),
-            "source_label": "Начальный ориентир" if is_orienteer else "Локальный SRT",
+            "source_label": ("Внешний ориентир" if is_external
+                             else "Начальный ориентир" if is_orienteer
+                             else "Локальный SRT"),
             "curated_orienteer": bool(feat.get("curated_orienteer")),
             "scene_version_note": cand["version_note"] or "",
             "candidate_id": cand["id"], "candidate_status": cand["status"],
@@ -183,8 +186,12 @@ def build_love_batch(conn, official: dict | None = None) -> dict:
             "duration_seconds": feat.get("duration_seconds", end - start),
             "score": float(cand["match_score"] or 0),
             "evidence_features": feat,
-            "proposal_kind": "starting_orienteer" if is_orienteer else "love_batch",
+            "proposal_kind": ("external_orienteer" if is_external
+                              else "starting_orienteer" if is_orienteer
+                              else "love_batch"),
             "proposal_note": feat.get("evidence_note") or (
+                "Внешний ориентир по узнаваемой сцене, не проверенный момент."
+                if is_external else
                 "Уникальный начальный ориентир, не проверенный момент."
                 if is_orienteer else
                 "Окно построено вокруг строки локального SRT с прямым/трогательным признанием."),
@@ -192,8 +199,10 @@ def build_love_batch(conn, official: dict | None = None) -> dict:
             "proposed_label": start_label, "proposed_seconds": start,
             "proposed_end_label": end_label, "proposed_end_seconds": end,
             "starting_label": start_label, "starting_seconds": start,
-            "starting_kind": "estimate" if is_orienteer else "srt",
-            "starting_note": ("Уникальный начальный ориентир по фильму и категории; НЕ проверенный момент."
+            "starting_kind": "external" if is_external else "estimate" if is_orienteer else "srt",
+            "starting_note": ("Внешний ориентир Clip.Cafe по узнаваемой сцене; НЕ проверенный момент."
+                              if is_external else
+                              "Уникальный начальный ориентир по фильму и категории; НЕ проверенный момент."
                               if is_orienteer else
                               "Старт совпадает с подготовленным отрывком; НЕ проверенный момент."),
             "starting_open_url": open_url, "starting_command": f'mpv --start={start_label} "{LOCAL_PLACEHOLDER}"',
@@ -221,7 +230,8 @@ def build_love_batch(conn, official: dict | None = None) -> dict:
         "with_film_links": sum(1 for i in items if i["film_links"]),
         "with_local_command": sum(1 for i in items if i["local_command"]),
         "srt_evidence": sum(1 for i in items if i["evidence_kind"] == "srt_window"),
-        "starting_orienteers": sum(1 for i in items if i["evidence_kind"] == "starting_orienteer"),
+        "starting_orienteers": sum(1 for i in items if i["evidence_kind"] in ("starting_orienteer", "external_orienteer")),
+        "external_orienteers": sum(1 for i in items if i["evidence_kind"] == "external_orienteer"),
         "with_external_refs": sum(1 for i in items if i["external_refs"]),
         "verified_by_human": False,
         "version_note_required": True,

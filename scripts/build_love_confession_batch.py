@@ -96,6 +96,7 @@ for _key, _v in CURATED_MOMENTS.items():
         "refs": _v["refs"],
         "external_note": _v["external_note"],
         "moment": _v["moment"],
+        "external_time": _v.get("external_time", ""),
     }
 
 # 50 разных фильмов: только романтика/чувства. Порядок задаёт curated-файл.
@@ -106,6 +107,11 @@ EXTERNAL_NOTES = [
     "Локальные SRT дают окно 25–75 секунд с sha1 и номером строки; начальные ориентиры дают уникальный sha1 каталога, но не номер строки SRT.",
     "Все 50 карточек — 50 разных фильмов; verified_by_human=false, version_note обязателен.",
 ]
+
+
+def parse_tc(value: str) -> int:
+    h, m, sec = (int(x) for x in value.split(":"))
+    return h * 3600 + m * 60 + sec
 
 
 def now_iso():
@@ -322,9 +328,34 @@ def main():
             context = (iconic["context"] if iconic else
                        " ".join(filter(None, [scene.get("description"), scene.get("why_fits"),
                                               intent.get("curated_anchor")]))[:240])
-            start_label, start = starting_timecode(title, year, "love_confession", scene.get("genre"))
+            external_time = (iconic or {}).get("external_time", "")
+            if external_time:
+                start = parse_tc(external_time)
+                start_label = ft.fmt_tc(start)
+                evidence_kind = "external_orienteer"
+                evidence_note = ("Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена"
+                                 " и не является строкой SRT.")
+                evidence_source = ((iconic or {}).get("refs") or ["Clip.Cafe"])[0]
+                source_value = f"external-orienteer|{BATCH_ID}"
+                source_license = ("Clip.Cafe: публичная страница сцены; только время и контекст,"
+                                  " без видео и текста субтитров")
+                version_hint = ("Внешний ориентир, НЕ проверенный момент. Сверь издание,"
+                                " поправь минуты; version_note обязателен.")
+                extra_tags = ["внешний ориентир", "не проверено"]
+            else:
+                start_label, start = starting_timecode(title, year, "love_confession", scene.get("genre"))
+                evidence_kind = "starting_orienteer"
+                evidence_note = ("Уникальный начальный ориентир по фильму/категории."
+                                 " Не проверенный момент и не строка SRT.")
+                evidence_source = "data/timecode_library/scene_intents.json"
+                source_value = f"catalog-orienteer|{BATCH_ID}"
+                source_license = "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров"
+                version_hint = ("Начальный ориентир, НЕ проверенный момент. Сверь издание,"
+                                " поправь минуты; version_note обязателен.")
+                extra_tags = ["начальный ориентир", "не проверено"]
             end = start + 35
-            digest = hashlib.sha1(f"{BATCH_ID}|{title}|{year}|{start}".encode("utf-8")).hexdigest()
+            digest = hashlib.sha1(
+                f"{BATCH_ID}|{title}|{year}|{start}|{evidence_kind}".encode("utf-8")).hexdigest()
             c = {
                 "key": key, "movie_title": title, "movie_year": year,
                 "imdb_id": scene.get("imdb_id"), "genre": scene.get("genre"),
@@ -336,28 +367,29 @@ def main():
                 "fragment_type_label": fragment_types().get(intent.get("fragment_type", "dialogue"), ""),
                 "curated_anchor": intent.get("curated_anchor", ""),
                 "moment_label": label, "context": context,
-                "emotion_tags": emotion_tags("", intent, iconic) + ["начальный ориентир", "не проверено"],
+                "emotion_tags": emotion_tags("", intent, iconic) + extra_tags,
                 "timecode_label": start_label, "timecode_seconds": start,
                 "timecode_end_label": ft.fmt_tc(end), "timecode_end_seconds": end,
                 "duration_seconds": 35,
-                "source": f"catalog-orienteer|{BATCH_ID}",
-                "evidence_source": "data/timecode_library/scene_intents.json",
-                "source_license": "Каталог сцен; уникальный непроверенный ориентир, без текста субтитров",
+                "source": source_value,
+                "evidence_source": evidence_source,
+                "source_license": source_license,
                 "evidence_sha1": digest, "line_index": 0,
                 "match_score": 0.0, "intent_score": 0.0, "confidence": 0.0,
                 "consensus": 1, "auto": 0, "status": "pending", "verified": 0,
-                "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
+                "version_hint": version_hint,
                 "external_refs": (iconic or {}).get("refs", []),
-                "evidence_kind": "starting_orienteer",
-                "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
+                "evidence_kind": evidence_kind,
+                "evidence_note": evidence_note,
                 "external_note": (iconic or {}).get("external_note", ""),
+                "external_time": external_time,
                 "curated_orienteer": True,
                 "evidence_features": {
-                    "batch_id": BATCH_ID, "centered_on": "starting_orienteer",
+                    "batch_id": BATCH_ID, "centered_on": evidence_kind,
                     "curated_orienteer": True, "strong_hits": 0, "lexicon_hits": 0,
                     "negative_markers": 0, "lines": 0, "duration_seconds": 35,
                     "context_score": context_score(scene, intent),
-                    "emotion_tags": emotion_tags("", intent, iconic) + ["начальный ориентир", "не проверено"],
+                    "emotion_tags": emotion_tags("", intent, iconic) + extra_tags,
                     "context": context, "moment_label": label,
                     "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
                     "external_refs": (iconic or {}).get("refs", []),
@@ -367,9 +399,10 @@ def main():
                     "category_label": BATCH_LABEL, "genre": scene.get("genre"),
                     "description": scene.get("description"), "why_fits": scene.get("why_fits"),
                     "imdb_id": scene.get("imdb_id"),
-                    "evidence_kind": "starting_orienteer",
-                    "evidence_note": "Уникальный начальный ориентир по фильму/категории. Не проверенный момент и не строка SRT.",
+                    "evidence_kind": evidence_kind,
+                    "evidence_note": evidence_note,
                     "external_note": (iconic or {}).get("external_note", ""),
+                    "external_time": external_time,
                 },
             }
         c = dict(c)
@@ -398,13 +431,14 @@ def main():
             "clip_seconds": [25, 75],
             "min_gap_between_candidates_seconds": 60,
             "max_per_scene": 1,
-            "evidence_modes": ["srt_window", "starting_orienteer"],
+            "evidence_modes": ["srt_window", "external_orienteer", "starting_orienteer"],
         },
         "stats": {
             "count": len(entries),
             "unique_scenes": len(seen),
             "srt_evidence": sum(1 for c in entries if c["evidence_kind"] == "srt_window"),
-            "starting_orienteers": sum(1 for c in entries if c["evidence_kind"] == "starting_orienteer"),
+            "starting_orienteers": sum(1 for c in entries if c["evidence_kind"] in ("starting_orienteer", "external_orienteer")),
+            "external_orienteers": sum(1 for c in entries if c["evidence_kind"] == "external_orienteer"),
             "primary_love_confession": sum(1 for c in entries if c["primary_intent"] == "love_confession"),
             "with_consensus_gt_1": sum(1 for c in entries if c["consensus"] > 1),
         },
@@ -452,15 +486,17 @@ def _write_doc(data):
         "",
         f"**{data['stats']['count']} отрывков · {data['stats']['unique_scenes']} разных фильмов · "
         f"SRT-окон: {data['stats']['srt_evidence']} · "
-        f"непроверенных начальных ориентиров: {data['stats']['starting_orienteers']} · "
+        f"непроверенных ориентиров: {data['stats']['starting_orienteers']} "
+        f"(внешних: {data['stats'].get('external_orienteers', 0)}) · "
         f"{data['stats']['primary_love_confession']} сцен с основным интентом «признание в любви» · "
         f"проверено вручную: 0.**",
         "",
-        "Это подготовленные кандидаты, а не проверенная библиотека. Для части фильмов ",
-        "окно 25–75 секунд построено вокруг строки локального SRT; для остальных дан ",
-        "уникальный непроверенный начальный ориентир по структуре фильма и внешняя подсказка ",
-        "по узнаваемой сцене. Текст субтитров не сохранён. Ссылки в админке ведут только ",
-        "в VK Видео и Rutube. `verified=1` появится только после «✓ Подтвердить» ",
+        "Это подготовленные кандидаты, а не проверенная библиотека. Для части фильмов "
+        "окно 25–75 секунд построено вокруг строки локального SRT; для двух фильмов "
+        "использован внешний ориентир Clip.Cafe, для остальных — уникальный непроверенный "
+        "начальный ориентир по структуре фильма. Текст субтитров не сохранён. "
+        "Ссылки в админке ведут только "
+        "в VK Видео и Rutube. `verified=1` появится только после «✓ Подтвердить» "
         "с обязательным `version_note`.",
         "",
         "| # | Фильм | Таймкод | Что смотреть | Эмоция | Контекст/якорь | Источник |",
@@ -471,14 +507,16 @@ def _write_doc(data):
         tc = f"{c['timecode_label']}–{c['timecode_end_label']}"
         tags = ", ".join(c["emotion_tags"])
         ctx = c["context"].replace("|", "/").replace("\n", " ")[:110]
-        src = "Локальный SRT" if c["evidence_kind"] == "srt_window" else "Начальный ориентир"
+        src = ("Локальный SRT" if c["evidence_kind"] == "srt_window"
+               else "Внешний ориентир" if c["evidence_kind"] == "external_orienteer"
+               else "Начальный ориентир")
         lines.append(f"| {c['batch_rank']} | {title} | `{tc}` | {c['moment_label']} | {tags} | {ctx} | {src} |")
     lines += [
         "",
         "## Как модерировать",
         "",
         "1. Открой `#/admin`: фильтр «💘 Блок: признание в любви (50)» уже выбран по умолчанию. Если переключился на основную очередь — верни его обратно.",
-        "2. В карточке уже есть таймкод, метка момента, контекст, emotion tags, sha1/строка SRT — только для SRT-окон; для начальных ориентиров есть sha1 каталога без строки SRT. Также видны ссылки VK/Rutube и `mpv --start=…`.",
+        "2. Вверху экрана есть сводная таблица всех 50 таймкодов, а в каждой карточке — крупный бейдж с `начало–конец`. Для SRT-окон сохранены sha1 и номер строки; для ориентиров — sha1 ориентира без строки SRT. Также видны контекст, emotion tags, ссылки VK/Rutube и `mpv --start=…`.",
         "3. Открой фильм на нужной секунде, поправь минуты под своё издание, обязательно укажи `version_note`.",
         "4. Нажми «✓ Подтвердить» — только тут ставится `verified=1`. «✗ Отклонить» оставляет `verified=0`.",
         "",
@@ -506,7 +544,7 @@ def _write_doc(data):
         "",
     ]
     with open(OUT_DOC, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
+        f.write("\n".join(line.rstrip() for line in lines))
 
 
 if __name__ == "__main__":
