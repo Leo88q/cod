@@ -255,6 +255,8 @@ CREATE TABLE IF NOT EXISTS timecode_candidates (
   evidence_features TEXT,                           -- JSON признаков (БЕЗ текста реплик)
   reason TEXT,                                      -- человекочитаемое «почему этот момент»
   intent_score REAL DEFAULT 0,                      -- итоговый скор категории+структуры
+  batch_id TEXT,                                    -- отдельный тематический блок модерации
+  batch_rank INTEGER,                               -- порядок внутри блока
   status TEXT NOT NULL DEFAULT 'pending',           -- pending / approved / rejected / archived
   created_at TEXT NOT NULL,
   reviewed_at TEXT,

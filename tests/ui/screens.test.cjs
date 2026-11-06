@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
+const loveBatchMock = require('./fixtures/loveConfessionBatch.cjs');
 const { JSDOM } = require('jsdom');
 
 async function screen(hash, overrides = {}, uid = null) {
@@ -103,6 +104,7 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/scenes?status=draft': {scenes:[]},
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
     '/api/admin/timecodes?status=pending': {candidates:[]},
+'/api/admin/moderation/love-confession': loveBatchMock(),
 '/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:44,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:146,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
       categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
       items:[
@@ -144,8 +146,23 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Модерация таймкодов — 146 сцен/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /источники: VK \+ Rutube/);
     assert.doesNotMatch(dom.window.document.querySelector('#adm-body').textContent, /youtube\.com|kinopoisk|ivi\.ru|okko\.tv|imdb\.com/);
-    assert.ok(dom.window.document.querySelector('.mod-item'));
-    assert.match(dom.window.document.querySelector('.mod-item').dataset.open, /\?t=1976$/);
+    assert.equal(dom.window.document.querySelector('#mod-filter').value, 'love_batch');
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Блок №1/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /2 подготовленных отрывков/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /SRT-окон: 1/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /непроверенных начальных ориентиров: 1/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ЧТО СМОТРЕТЬ:/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ВНЕШНЯЯ ПОДСКАЗКА/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /version_note \*/);
+    assert.match(dom.window.document.querySelector('#mod-visible').textContent, /Показано: 2/);
+    assert.equal(dom.window.document.querySelectorAll('.mod-item[data-batch="love"]').length, 2);
+    const loveCard = dom.window.document.querySelector('.mod-item[data-batch="love"]');
+    const mainCard = dom.window.document.querySelector('.mod-item:not([data-batch="love"])');
+    assert.ok(loveCard && mainCard);
+    assert.match(loveCard.dataset.open, /[?&]t=2584$/);
+    assert.match(mainCard.dataset.open, /\?t=1976$/);
+    assert.equal(mainCard.style.display, 'none', 'основная очередь скрыта, пока выбран блок №1');
+    assert.notEqual(loveCard.style.display, 'none');
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Признание в любви/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /есть таймкод — к отсмотру/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Как куратору отбирать/);
@@ -191,6 +208,7 @@ test('admin timecode queue supports manual verification fields', async () => {
         {kind:'local',priority:3,label:'⏱ Открыть локальный файл на ориентире',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
       ]
     }]},
+'/api/admin/moderation/love-confession': loveBatchMock(),
 '/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:44,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:146,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
       categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
       items:[

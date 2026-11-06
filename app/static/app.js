@@ -1192,9 +1192,14 @@
         const tcs = await adminApi("/api/admin/timecodes?status=pending");
         const lib = await adminApi("/api/admin/timecode-library");
         const board = await adminApi("/api/admin/moderation");
+        const loveBatch = await adminApi("/api/admin/moderation/love-confession");
         const boardItems = board && Array.isArray(board.items) ? board.items : [];
         const boardStats = board && board.stats ? board.stats : {};
         const boardCats = board && Array.isArray(board.categories) ? board.categories : [];
+        const loveItems = loveBatch && Array.isArray(loveBatch.items) ? loveBatch.items : [];
+        const loveStats = loveBatch && loveBatch.stats ? loveBatch.stats : {};
+        const allItems = loveItems.map(it => ({...it, _batch: true}))
+          .concat(boardItems.map(it => ({...it, _batch: false})));
         const libCat = lib && lib.catalog ? lib.catalog : {};
         const libCand = lib && lib.candidates ? lib.candidates : {};
         const libMan = lib && lib.manifests ? lib.manifests : {};
@@ -1209,6 +1214,11 @@
             <span class="btn ghost small">✅ Проверено: ${Number(boardStats.verified ?? 0)}</span>
             <span class="muted">Таймкодов: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · начальных ориентиров: ${Number(boardStats.with_starting_timecode ?? 0)} (уникальных ${Number(boardStats.unique_starting_timecodes ?? 0)}) · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)} · источники: VK + Rutube</span>
           </div>
+          <section class="panel" style="background:rgba(255,105,150,.08);border:1px solid rgba(255,105,150,.25)">
+            <h3>💘 Блок №1 — ${esc(loveBatch.label || "Признание в любви и чувства")}</h3>
+            <p><b>${Number(loveStats.total ?? 0)} подготовленных отрывков</b> · ${Number(loveStats.unique_scenes ?? 0)} разных фильмов · SRT-окон: ${Number(loveStats.srt_evidence ?? 0)} · непроверенных начальных ориентиров: ${Number(loveStats.starting_orienteers ?? 0)} · проверено вручную: ${Number(loveStats.verified ?? 0)}.</p>
+            <p class="muted">Это не проверенная библиотека. Таймкод, метка момента, контекст, emotion tags, sha1/строка SRT или sha1 orientира, ссылки VK/Rutube и <code>mpv --start=…</code> уже в карточке. Поправь минуты под издание, укажи <b>version_note *</b> и нажми «✓ Подтвердить». Внешние подсказки — только контекст, не источник просмотра фильма.</p>
+          </section>
           <section class="panel" style="background:rgba(127,127,127,.06)"><h3>Как куратору отбирать — коротко</h3>
             <p><b>1. Карточки «▶ К отсмотру»</b>: таймкод и кнопка «Открыть на …» уже в карточке. Открой момент, поправь начало/конец, укажи <b>версию издания *</b>, жми «✓ Подтвердить».</p>
             <p><b>2. Карточки «📌 Нет таймкода»</b>: у каждой есть <b>свой начальный ориентир</b> (не 0:32:56 всем подряд), <b>якорь эпизода</b> и <b>ссылки VK + Rutube</b>. Первая кнопка ведёт в VK Видео, вторая — на Rutube (для 10 фильмов сразу на ориентир через ?t=). Команда mpv --start=… тоже открывает уникальную минуту. Поправь её после просмотра и жми «➕ Добавить таймкод в отсмотр».</p>
@@ -1217,7 +1227,8 @@
           <div class="row" style="margin-bottom:8px">
             <input id="mod-search" class="search-input" style="max-width:190px" placeholder="поиск по названию">
             <select id="mod-filter" class="search-input" style="max-width:210px">
-              <option value="all">Все 146</option>
+              <option value="love_batch" selected>💘 Блок: признание в любви (50)</option>
+              <option value="all">Все 146 (основная очередь)</option>
               <option value="pending">▶ С таймкодом / к отсмотру</option>
               <option value="needs_curator">📌 Без таймкода / куратору</option>
               <option value="verified">✅ Проверенные</option>
@@ -1229,9 +1240,17 @@
             <span id="mod-visible" class="muted"></span>
           </div>
           <div id="mod-list">
-          ${boardItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-film="${esc(it.film_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}" data-starting="${esc(it.starting_label || "")}" data-starting-cmd="${esc(it.starting_command || "")}">
+          ${allItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-batch="${it._batch ? "love" : ""}" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-film="${esc(it.film_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}" data-starting="${esc(it.starting_label || "")}" data-starting-cmd="${esc(it.starting_command || "")}">
             <p><b>${esc(it.movie_title)}</b> (${Number(it.movie_year ?? 0)}) ${it.imdb_id ? `· ${esc(it.imdb_id)}` : ""} · <span class="muted mod-category">${esc(it.category_label)}</span> · <b>${esc(it.status_label)}</b></p>
             <p class="muted">${esc(it.description || "")}</p>
+            ${it._batch ? `<p><b>💘 БЛОК ${esc(it.batch_label || "Признание в любви и чувства")} · № ${Number(it.batch_rank ?? 0)}</b> · ${esc(it.source_label || "подготовленный кандидат")} · ${esc(it.status_label)} · <span class="muted">verified_by_human: false</span></p>
+              <p><b>ЧТО СМОТРЕТЬ:</b> ${esc(it.moment_label || "")} · <b>ЭМОЦИЯ:</b> ${(it.emotion_tags || []).map(t => esc(t)).join(", ") || "трогательно"}</p>
+              <p class="muted"><b>КОНТЕКСТ:</b> ${esc(it.context || it.reason || "")}</p>
+              <p class="muted"><b>ДОКАЗАТЕЛЬСТВО:</b> ${esc(it.evidence_note || it.proposal_note || "")} <b>SHA1:</b> <code>${esc(it.evidence_sha1 || "")}</code>${it.evidence_kind === "srt_window" ? ` · строка SRT: ${Number(it.line_index ?? 0)}` : " · без строки SRT"}</p>
+              <p class="muted"><b>ИСТОЧНИК/ЛИЦЕНЗИЯ:</b> ${esc(it.candidate_source || "")} · ${esc(it.source_license || "")}</p>
+              <p class="muted"><b>ВЕРСИЯ:</b> ${esc(it.version_hint || "Сверь издание и укажи version_note.")}</p>
+              ${(it.external_refs || []).length ? `<p class="muted"><b>ВНЕШНЯЯ ПОДСКАЗКА (не просмотр фильма):</b> ${esc(it.external_note || "")} ${(it.external_refs || []).slice(0, 3).map((u, idx) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">источник ${idx + 1}</a>`).join(" · ")}</p>` : ""}
+            ` : ""}
             <p><b>ТАЙМКОД:</b> ${it.proposed_label ? `<b>${esc(it.proposed_label)}–${esc(it.proposed_end_label)}</b>` : `<b>— нет проверенного таймкода</b>`} · <b>НАЧАЛЬНЫЙ ОРИЕНТИР:</b> <b>${esc(it.starting_label || "—")}</b> (${esc(it.starting_kind || "")}, не подтверждён) · <b>КАТЕГОРИЯ:</b> ${esc(it.category_label)} · <b>ТИП:</b> ${esc(it.fragment_type_label || it.fragment_type || "")}</p>
             <p class="muted">${esc(it.starting_note || "")}</p>
             <p class="muted"><b>ПОЧЕМУ:</b> ${esc(it.reason || it.proposal_note || "")} ${esc(it.open_note || "")}</p>
@@ -1384,8 +1403,9 @@
           const c = modCategory && modCategory.value || 'all';
           let n = 0;
           body.querySelectorAll('.mod-item').forEach(el => {
+            const isLove = el.dataset.batch === 'love';
             const show = (!q || (el.dataset.search || '').includes(q))
-              && (f === 'all' || el.dataset.status === f)
+              && (f === 'love_batch' ? isLove : !isLove && (f === 'all' || el.dataset.status === f))
               && (c === 'all' || el.dataset.category === c);
             el.style.display = show ? '' : 'none';
             if (show) n++;

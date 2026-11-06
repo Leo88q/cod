@@ -37,6 +37,7 @@ def _best_candidate(conn, scene_id: int):
     """Категорийные кандидаты: SRT-скоринг или кураторский якорь."""
     return conn.execute(
         "SELECT * FROM timecode_candidates WHERE scene_id=? AND category IS NOT NULL"
+        " AND (batch_id IS NULL OR batch_id='')"
         " AND status IN ('pending','approved')"
         " ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END,"
         " intent_score DESC, id ASC LIMIT 1", (scene_id,),
@@ -69,6 +70,163 @@ def _curated(cand) -> bool:
         return bool(json.loads(cand["evidence_features"] or "{}").get("curated"))
     except (ValueError, TypeError):
         return False
+
+
+LOVE_BATCH_ID = "love_confession_50"
+LOVE_BATCH_LABEL = "Признание в любви и чувства"
+
+
+def _features(row) -> dict:
+    try:
+        return json.loads(row["evidence_features"] or "{}")
+    except (ValueError, TypeError):
+        return {}
+
+
+def build_love_batch(conn, official: dict | None = None) -> dict:
+    """Отдельный блок из 50 подготовленных кандидатов «признание в любви и чувства».
+
+    Основная очередь на 146 сцен не меняется: у этих кандидатов есть `batch_id`,
+    поэтому `_best_candidate()` их игнорирует. У каждого отрывка свой candidate_id,
+    таймкод, контекст, VK/Rutube-ссылка и локальная команда. `verified=1`
+    по-прежнему ставится только через `/api/admin/moderation/confirm`.
+    """
+    official = official or load_official_videos()
+    gate = float(load_taxonomy().get("gate_threshold", 0.45))
+    rows = conn.execute(
+        "SELECT tc.*, s.movie_title, s.movie_year, s.imdb_id, s.genre, s.description,"
+        " s.why_fits, s.watch_url, s.version_note, s.verified AS scene_verified"
+        " FROM timecode_candidates tc JOIN scenes s ON s.id=tc.scene_id"
+        " WHERE tc.batch_id=? ORDER BY COALESCE(tc.batch_rank, tc.id), tc.id",
+        (LOVE_BATCH_ID,),
+    ).fetchall()
+    items = []
+    for cand in rows:
+        title = cand["movie_title"]
+        year = cand["movie_year"]
+        start = int(cand["timecode_seconds"])
+        end = int(cand["timecode_end_seconds"] or start + 25)
+        start_label = seconds_to_label(start)
+        end_label = seconds_to_label(end)
+        feat = _features(cand)
+        evidence_kind = feat.get("evidence_kind", "srt_window")
+        is_orienteer = evidence_kind == "starting_orienteer"
+        intent = intent_for(title, year)
+        q = quote(f"{title} {year or ''}".strip())
+        q_full = quote(f"{title} {year or ''} полный фильм".strip())
+        vk_search_url = SERVICE_SEARCH["vkvideo"].format(q=q_full)
+        rutube_search_url = SERVICE_SEARCH["rutube"].format(q=q_full)
+        video = _official_video(title, year, cand["imdb_id"], official)
+        if video:
+            open_url = _deep_link(video, start)
+            open_provider = "VK Видео" if video.get("template") == "vk_video" else "Rutube"
+            open_kind = video.get("template") or "deep"
+            open_note = (f"Официальная версия {open_provider} откроется сразу на "
+                         f"{start_label}. {video.get('version_hint') or ''}")
+        elif cand["watch_url"]:
+            open_url = normalize_watch_url(cand["watch_url"], start) or cand["watch_url"]
+            open_provider = "VK/Rutube watch_url"
+            open_kind = "direct"
+            open_note = "Ссылка сцены; таймкод добавлен, если это VK Видео или Rutube."
+        else:
+            open_url = vk_search_url
+            open_provider = "VK Видео"
+            open_kind = "vk_search"
+            open_note = f"Поиск полной версии в VK Видео; ориентир {start_label} указан в карточке."
+        link_candidate = {
+            "movie_title": title, "movie_year": year, "imdb_id": cand["imdb_id"],
+            "timecode_label": start_label, "timecode_seconds": start,
+            "timecode_end_seconds": end, "watch_url": cand["watch_url"],
+        }
+        film_links = [
+            {"label": l["label"], "url": l["url"], "note": (l.get("note") or "")[:120]}
+            for l in build_moderation_links(link_candidate, official) if l.get("url")
+        ][:6]
+        film_url = film_links[0]["url"] if film_links else vk_search_url
+        status = ("verified" if cand["scene_verified"] or cand["status"] == "approved"
+                  else "rejected" if cand["status"] == "rejected" else "pending")
+        items.append({
+            "scene_id": cand["scene_id"], "movie_title": title, "movie_year": year,
+            "imdb_id": cand["imdb_id"], "genre": cand["genre"],
+            "description": cand["description"], "why_fits": cand["why_fits"],
+            "verified": bool(cand["scene_verified"]), "status": status,
+            "status_label": {"verified": "проверено", "rejected": "отклонено"}.get(
+                status, "есть ориентир — к отсмотру" if is_orienteer
+                else "есть таймкод — к отсмотру"),
+            "batch_id": LOVE_BATCH_ID, "batch_rank": cand["batch_rank"],
+            "batch_label": LOVE_BATCH_LABEL,
+            "category": "love_confession", "category_label": LOVE_BATCH_LABEL,
+            "primary_intent": feat.get("primary_intent", intent.get("primary_intent")),
+            "secondary_intents": feat.get("secondary_intents", intent.get("secondary_intents", [])),
+            "fragment_type": cand["fragment_type"] or intent.get("fragment_type", "dialogue"),
+            "fragment_type_label": fragment_types().get(cand["fragment_type"] or intent.get("fragment_type", "dialogue"), ""),
+            "curated_anchor": feat.get("curated_anchor", intent.get("curated_anchor", "")),
+            "moment_label": cand["moment_label"] or feat.get("moment_label", ""),
+            "context": cand["reason"] or feat.get("context", ""),
+            "emotion_tags": feat.get("emotion_tags", []),
+            "version_hint": feat.get("version_hint", "Сверь издание и укажи version_note."),
+            "external_refs": feat.get("external_refs", []),
+            "external_note": feat.get("external_note", ""),
+            "evidence_kind": evidence_kind,
+            "evidence_note": feat.get("evidence_note", ""),
+            "source_label": "Начальный ориентир" if is_orienteer else "Локальный SRT",
+            "curated_orienteer": bool(feat.get("curated_orienteer")),
+            "scene_version_note": cand["version_note"] or "",
+            "candidate_id": cand["id"], "candidate_status": cand["status"],
+            "candidate_source": cand["source"],
+            "evidence_source": cand["source"].split(f"#{LOVE_BATCH_ID}")[0],
+            "source_license": cand["source_license"],
+            "evidence_sha1": cand["evidence_sha1"], "line_index": cand["line_index"],
+            "intent_score": float(cand["intent_score"] or 0),
+            "confidence": float(cand["confidence"] or 0),
+            "consensus": int(cand["consensus"] or 1), "auto": int(cand["auto"] or 0),
+            "duration_seconds": feat.get("duration_seconds", end - start),
+            "score": float(cand["match_score"] or 0),
+            "evidence_features": feat,
+            "proposal_kind": "starting_orienteer" if is_orienteer else "love_batch",
+            "proposal_note": feat.get("evidence_note") or (
+                "Уникальный начальный ориентир, не проверенный момент."
+                if is_orienteer else
+                "Окно построено вокруг строки локального SRT с прямым/трогательным признанием."),
+            "reason": cand["reason"] or "",
+            "proposed_label": start_label, "proposed_seconds": start,
+            "proposed_end_label": end_label, "proposed_end_seconds": end,
+            "starting_label": start_label, "starting_seconds": start,
+            "starting_kind": "estimate" if is_orienteer else "srt",
+            "starting_note": ("Уникальный начальный ориентир по фильму и категории; НЕ проверенный момент."
+                              if is_orienteer else
+                              "Старт совпадает с подготовленным отрывком; НЕ проверенный момент."),
+            "starting_open_url": open_url, "starting_command": f'mpv --start={start_label} "{LOCAL_PLACEHOLDER}"',
+            "open_url": open_url, "open_provider": open_provider, "open_kind": open_kind,
+            "open_note": open_note, "source_url": film_url,
+            "film_url": film_url, "film_links": film_links,
+            "local_command": f'mpv --start={start_label} "{LOCAL_PLACEHOLDER}"',
+            "gate_threshold": gate,
+            "curator_instruction": ("Открой ориентир в VK Видео или Rutube, поправь минуты под издание, "
+                                    "укажи version_note и нажми «✓ Подтвердить»." if is_orienteer else
+                                    "Открой момент в VK Видео или Rutube, поправь минуты под издание, "
+                                    "укажи version_note и нажми «✓ Подтвердить»."),
+            "search_url": vk_search_url, "vk_search_url": vk_search_url,
+            "rutube_search_url": rutube_search_url,
+            "youtube_search_url": None, "imdb_url": None,
+        })
+    stats = {
+        "total": len(items),
+        "pending": sum(1 for i in items if i["status"] == "pending"),
+        "verified": sum(1 for i in items if i["status"] == "verified"),
+        "rejected": sum(1 for i in items if i["status"] == "rejected"),
+        "unique_scenes": len({(i["movie_title"], i["movie_year"]) for i in items}),
+        "with_timecode": sum(1 for i in items if i["proposed_label"]),
+        "with_open_url": sum(1 for i in items if i["open_url"]),
+        "with_film_links": sum(1 for i in items if i["film_links"]),
+        "with_local_command": sum(1 for i in items if i["local_command"]),
+        "srt_evidence": sum(1 for i in items if i["evidence_kind"] == "srt_window"),
+        "starting_orienteers": sum(1 for i in items if i["evidence_kind"] == "starting_orienteer"),
+        "with_external_refs": sum(1 for i in items if i["external_refs"]),
+        "verified_by_human": False,
+        "version_note_required": True,
+    }
+    return {"items": items, "stats": stats, "batch_id": LOVE_BATCH_ID, "label": LOVE_BATCH_LABEL}
 
 
 def build_board(conn, official: dict | None = None) -> dict:
@@ -260,6 +418,9 @@ def build_board(conn, official: dict | None = None) -> dict:
         "with_starting_open_url": sum(1 for i in items if i["starting_open_url"]),
         "with_open_url": sum(1 for i in items if i["open_url"]),
         "with_local_command": sum(1 for i in items if i["local_command"]),
+        "srt_evidence": sum(1 for i in items if i["evidence_kind"] == "srt"),
+        "starting_orienteers": sum(1 for i in items if i["starting_kind"] == "estimate"),
+        "with_external_refs": sum(1 for i in items if i.get("external_refs")),
         "with_film_links": sum(1 for i in items if i["film_links"]),
         "by_category": by_category,
     }

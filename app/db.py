@@ -66,6 +66,8 @@ MIGRATIONS = [
     ("timecode_candidates", "evidence_features", "TEXT"),
     ("timecode_candidates", "reason", "TEXT"),
     ("timecode_candidates", "intent_score", "REAL DEFAULT 0"),
+    ("timecode_candidates", "batch_id", "TEXT"),
+    ("timecode_candidates", "batch_rank", "INTEGER"),
 ]
 
 
@@ -114,6 +116,8 @@ def _migrate(conn: sqlite3.Connection) -> None:
       evidence_features TEXT,
       reason TEXT,
       intent_score REAL DEFAULT 0,
+      batch_id TEXT,
+      batch_rank INTEGER,
       status TEXT NOT NULL DEFAULT 'pending',
       created_at TEXT NOT NULL,
       reviewed_at TEXT,

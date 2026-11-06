@@ -22,7 +22,7 @@ from . import config, payments, scheduler, search as semantic
 from .db import connect, init_db, new_code, row_to_dict, enqueue_notification
 from .flowwow import watch_links, order_link
 from .intent_taxonomy import intent_for, load_taxonomy
-from .moderation_board import build_board
+from .moderation_board import build_board, build_love_batch
 from .moderation_links import (
     build_moderation_links, load_official_videos, moderation_coverage, moderation_targets,
 )
@@ -1897,6 +1897,23 @@ def admin_moderation_board(request: Request):
     board = build_board(conn, load_official_videos())
     conn.close()
     return board
+
+
+@app.get("/api/admin/moderation/love-confession")
+def admin_love_confession_batch(request: Request):
+    """Блок №1: 50 подготовленных отрывков «признание в любви и чувства».
+
+    Часть окон построена по локальным SRT, часть — уникальные непроверенные
+    начальные ориентиры. Кандидаты уже лежат в `timecode_candidates`
+    со статусом `pending`,
+    `batch_id='love_confession_50'` и `verified=0`. Подтверждение — только
+    вручную через общий `/api/admin/moderation/confirm` с `version_note`.
+    """
+    require_admin(request)
+    conn = connect(config.DB_PATH)
+    batch = build_love_batch(conn, load_official_videos())
+    conn.close()
+    return batch
 
 
 @app.post("/api/admin/moderation/curate")
