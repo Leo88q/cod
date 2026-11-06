@@ -257,6 +257,8 @@ CREATE TABLE IF NOT EXISTS timecode_candidates (
   intent_score REAL DEFAULT 0,                      -- итоговый скор категории+структуры
   batch_id TEXT,                                    -- отдельный тематический блок модерации
   batch_rank INTEGER,                               -- порядок внутри блока
+  film_url TEXT,                                    -- точная прямая ссылка VK/Rutube на фильм (пусто = поле под ссылку)
+  version_note TEXT,                                -- версия издания, вписанная оператором в строке блока
   status TEXT NOT NULL DEFAULT 'pending',           -- pending / approved / rejected / archived
   created_at TEXT NOT NULL,
   reviewed_at TEXT,

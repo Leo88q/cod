@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
-const loveBatchMock = require('./fixtures/loveConfessionBatch.cjs');
+const { loveTableMock } = require('./fixtures/loveConfessionBatch.cjs');
 const { JSDOM } = require('jsdom');
 
 async function screen(hash, overrides = {}, uid = null) {
@@ -93,8 +93,8 @@ test('studio picker only renders assigned studios', async () => {
   } finally { dom.window.close(); }
 });
 
-test('admin operational view renders failed notifications, audit and timecode queue', async () => {
-  const dom = await screen('/admin', {
+function adminMocks(extra = {}) {
+  return {
     '/api/admin/overview': {users:1,scenes:1,gifts:0,shops:1,cards:0,revenue_rub:0},
     '/api/admin/reports': {reports:[]},
     '/api/admin/metrics': {worker:{status:'degraded',age_seconds:10},pending_notifications:1,failed_notifications:1},
@@ -104,102 +104,73 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/scenes?status=draft': {scenes:[]},
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
     '/api/admin/timecodes?status=pending': {candidates:[]},
-'/api/admin/moderation/love-confession': loveBatchMock(),
-'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:44,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:146,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
-      categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
-      items:[
-        {scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'есть таймкод — к отсмотру',description:'Новогодняя Москва',why_fits:'',
-        category:'love_confession',category_label:'Признание в любви',fragment_type:'monologue',fragment_type_label:'Одна длинная реплика / монолог',secondary_intents:[],curated_anchor:'Робкое объяснение в чувствах',intent_confidence:0.95,intent_source:'manual',
-        candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',evidence_kind:'srt',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
-        proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,moment_label:'Женя у двери',
-        open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',open_provider:'rutube_mosfilm',open_kind:'rutube',open_note:'Официальная версия',
-        source_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'▶ Rutube · 0:32:56',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',note:'Официально'}],
-        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',starting_label:'0:32:56',starting_seconds:1976,starting_kind:'srt',starting_note:'Старт совпадает с кандидатом',starting_open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',starting_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''},
-        {scene_id:2,movie_title:'Девчата',movie_year:1961,imdb_id:'tt0054790',status:'needs_curator',status_label:'нет таймкода — куратор',description:'Работницы общежития',why_fits:'женская дружба',
-        category:'female_friendship',category_label:'Женская дружба / сестринство',fragment_type:'dialogue',fragment_type_label:'Живой диалог',secondary_intents:[],curated_anchor:'Девушки в общежитии спорят о замужестве Тоси',intent_confidence:0.95,intent_source:'manual',
-        candidate_id:null,candidate_status:null,candidate_source:null,intent_score:0,proposal_kind:'none',evidence_kind:'none',proposal_note:'Таймкода пока нет',reason:'',
-        proposed_label:'',proposed_seconds:null,proposed_end_label:'',proposed_end_seconds:null,moment_label:'Разговор подруг',
-        open_url:null,open_provider:'no_timecode',open_kind:'no_timecode',open_note:'Таймкод не задан',
-        source_url:'https://vkvideo.ru/search?query=x',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'🔍 Rutube',url:'https://rutube.ru/search/?query=x',note:'Поиск'}],
-        local_command:null,starting_label:'0:47:12',starting_seconds:2832,starting_kind:'estimate',starting_note:'Начальный ориентир, не проверенный момент',starting_open_url:'https://rutube.ru/video/86bda3b43e24e96bcf93a620862d8236/?t=2832',starting_command:'mpv --start=0:47:12 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''}
-      ]},
-    '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
+    '/api/admin/timecode-library': {
+      catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:0},scenes_with_candidates:0,total:0},
-      moderation:{official_videos:10,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['vk_mosfilm','rutube_mosfilm'],
-        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=0',provider:'rutube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/',pending_candidates:0}]},
+      moderation:{official_videos:10,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,
+        sources:['rutube_russia1'],targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',
+          movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',
+          url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=0',provider:'rutube_russia1',
+          has_deep_link:true,version_hint:'Реставрация',evidence_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/',
+          pending_candidates:0}]},
       sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
-      manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
-      files:[],note:'Ручная сверка обязательна.'}
-  });
+      manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},
+        imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
+      files:[],note:'Ручная сверка обязательна.'},
+    '/api/admin/moderation/love-confession/table': loveTableMock(),
+    ...extra,
+  };
+}
+
+test('admin renders one compact love table with direct links and editable timecodes', async () => {
+  const dom = await screen('/admin', adminMocks());
   try {
-    dom.window.document.querySelector('#adm-load').click();
+    const doc = dom.window.document;
+    doc.querySelector('#adm-load').click();
     await new Promise(resolve => setTimeout(resolve, 40));
-    assert.ok(dom.window.document.querySelector('.notification-retry'));
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /notification_retry/);
-    assert.ok(dom.window.document.querySelector('#tc-bulk').disabled);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Авто-одобрение отключено/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Библиотека таймкодов/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /полный манифест: 62 из 140/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные бесплатные версии: 10 сцен/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные полные версии для ручного поиска момента/);
-    assert.ok(dom.window.document.querySelector('.md-target'));
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Модерация таймкодов — 146 сцен/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /источники: VK \+ Rutube/);
-    assert.doesNotMatch(dom.window.document.querySelector('#adm-body').textContent, /youtube\.com|kinopoisk|ivi\.ru|okko\.tv|imdb\.com/);
-    assert.equal(dom.window.document.querySelector('#mod-filter').value, 'love_batch');
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Блок №1/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /2 подготовленных отрывков/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /SRT-окон: 1/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /непроверенных ориентиров: 1 \(внешних: 0\)/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ЧТО СМОТРЕТЬ:/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ВНЕШНЯЯ ПОДСКАЗКА/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /version_note \*/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Таймкоды всех 2 отрывков/);
-    assert.equal(dom.window.document.querySelectorAll('.mod-time-table tbody tr').length, 2);
-    assert.match(dom.window.document.querySelector('.mod-time-table').textContent, /0:43:04–0:43:58/);
-    assert.match(dom.window.document.querySelector('.mod-time-table').textContent, /1:36:55–1:37:30/);
-    assert.ok(dom.window.document.querySelector('.mod-time-badge'));
-    assert.match(dom.window.document.querySelector('.mod-time-badge').textContent, /0:43:04–0:43:58/);
-    assert.match(dom.window.document.querySelector('#mod-visible').textContent, /Показано: 2/);
-    assert.equal(dom.window.document.querySelectorAll('.mod-item[data-batch="love"]').length, 2);
-    const loveCard = dom.window.document.querySelector('.mod-item[data-batch="love"]');
-    const mainCard = dom.window.document.querySelector('.mod-item:not([data-batch="love"])');
-    assert.ok(loveCard && mainCard);
-    assert.match(loveCard.dataset.open, /[?&]t=2584$/);
-    assert.match(mainCard.dataset.open, /\?t=1976$/);
-    assert.equal(mainCard.style.display, 'none', 'основная очередь скрыта, пока выбран блок №1');
-    assert.notEqual(loveCard.style.display, 'none');
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Признание в любви/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /есть таймкод — к отсмотру/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Как куратору отбирать/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ТАЙМКОД:/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ССЫЛКИ:/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /нет таймкода/);
-    assert.ok(dom.window.document.querySelector('.mod-category'));
-    assert.match(dom.window.document.querySelector('.mod-category').textContent, /Признание в любви/);
-    assert.ok(dom.window.document.querySelector('.mod-anchor'));
-    assert.ok(dom.window.document.querySelector('.cur-add'), 'у сцены без таймкода должна быть форма куратора');
-    assert.ok(dom.window.document.querySelector('.cur-start'));
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /НАЧАЛЬНЫЙ ОРИЕНТИР/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /0:47:12/);
-    assert.equal(dom.window.document.querySelector('.cur-start').value, '0:47:12');
-    assert.notEqual(dom.window.document.querySelector('.cur-start').value, '0:32:56');
-    assert.ok(dom.window.document.querySelector('.start-local'));
-    assert.ok(dom.window.document.querySelector('.start-copy'));
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Девчата/);
+    const text = doc.querySelector('#adm-body').textContent;
+    const table = doc.querySelector('#moderation-board');
+    const tableText = table.textContent;
+    assert.ok(doc.querySelector('.notification-retry'));
+    assert.match(text, /notification_retry/);
+    assert.ok(doc.querySelector('#tc-bulk').disabled);
+    assert.match(text, /Авто-одобрение отключено/);
+    assert.match(text, /Библиотека таймкодов/);
+    assert.match(text, /полный манифест: 62 из 140/);
+    assert.match(text, /Легальные бесплатные версии: 10 сцен/);
+    assert.ok(doc.querySelector('.md-target'));
+    const details = doc.querySelector('#adm-body details');
+    assert.ok(details, 'служебные панели спрятаны в details');
+    assert.equal(details.hasAttribute('open'), false);
+
+    assert.match(tableText, /Признание в любви и чувства/);
+    assert.match(tableText, /2 фильмов · 1 прямых ссылок VK\/Rutube · 1 полей под ссылку/);
+    assert.match(tableText, /version_note обязателен/);
+    assert.match(tableText, /Ссылка на фильм/);
+    assert.match(tableText, /Версия издания/);
+    assert.equal(doc.querySelectorAll('.love-row').length, 2);
+    assert.equal(doc.querySelectorAll('.love-start').length, 2);
+    assert.equal(doc.querySelector('.love-row .love-start').value, '0:43:04');
+    assert.equal(doc.querySelector('.love-row .love-end').value, '0:43:58');
+    assert.equal(doc.querySelectorAll('.love-url')[0].value, 'https://rutube.ru/video/abc/');
+    assert.equal(doc.querySelectorAll('.love-url')[1].value, '');
+    assert.ok(doc.querySelector('.love-check'));
+    assert.ok(doc.querySelector('.love-save'));
+    assert.ok(doc.querySelector('.love-confirm'));
+    assert.ok(doc.querySelector('.love-reject'));
+    assert.match(tableText, /к проверке/);
+    // Никаких поисковых URL, «Мосфильм»-префиксов и старых карточек в основной таблице.
+    assert.doesNotMatch(tableText, /search|Мосфильм|vk_search|ЧТО СМОТРЕТЬ|ВНЕШНЯЯ ПОДСКАЗКА/);
+    assert.equal(table.querySelector('.mod-item'), null);
+    assert.equal(table.querySelector('.mod-time-badge'), null);
+    assert.equal(doc.querySelector('#mod-filter'), null);
+    assert.equal(doc.querySelector('.cur-start'), null);
+    assert.doesNotMatch(tableText, /найди момент сам|Таймкоды всех 50 отрывков/);
   } finally { dom.window.close(); }
 });
 
 test('admin timecode queue supports manual verification fields', async () => {
-  const dom = await screen('/admin', {
-    '/api/admin/overview': {users:1,scenes:1,gifts:0,shops:0,cards:0,revenue_rub:0},
-    '/api/admin/reports': {reports:[]},
-    '/api/admin/metrics': {worker:{status:'ok',age_seconds:0},pending_notifications:0,failed_notifications:0},
-    '/api/admin/notifications/failed': {notifications:[]},
-    '/api/admin/audit': {entries:[]},
-    '/api/admin/analytics': {funnel:{}},
-    '/api/admin/scenes?status=draft': {scenes:[]},
-    '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
+  const dom = await screen('/admin', adminMocks({
     '/api/admin/timecodes?status=pending': {candidates:[{
       id:7, movie_title:'Форрест Гамп', movie_year:1994, imdb_id:'tt0109830',
       timecode_label:'0:50:19', timecode_end_label:'0:50:56', service:'vkvideo',
@@ -213,37 +184,11 @@ test('admin timecode queue supports manual verification fields', async () => {
         {kind:'search',priority:1,label:'🔍 VK Видео · Форрест Гамп',url:'https://vkvideo.ru/search?query=x',note:'Поиск'},
         {kind:'local',priority:3,label:'⏱ Открыть локальный файл на ориентире',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
       ]
-    }]},
-'/api/admin/moderation/love-confession': loveBatchMock(),
-'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:44,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:146,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
-      categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
-      items:[
-        {scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'есть таймкод — к отсмотру',description:'Новогодняя Москва',why_fits:'',
-        category:'love_confession',category_label:'Признание в любви',fragment_type:'monologue',fragment_type_label:'Одна длинная реплика / монолог',secondary_intents:[],curated_anchor:'Робкое объяснение в чувствах',intent_confidence:0.95,intent_source:'manual',
-        candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',evidence_kind:'srt',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
-        proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,moment_label:'Женя у двери',
-        open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',open_provider:'rutube_mosfilm',open_kind:'rutube',open_note:'Официальная версия',
-        source_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'▶ Rutube · 0:32:56',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',note:'Официально'}],
-        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',starting_label:'0:32:56',starting_seconds:1976,starting_kind:'srt',starting_note:'Старт совпадает с кандидатом',starting_open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',starting_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''},
-        {scene_id:2,movie_title:'Девчата',movie_year:1961,imdb_id:'tt0054790',status:'needs_curator',status_label:'нет таймкода — куратор',description:'Работницы общежития',why_fits:'женская дружба',
-        category:'female_friendship',category_label:'Женская дружба / сестринство',fragment_type:'dialogue',fragment_type_label:'Живой диалог',secondary_intents:[],curated_anchor:'Девушки в общежитии спорят о замужестве Тоси',intent_confidence:0.95,intent_source:'manual',
-        candidate_id:null,candidate_status:null,candidate_source:null,intent_score:0,proposal_kind:'none',evidence_kind:'none',proposal_note:'Таймкода пока нет',reason:'',
-        proposed_label:'',proposed_seconds:null,proposed_end_label:'',proposed_end_seconds:null,moment_label:'Разговор подруг',
-        open_url:null,open_provider:'no_timecode',open_kind:'no_timecode',open_note:'Таймкод не задан',
-        source_url:'https://vkvideo.ru/search?query=x',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'🔍 Rutube',url:'https://rutube.ru/search/?query=x',note:'Поиск'}],
-        local_command:null,starting_label:'0:47:12',starting_seconds:2832,starting_kind:'estimate',starting_note:'Начальный ориентир, не проверенный момент',starting_open_url:'https://rutube.ru/video/86bda3b43e24e96bcf93a620862d8236/?t=2832',starting_command:'mpv --start=0:47:12 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''}
-      ]},
-    '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
-      candidates:{by_status:{pending:1},scenes_with_candidates:1,total:1},
-      moderation:{official_videos:10,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['vk_mosfilm','rutube_mosfilm'],
-        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=0',provider:'rutube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/',pending_candidates:0}]},
-      sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
-      manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
-      files:[],note:'Ручная сверка обязательна.'}
-  });
+    }]}
+  }));
   try {
     dom.window.localStorage.setItem('scena_admin_token', 'test-admin');
-    let opened = null, posted = null, manualPosted = null, curatorPosted = null;
+    let opened = null, posted = null, manualPosted = null;
     dom.window.open = (url) => { opened = url; };
     const originalFetch = dom.window.fetch;
     dom.window.fetch = async (path, opts) => {
@@ -254,10 +199,6 @@ test('admin timecode queue supports manual verification fields', async () => {
       if (opts && opts.method === 'POST' && String(path).includes('/timecodes/manual')) {
         manualPosted = JSON.parse(opts.body);
         return { ok: true, json: async () => ({ok:true,id:999}) };
-      }
-      if (opts && opts.method === 'POST' && String(path).includes('/moderation/curate')) {
-        curatorPosted = JSON.parse(opts.body);
-        return { ok: true, json: async () => ({ok:true,candidate_id:1000}) };
       }
       return originalFetch(path, opts);
     };
@@ -278,7 +219,7 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.match(doc.querySelector('#adm-body').textContent, /Официальная бесплатная версия найдена/);
     doc.querySelector('.md-start').value = '0:32:56';
     doc.querySelector('.md-end').value = '0:33:21';
-    doc.querySelector('.md-version').value = 'Мосфильм, реставрация';
+    doc.querySelector('.md-version').value = 'реставрация';
     doc.querySelector('.md-label').value = 'Женя у двери';
     doc.querySelector('.md-add').click();
     await new Promise(resolve => setTimeout(resolve, 60));
@@ -286,7 +227,7 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.equal(manualPosted.movie_title, 'Ирония судьбы, или С лёгким паром!');
     assert.equal(manualPosted.timecode_label, '0:32:56');
     assert.equal(manualPosted.timecode_end_label, '0:33:21');
-    assert.equal(manualPosted.version_note, 'Мосфильм, реставрация');
+    assert.equal(manualPosted.version_note, 'реставрация');
     // adm-load перезагрузил разметку после успешного добавления
     doc.querySelector('.tc-start').value = '0:50:20';
     doc.querySelector('.tc-approve').click();
@@ -302,12 +243,64 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.equal(posted.body.service, 'vkvideo');
     assert.equal(posted.body.version_note, 'театральная, VK Видео 2024');
     assert.equal(posted.body.moment_label, 'момент, где Форрест бежит');
-    doc.querySelector('.cur-start').value = '0:17:42';
-    doc.querySelector('.cur-add').click();
+  } finally { dom.window.close(); }
+});
+
+test('admin love table saves rows without verifying and confirms with version_note', async () => {
+  const posts = [];
+  const dom = await screen('/admin', adminMocks());
+  try {
+    const doc = dom.window.document;
+    doc.querySelector('#adm-load').click();
     await new Promise(resolve => setTimeout(resolve, 40));
-    assert.ok(curatorPosted, 'кураторская минута должна уйти на /moderation/curate');
-    assert.equal(curatorPosted.scene_id, 2);
-    assert.equal(curatorPosted.timecode_label, '0:17:42');
+    let opened = null;
+    dom.window.open = (url) => { opened = url; };
+    const originalFetch = dom.window.fetch;
+    dom.window.fetch = async (path, opts) => {
+      if (opts && opts.method === 'POST') {
+        posts.push({ path: String(path), body: JSON.parse(opts.body) });
+        return { ok: true, json: async () => ({ok:true}) };
+      }
+      return originalFetch(path, opts);
+    };
+    const tick = () => new Promise(resolve => setTimeout(resolve, 40));
+    let row = doc.querySelectorAll('.love-row')[0];
+    row.querySelector('.love-start').value = '0:43:10';
+    row.querySelector('.love-check').click();
+    assert.ok(opened && opened.includes('t=2590'), 'прямая ссылка открывается с таймкодом');
+
+    row.querySelector('.love-save').click();
+    await tick();
+    const saved = posts.find(p => p.path.includes('/edit'));
+    assert.ok(saved, 'сохранение строки уходит на /edit');
+    assert.equal(saved.path, '/api/admin/moderation/love-confession/501/edit');
+    assert.equal(saved.body.candidate_id, 501);
+    assert.equal(saved.body.timecode_label, '0:43:10');
+    assert.equal(saved.body.film_url, 'https://rutube.ru/video/abc/');
+    assert.equal(saved.body.verified, undefined, 'сохранение не ставит verified');
+
+    row = doc.querySelectorAll('.love-row')[0];
+    row.querySelector('.love-confirm').click();
+    await tick();
+    assert.equal(posts.some(p => p.path.includes('/confirm')), false,
+      'без version_note подтверждение не уходит');
+
+    row = doc.querySelectorAll('.love-row')[0];
+    row.querySelector('.love-version').value = 'Rutube, реставрация';
+    row.querySelector('.love-confirm').click();
+    await tick();
+    const confirmed = posts.find(p => p.path.includes('/confirm'));
+    assert.ok(confirmed, 'подтверждение уходит на /confirm');
+    assert.equal(confirmed.body.action, 'confirm');
+    assert.equal(confirmed.body.version_note, 'Rutube, реставрация');
+    assert.match(confirmed.body.watch_url, /rutube\.ru\/video\/abc\/\?t=2584/);
+
+    row = doc.querySelectorAll('.love-row')[0];
+    row.querySelector('.love-reject').click();
+    await tick();
+    const rejected = posts.filter(p => p.path.includes('/confirm')).pop();
+    assert.equal(rejected.body.action, 'reject');
+    assert.equal(rejected.body.version_note, undefined);
   } finally { dom.window.close(); }
 });
 

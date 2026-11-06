@@ -3,7 +3,7 @@
   "batch_id": "love_confession_50",
   "label": "Признание в любви и чувства",
   "generated_by": "scripts/build_love_confession_batch.py",
-  "generated_at": "2026-11-06T16:46:13+00:00",
+  "generated_at": "2026-11-06T18:55:53+00:00",
   "comment": "50 подготовленных кандидатов из 50 разных фильмов: окна по локальным SRT и уникальные непроверенные начальные ориентиры. Текст субтитров НЕ сохранён; только время, sha1, источник, лицензия и кураторский контекст.",
   "rules": {
     "verified_by_human": false,
@@ -26,16 +26,17 @@
   "stats": {
     "count": 50,
     "unique_scenes": 50,
-    "srt_evidence": 24,
-    "starting_orienteers": 26,
-    "external_orienteers": 2,
+    "srt_evidence": 13,
+    "starting_orienteers": 37,
+    "external_orienteers": 13,
     "primary_love_confession": 16,
-    "with_consensus_gt_1": 11
+    "with_consensus_gt_1": 7,
+    "with_direct_links": 9
   },
   "external_notes": [
-    "Clip.Cafe, подборки цитат и обзоры romantic scenes использованы только как внешние подсказки к узнаваемым эпизодам.",
+    "Clip.Cafe, подборки цитат и обзоры romantic scenes использованы только как внешние подсказки к узнаваемым эпизодам; для 13 фильмов время сцены взято оттуда и помечено как внешний ориентир.",
     "Локальные SRT дают окно 25–75 секунд с sha1 и номером строки; начальные ориентиры дают уникальный sha1 каталога, но не номер строки SRT.",
-    "Все 50 карточек — 50 разных фильмов; verified_by_human=false, version_note обязателен."
+    "Все 50 таймкодов ограничены реальной длительностью фильма; verified_by_human=false, version_note обязателен."
   ],
   "entries": [
     {
@@ -63,73 +64,53 @@
         "узнавание",
         "нежность",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "0:43:04",
-      "timecode_seconds": 2584,
-      "timecode_end_label": "0:43:58",
-      "timecode_end_seconds": 2638,
-      "duration_seconds": 54.0,
-      "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Romance/Amelie%20.srt#love_confession_50",
-      "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/preprocess/Subtitles/Romance/Amelie%20.srt",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "13b4d2f9a7053f1474ed5f4bc2549a5162364d9d",
-      "line_index": 513,
-      "match_score": 0.3775,
-      "intent_score": 1.81,
-      "confidence": 1.81,
+      "timecode_label": "1:12:31",
+      "timecode_seconds": 4351,
+      "timecode_end_label": "1:13:06",
+      "timecode_end_seconds": 4386,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/amelie-2001/shes-in-love/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "2571e6f7fb36d3acd5a4d4040f51f87eedc5fff3",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/amelie-2001/shes-in-love/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 01:12:31, не проверено.",
+      "external_time": "1:12:31",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 1,
-        "lexicon_hits": 3,
-        "negative_markers": 0,
-        "lines": 15,
-        "duration_seconds": 54.0,
-        "context_score": 0.3,
-        "emotion_tags": [
-          "робкое чувство",
-          "узнавание",
-          "нежность",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "Парижская сказка о двух застенчивых людях: вместо прямого признания — альбом, подсказки и тихое сближение. Внешняя подсказка Clip.Cafe относит эпизод «она влюблена» примерно к 01:12:31; издание может сдвинуть время. Clip.Cafe: внешний ориентир около 01:12:31, не проверено.",
-        "moment_label": "Нино узнаёт, что Амели влюблена; робость превращается в узнавание",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "1:12:31",
         "external_refs": [
           "https://clip.cafe/amelie-2001/shes-in-love/"
         ],
-        "primary_intent": "female_friendship",
-        "secondary_intents": [
-          "children_animation",
-          "love_confession"
-        ],
-        "curated_anchor": "Амели решает помочь другим; разговор о добрых делах",
-        "category_label": "Признание в любви и чувства",
-        "genre": "ромком",
-        "description": "Девушка решает сделать мир вокруг лучше — начиная с чужих судеб.",
-        "why_fits": "Парижская сказка о добрых делах.",
-        "imdb_id": "tt0211915",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 01:12:31, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 7320,
+        "film_url": ""
       },
+      "starting_label": "1:12:31",
+      "starting_seconds": 4351,
       "batch_rank": 1,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7320
     },
     {
       "key": "Асса|1987",
@@ -221,8 +202,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:36:55",
+      "starting_seconds": 5815,
       "batch_rank": 2,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 9180
     },
     {
       "key": "Афоня|1975",
@@ -314,8 +299,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:12:34",
+      "starting_seconds": 4354,
       "batch_rank": 3,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/97251d193ac780c0138596f3aea972c0/",
+      "runtime_seconds": 5520
     },
     {
       "key": "ВАЛЛ-И|2008",
@@ -348,7 +337,7 @@
       "timecode_seconds": 1203,
       "timecode_end_label": "0:20:58",
       "timecode_end_seconds": 1258,
-      "duration_seconds": 55.0,
+      "duration_seconds": 55,
       "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/WALL%2AE.srt#love_confession_50",
       "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/WALL%2AE.srt",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -403,8 +392,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "0:20:03",
+      "starting_seconds": 1203,
       "batch_rank": 4,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5880
     },
     {
       "key": "Вверх|2009",
@@ -437,7 +430,7 @@
       "timecode_seconds": 564,
       "timecode_end_label": "0:10:10",
       "timecode_end_seconds": 610,
-      "duration_seconds": 45.7,
+      "duration_seconds": 46,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Up-2009.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Up-2009.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -492,8 +485,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "0:09:24",
+      "starting_seconds": 564,
       "batch_rank": 5,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5760
     },
     {
       "key": "Величайшее шоу на Земле|2017",
@@ -523,7 +520,7 @@
       "timecode_seconds": 4560,
       "timecode_end_label": "1:16:47",
       "timecode_end_seconds": 4607,
-      "duration_seconds": 47.5,
+      "duration_seconds": 47,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Greatest-Showman-2017.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Greatest-Showman-2017.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -575,8 +572,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:16:00",
+      "starting_seconds": 4560,
       "batch_rank": 6,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6300
     },
     {
       "key": "Виноваты звёзды|2014",
@@ -609,7 +610,7 @@
       "timecode_seconds": 5031,
       "timecode_end_label": "1:24:56",
       "timecode_end_seconds": 5096,
-      "duration_seconds": 64.3,
+      "duration_seconds": 65,
       "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Fault%20in%20Our%20Stars.srt#love_confession_50",
       "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/The%20Fault%20in%20Our%20Stars.srt",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -664,8 +665,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:23:51",
+      "starting_seconds": 5031,
       "batch_rank": 7,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7560
     },
     {
       "key": "Властелин колец: Возвращение короля|2003",
@@ -706,7 +711,7 @@
       "evidence_sha1": "20ae976653277bd8b475e067cd59869d84d3e986",
       "line_index": 0,
       "match_score": 0.0,
-      "intent_score": 0.0,
+      "intent_score": 999.0,
       "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
@@ -720,49 +725,24 @@
       "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
       "external_time": "1:15:15",
-      "curated_orienteer": true,
+      "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
         "centered_on": "external_orienteer",
-        "curated_orienteer": true,
-        "strong_hits": 0,
-        "lexicon_hits": 0,
-        "negative_markers": 0,
-        "lines": 0,
-        "duration_seconds": 35,
-        "context_score": 1.07,
-        "emotion_tags": [
-          "выбор",
-          "верность",
-          "долгая любовь",
-          "тихая клятва",
-          "подготовленный кандидат",
-          "внешний ориентир",
-          "не проверено"
-        ],
-        "context": "В эпическом финале есть тихая романтическая линия: отказ от бессмертия и обещание прожить обычную жизнь вместе. Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
-        "moment_label": "Арагорн и Арвен: выбор смертной жизни ради любви",
-        "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
+        "curated_orienteer": false,
+        "external_time": "1:15:15",
         "external_refs": [
           "https://clip.cafe/the-lord-of-the-rings-the-return-of-the-king-2003/arwen-i-choose-a-mortal-life-s1/"
         ],
-        "primary_intent": "anniversary_long_love",
-        "secondary_intents": [
-          "male_friendship"
-        ],
-        "curated_anchor": "Эпизод: Финал эпопеи.. Искать: годовщина вместе столько лет любовь на всю жизнь клятва тост прожили помнишь",
-        "category_label": "Признание в любви и чувства",
-        "genre": "фэнтези",
-        "description": "Финал эпопеи.",
-        "why_fits": "—",
-        "imdb_id": "tt0167260",
-        "evidence_kind": "external_orienteer",
-        "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
-        "external_note": "Clip.Cafe: внешний ориентир около 01:15:15 для выбора Арвен, не проверено.",
-        "external_time": "1:15:15"
+        "runtime_seconds": 12060,
+        "film_url": ""
       },
+      "starting_label": "1:15:15",
+      "starting_seconds": 4515,
       "batch_rank": 8,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 12060
     },
     {
       "key": "Война и мир|1966",
@@ -792,7 +772,7 @@
       "timecode_seconds": 4786,
       "timecode_end_label": "1:20:35",
       "timecode_end_seconds": 4835,
-      "duration_seconds": 49.2,
+      "duration_seconds": 49,
       "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/War%20and%20Peace.srt#love_confession_50",
       "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/War%20and%20Peace.srt",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -844,8 +824,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:19:46",
+      "starting_seconds": 4786,
       "batch_rank": 9,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/d52093cb69d267515044eaf5296cd62f/",
+      "runtime_seconds": 25200
     },
     {
       "key": "Вторжение|2020",
@@ -933,8 +917,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:51:23",
+      "starting_seconds": 6683,
       "batch_rank": 10,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8040
     },
     {
       "key": "Грязные танцы|1987",
@@ -961,73 +949,53 @@
         "уязвимость",
         "танец",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "0:45:41",
-      "timecode_seconds": 2741,
-      "timecode_end_label": "0:46:31",
-      "timecode_end_seconds": 2791,
-      "duration_seconds": 50.4,
-      "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Dirty%20Dancing.srt#love_confession_50",
-      "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Dirty%20Dancing.srt",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "70c873cfb9e86e319667a3126e89b050dbad0a5c",
-      "line_index": 397,
-      "match_score": 0.3375,
-      "intent_score": 1.67,
-      "confidence": 1.67,
+      "timecode_label": "0:55:45",
+      "timecode_seconds": 3345,
+      "timecode_end_label": "0:56:20",
+      "timecode_end_seconds": 3380,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/dirty-dancing-1987/im-scared-of-everything-im-scared-of-what-i-saw/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "acd079180f18270aa3b77f8990509517cccbbd1e",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/dirty-dancing-1987/im-scared-of-everything-im-scared-of-what-i-saw/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 00:55:45, не проверено.",
+      "external_time": "0:55:45",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 1,
-        "lexicon_hits": 3,
-        "negative_markers": 0,
-        "lines": 11,
-        "duration_seconds": 50.4,
-        "context_score": 0.32,
-        "emotion_tags": [
-          "первое признание",
-          "уязвимость",
-          "танец",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "Одно из самых трогательных косвенных признаний фильма: герой впервые проговаривает страх потерять это чувство. Внешняя подсказка Clip.Cafe — около 00:55:45. Clip.Cafe: внешний ориентир около 00:55:45, не проверено.",
-        "moment_label": "Джонни говорит Бэби, что рядом с ней он чувствует себя живым",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "0:55:45",
         "external_refs": [
           "https://clip.cafe/dirty-dancing-1987/im-scared-of-everything-im-scared-of-what-i-saw/"
         ],
-        "primary_intent": "children_animation",
-        "secondary_intents": [
-          "memory_war",
-          "anniversary_long_love"
-        ],
-        "curated_anchor": "Финальный танец «I've Had the Time of My Life»",
-        "category_label": "Признание в любви и чувства",
-        "genre": "мюзикл",
-        "description": "Лето 1963-го: Baby учит танцевать.",
-        "why_fits": "Про первую любовь и танец.",
-        "imdb_id": "tt0092890",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 00:55:45, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 6000,
+        "film_url": ""
       },
+      "starting_label": "0:55:45",
+      "starting_seconds": 3345,
       "batch_rank": 11,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6000
     },
     {
       "key": "Гусарская баллада|1962",
@@ -1121,8 +1089,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:07:59",
+      "starting_seconds": 4079,
       "batch_rank": 12,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5760
     },
     {
       "key": "Десять причин моей ненависти|2017",
@@ -1153,10 +1125,10 @@
         "начальный ориентир",
         "не проверено"
       ],
-      "timecode_label": "1:43:34",
-      "timecode_seconds": 6214,
-      "timecode_end_label": "1:44:09",
-      "timecode_end_seconds": 6249,
+      "timecode_label": "1:36:00",
+      "timecode_seconds": 5760,
+      "timecode_end_label": "1:36:35",
+      "timecode_end_seconds": 5795,
       "duration_seconds": 35,
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
@@ -1216,8 +1188,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:36:00",
+      "starting_seconds": 5760,
       "batch_rank": 13,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5820
     },
     {
       "key": "Дневник памяти|2004",
@@ -1244,75 +1220,55 @@
         "память",
         "светлая грусть",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "1:48:57",
-      "timecode_seconds": 6537,
-      "timecode_end_label": "1:49:47",
-      "timecode_end_seconds": 6587,
-      "duration_seconds": 49.5,
-      "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Notebook-2004.csv#love_confession_50",
-      "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/The-Notebook-2004.csv",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "19f8835a2f5b013e004214f4603d70f94ddc8f96",
-      "line_index": 1539,
-      "match_score": 0.7525,
-      "intent_score": 4.38,
-      "confidence": 4.38,
-      "consensus": 4,
+      "timecode_label": "0:19:06",
+      "timecode_seconds": 1146,
+      "timecode_end_label": "0:19:41",
+      "timecode_end_seconds": 1181,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/the-notebook-2004/they-fell-in-love/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "39062f18a53ce3781a104dbd113667e3234abd25",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
+      "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/the-notebook-2004/they-fell-in-love/",
         "https://clip.cafe/the-notebook-2004/now-thats-a-damn-picture-there/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешние ориентиры около 00:19:06 / 00:21:03, не проверено.",
+      "external_time": "0:19:06",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 3,
-        "lexicon_hits": 5,
-        "negative_markers": 0,
-        "lines": 19,
-        "duration_seconds": 49.5,
-        "context_score": 1.07,
-        "emotion_tags": [
-          "долгая любовь",
-          "память",
-          "светлая грусть",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "История любви на всю жизнь, рассказанная через чтение вслух. Внешние страницы сцен дают ориентиры около 00:19:06 и 00:21:03 для эпизодов влюблённости и «птицей»-образа; таймкод издания может отличаться. Clip.Cafe: внешние ориентиры около 00:19:06 / 00:21:03, не проверено.",
-        "moment_label": "Старый муж читает дневник жене, чтобы вернуть их историю",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "0:19:06",
         "external_refs": [
           "https://clip.cafe/the-notebook-2004/they-fell-in-love/",
           "https://clip.cafe/the-notebook-2004/now-thats-a-damn-picture-there/"
         ],
-        "primary_intent": "anniversary_long_love",
-        "secondary_intents": [
-          "anniversary_long_love",
-          "memory_war"
-        ],
-        "curated_anchor": "Пожилой муж читает дневник своей жене: любовь на всю жизнь",
-        "category_label": "Признание в любви и чувства",
-        "genre": "драма",
-        "description": "История любви, рассказанная пожилой парой внукам.",
-        "why_fits": "Классика «любовь на всю жизнь».",
-        "imdb_id": "tt0332280",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешние ориентиры около 00:19:06 / 00:21:03, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 7380,
+        "film_url": ""
       },
+      "starting_label": "0:19:06",
+      "starting_seconds": 1146,
       "batch_rank": 14,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7380
     },
     {
       "key": "Ешь, молись, люби|2010",
@@ -1345,7 +1301,7 @@
       "timecode_seconds": 1822,
       "timecode_end_label": "0:31:30",
       "timecode_end_seconds": 1890,
-      "duration_seconds": 68.7,
+      "duration_seconds": 68,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Eat-Pray-Love-2010.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Eat-Pray-Love-2010.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -1400,8 +1356,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "0:30:22",
+      "starting_seconds": 1822,
       "batch_rank": 15,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7980
     },
     {
       "key": "Жестокий романс|2008",
@@ -1495,8 +1455,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:38:02",
+      "starting_seconds": 5882,
       "batch_rank": 16,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8520
     },
     {
       "key": "Зависть богов|2000",
@@ -1590,8 +1554,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:41:08",
+      "starting_seconds": 6068,
       "batch_rank": 17,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7920
     },
     {
       "key": "Звезда родилась|2018",
@@ -1618,75 +1586,55 @@
         "сцена",
         "уязвимость",
         "светлая грусть",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "2:49:58",
-      "timecode_seconds": 10198,
-      "timecode_end_label": "2:50:51",
-      "timecode_end_seconds": 10251,
-      "duration_seconds": 53.1,
-      "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Musical/A%20Star%20Is%20Born.srt#love_confession_50",
-      "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Musical/A%20Star%20Is%20Born.srt",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "96acba2ee08c8b0e36239d188a8f4ab974564ce3",
-      "line_index": 2261,
-      "match_score": 0.585,
-      "intent_score": 3.9,
-      "confidence": 3.9,
+      "timecode_label": "1:11:26",
+      "timecode_seconds": 4286,
+      "timecode_end_label": "1:12:01",
+      "timecode_end_seconds": 4321,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/a-star-is-born-2018/you-know-its-like/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "3b78ca65554227324c29659b1684da3110a6ebab",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/a-star-is-born-2018/you-know-its-like/",
         "https://clip.cafe/a-star-is-born-2018/tearfully-its-i-idolized-it-wasnt-dad/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешние ориентиры около 01:11:26 / 01:50:36, не проверено.",
+      "external_time": "1:11:26",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 4,
-        "negative_markers": 0,
-        "lines": 19,
-        "duration_seconds": 53.1,
-        "context_score": 1.56,
-        "emotion_tags": [
-          "нежность",
-          "сцена",
-          "уязвимость",
-          "светлая грусть",
-          "подготовленный кандидат"
-        ],
-        "context": "Личная интонация посреди сцены и славы. Внешние страницы Clip.Cafe дают ориентиры около 01:11:26 и 01:50:36 для любовной линии и запоздалого понимания; не human-verified. Clip.Cafe: внешние ориентиры около 01:11:26 / 01:50:36, не проверено.",
-        "moment_label": "Джек и Элли: тихое признание в том, что они нашли друг друга",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "1:11:26",
         "external_refs": [
           "https://clip.cafe/a-star-is-born-2018/you-know-its-like/",
           "https://clip.cafe/a-star-is-born-2018/tearfully-its-i-idolized-it-wasnt-dad/"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "inspiration_dream",
-          "support_hope"
-        ],
-        "curated_anchor": "Эпизод: Звезда рождается и гаснет.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
-        "category_label": "Признание в любви и чувства",
-        "genre": "мюзикл",
-        "description": "Звезда рождается и гаснет.",
-        "why_fits": "О цене славы и любви.",
-        "imdb_id": "tt1517451",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешние ориентиры около 01:11:26 / 01:50:36, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 8160,
+        "film_url": ""
       },
+      "starting_label": "1:11:26",
+      "starting_seconds": 4286,
       "batch_rank": 18,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8160
     },
     {
       "key": "Игры разума|2001",
@@ -1712,72 +1660,53 @@
         "верность",
         "робкое признание",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "1:14:29",
-      "timecode_seconds": 4469,
-      "timecode_end_label": "1:15:11",
-      "timecode_end_seconds": 4511,
-      "duration_seconds": 42.3,
-      "source": "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/A%20Beautiful%20Mind.srt#love_confession_50",
-      "evidence_source": "https://github.com/imkira3/imkira3Keys/blob/8c1b635c31b2039f19407609572e6d114c155898/Subtitles/A%20Beautiful%20Mind.srt",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "15b1d39e6b4e63e29d3a1a27282103bf9689ad77",
-      "line_index": 862,
-      "match_score": 0.455,
-      "intent_score": 3.5,
-      "confidence": 3.5,
+      "timecode_label": "0:52:52",
+      "timecode_seconds": 3172,
+      "timecode_end_label": "0:53:27",
+      "timecode_end_seconds": 3207,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/a-beautiful-mind-2001/alicia-does-our-relationship-warrant-long-term-commitment",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "2a69646d25008a2231f0181fde1ad709c5934e99",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/a-beautiful-mind-2001/alicia-does-our-relationship-warrant-long-term-commitment"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 00:52:52, не проверено.",
+      "external_time": "0:52:52",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 2,
-        "negative_markers": 0,
-        "lines": 12,
-        "duration_seconds": 42.3,
-        "context_score": 1.68,
-        "emotion_tags": [
-          "поддержка",
-          "верность",
-          "робкое признание",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "Романтика здесь звучит через попытку описать отношения языком математики — и через выбор остаться, когда теория больше не работает. Внешняя подсказка Clip.Cafe — около 00:52:52. Clip.Cafe: внешний ориентир около 00:52:52, не проверено.",
-        "moment_label": "Алисия и Джон: от формулы доказательства к объяснению в чувствах",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "0:52:52",
         "external_refs": [
           "https://clip.cafe/a-beautiful-mind-2001/alicia-does-our-relationship-warrant-long-term-commitment"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "memory_war"
-        ],
-        "curated_anchor": "Эпизод: Гениальный математик борется со шизофренией — и побеждает любовью.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
-        "category_label": "Признание в любви и чувства",
-        "genre": "драма",
-        "description": "Гениальный математик борется со шизофренией — и побеждает любовью.",
-        "why_fits": "Про разум и сердце.",
-        "imdb_id": "tt0268978",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 00:52:52, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 8100,
+        "film_url": ""
       },
+      "starting_label": "0:52:52",
+      "starting_seconds": 3172,
       "batch_rank": 19,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8100
     },
     {
       "key": "Интерстеллар|2014",
@@ -1810,7 +1739,7 @@
       "timecode_seconds": 5525,
       "timecode_end_label": "1:32:57",
       "timecode_end_seconds": 5577,
-      "duration_seconds": 51.5,
+      "duration_seconds": 52,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Interstellar-2014.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Interstellar-2014.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -1865,8 +1794,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:32:05",
+      "starting_seconds": 5525,
       "batch_rank": 20,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 10140
     },
     {
       "key": "Ирония судьбы, или С лёгким паром!|1975",
@@ -1966,8 +1899,12 @@
         "external_note": "Внешний контекст: подборки цитат фильма, без проверенного таймкода.",
         "external_time": ""
       },
+      "starting_label": "1:12:39",
+      "starting_seconds": 4359,
       "batch_rank": 21,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/",
+      "runtime_seconds": 11520
     },
     {
       "key": "Ирония судьбы. Продолжение|2007",
@@ -2057,8 +1994,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:17:11",
+      "starting_seconds": 4631,
       "batch_rank": 22,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6840
     },
     {
       "key": "Кавказская пленница|1966",
@@ -2146,8 +2087,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:11:41",
+      "starting_seconds": 4301,
       "batch_rank": 23,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/2959f7a99504290930cc68951bd2f5ce/",
+      "runtime_seconds": 4920
     },
     {
       "key": "Когда Гарри встретил Салли|1989",
@@ -2174,73 +2119,53 @@
         "робость",
         "финал",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "1:19:30",
-      "timecode_seconds": 4770,
-      "timecode_end_label": "1:20:25",
-      "timecode_end_seconds": 4825,
-      "duration_seconds": 54.8,
-      "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/When-Harry-Met-Sally...-1989.csv#love_confession_50",
-      "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/When-Harry-Met-Sally...-1989.csv",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "a789bf979a2a10d19b84a10e0bef176cfd459d50",
-      "line_index": 1134,
-      "match_score": 0.475,
-      "intent_score": 3.64,
-      "confidence": 3.64,
-      "consensus": 4,
+      "timecode_label": "1:29:04",
+      "timecode_seconds": 5344,
+      "timecode_end_label": "1:29:39",
+      "timecode_end_seconds": 5379,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/when-harry-met-sally-1989/ive-been-doin-a-lot-of-thinkin-the-thing-i-love-you",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "9ce96cc074c1de68c3013688cc5362558d0532b0",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
+      "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/when-harry-met-sally-1989/ive-been-doin-a-lot-of-thinkin-the-thing-i-love-you"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 01:29:04, не проверено.",
+      "external_time": "1:29:04",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 2,
-        "negative_markers": 0,
-        "lines": 14,
-        "duration_seconds": 54.8,
-        "context_score": 1.44,
-        "emotion_tags": [
-          "первое признание",
-          "робость",
-          "финал",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "Каноническая речь о том, что хочется начать остаток жизни прямо сейчас. Внешняя страница сцены даёт ориентир около 01:29:04; локальный SRT и издание могут отличаться. Clip.Cafe: внешний ориентир около 01:29:04, не проверено.",
-        "moment_label": "Новогоднее признание Гарри: список мелочей, которые он любит",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "1:29:04",
         "external_refs": [
           "https://clip.cafe/when-harry-met-sally-1989/ive-been-doin-a-lot-of-thinkin-the-thing-i-love-you"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "love_confession",
-          "inspiration_dream"
-        ],
-        "curated_anchor": "Финальное новогоднее признание Гарри: список того, что он любит в Салли",
-        "category_label": "Признание в любви и чувства",
-        "genre": "ромком",
-        "description": "Могут ли мужчина и женщина быть просто друзьями — и что будет, если ответ «да».",
-        "why_fits": "Каноническая сцена признания.",
-        "imdb_id": "tt0098635",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 01:29:04, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 5760,
+        "film_url": ""
       },
+      "starting_label": "1:29:04",
+      "starting_seconds": 5344,
       "batch_rank": 24,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5760
     },
     {
       "key": "Красотка|1990",
@@ -2266,72 +2191,53 @@
         "робость",
         "сближение",
         "нежность",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "0:01:12",
-      "timecode_seconds": 72,
-      "timecode_end_label": "0:01:59",
-      "timecode_end_seconds": 119,
-      "duration_seconds": 46.2,
-      "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Pretty%20Woman.srt#love_confession_50",
-      "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Pretty%20Woman.srt",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "a018f8e8a7fe6b6e84a3c02eb3c98f2b28834c43",
-      "line_index": 27,
-      "match_score": 0.525,
-      "intent_score": 3.42,
-      "confidence": 3.42,
+      "timecode_label": "0:57:00",
+      "timecode_seconds": 3420,
+      "timecode_end_label": "0:57:35",
+      "timecode_end_seconds": 3455,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/pretty-woman-1990/lets-watch-old-movies-all-night/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "556d1d1f2da79a9e27bf70320e44a86a07f37b2a",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/pretty-woman-1990/lets-watch-old-movies-all-night/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 00:57:00, не проверено.",
+      "external_time": "0:57:00",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 3,
-        "negative_markers": 0,
-        "lines": 16,
-        "duration_seconds": 46.2,
-        "context_score": 1.32,
-        "emotion_tags": [
-          "сказка",
-          "робость",
-          "сближение",
-          "нежность",
-          "подготовленный кандидат"
-        ],
-        "context": "Сказка о двух людях из разных миров; момент сближения куда важнее финальной лестницы. Внешняя страница Clip.Cafe даёт ориентир около 00:57:00 для сцены возвращения. Clip.Cafe: внешний ориентир около 00:57:00, не проверено.",
-        "moment_label": "Эдвард и Вивиан: тихий вечер, после которого отношения перестают быть сделкой",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "0:57:00",
         "external_refs": [
           "https://clip.cafe/pretty-woman-1990/lets-watch-old-movies-all-night/"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "love_confession"
-        ],
-        "curated_anchor": "Разговор о том, что важнее денег, и признание на лестнице",
-        "category_label": "Признание в любви и чувства",
-        "genre": "ромком",
-        "description": "Миллиардер и девушка из бедного квартала.",
-        "why_fits": "Сказка про то, что важно не деньги.",
-        "imdb_id": "tt0100405",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 00:57:00, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 7140,
+        "film_url": ""
       },
+      "starting_label": "0:57:00",
+      "starting_seconds": 3420,
       "batch_rank": 25,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7140
     },
     {
       "key": "Курьер|1986",
@@ -2362,10 +2268,10 @@
         "начальный ориентир",
         "не проверено"
       ],
-      "timecode_label": "1:41:26",
-      "timecode_seconds": 6086,
-      "timecode_end_label": "1:42:01",
-      "timecode_end_seconds": 6121,
+      "timecode_label": "1:26:40",
+      "timecode_seconds": 5200,
+      "timecode_end_label": "1:27:15",
+      "timecode_end_seconds": 5235,
       "duration_seconds": 35,
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
@@ -2425,8 +2331,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:26:40",
+      "starting_seconds": 5200,
       "batch_rank": 26,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/788d258dd76e66c7f1e8bf972125e2bf/",
+      "runtime_seconds": 5280
     },
     {
       "key": "Ла-Ла Ленд|2016",
@@ -2453,73 +2363,53 @@
         "светлая грусть",
         "финал",
         "тихое прощание",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "0:21:26",
-      "timecode_seconds": 1286,
-      "timecode_end_label": "0:22:12",
-      "timecode_end_seconds": 1332,
-      "duration_seconds": 46.4,
-      "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/La-La-Land-2016.csv#love_confession_50",
-      "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/La-La-Land-2016.csv",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "3ec79a23507c99d5bcf2d80e95e5d71615c03b4f",
-      "line_index": 151,
-      "match_score": 0.625,
-      "intent_score": 2.97,
-      "confidence": 2.97,
+      "timecode_label": "1:42:55",
+      "timecode_seconds": 6175,
+      "timecode_end_label": "1:43:30",
+      "timecode_end_seconds": 6210,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/la-la-land-2016/im-always-gonna-love-you/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "b6c14db569bf9610415fd239a6c6c7b63f090e39",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/la-la-land-2016/im-always-gonna-love-you/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 01:42:55, не проверено.",
+      "external_time": "1:42:55",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 3,
-        "negative_markers": 0,
-        "lines": 26,
-        "duration_seconds": 46.4,
-        "context_score": 0.47,
-        "emotion_tags": [
-          "вечная любовь",
-          "светлая грусть",
-          "финал",
-          "тихое прощание",
-          "подготовленный кандидат"
-        ],
-        "context": "Финальное чувство без обещания быть вместе. Внешняя страница Clip.Cafe даёт ориентир около 01:42:55; не считать проверенным. Clip.Cafe: внешний ориентир около 01:42:55, не проверено.",
-        "moment_label": "Мия и Себастьян тихо обещают всегда любить друг друга",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "1:42:55",
         "external_refs": [
           "https://clip.cafe/la-la-land-2016/im-always-gonna-love-you/"
         ],
-        "primary_intent": "inspiration_dream",
-        "secondary_intents": [
-          "anniversary_long_love",
-          "children_animation"
-        ],
-        "curated_anchor": "Разговор о мечте и кафе / финальная «what if»",
-        "category_label": "Признание в любви и чувства",
-        "genre": "мюзикл",
-        "description": "Два мечтателя встречаются на фоне заката в Лос-Анджелесе.",
-        "why_fits": "Про мечты, ради которых стоит смотреть вместе.",
-        "imdb_id": "tt3783952",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 01:42:55, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 7680,
+        "film_url": ""
       },
+      "starting_label": "1:42:55",
+      "starting_seconds": 6175,
       "batch_rank": 27,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7680
     },
     {
       "key": "Любовь и голуби|1984",
@@ -2613,8 +2503,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:11:27",
+      "starting_seconds": 4287,
       "batch_rank": 28,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/68781d890618ea50933ec020fd5060bf/",
+      "runtime_seconds": 6420
     },
     {
       "key": "Любовь-морковь|2007",
@@ -2708,8 +2602,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:15:38",
+      "starting_seconds": 4538,
       "batch_rank": 29,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6240
     },
     {
       "key": "Москва слезам не верит|1979",
@@ -2803,8 +2701,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:31:44",
+      "starting_seconds": 5504,
       "batch_rank": 30,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/c3f9a356e9e04ac607b4d7d295648eab/",
+      "runtime_seconds": 9000
     },
     {
       "key": "Начало|2010",
@@ -2836,7 +2738,7 @@
       "timecode_seconds": 5778,
       "timecode_end_label": "1:37:06",
       "timecode_end_seconds": 5826,
-      "duration_seconds": 47.2,
+      "duration_seconds": 48,
       "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Inception.srt#love_confession_50",
       "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Inception.srt",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -2890,8 +2792,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:36:18",
+      "starting_seconds": 5778,
       "batch_rank": 31,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8880
     },
     {
       "key": "Ноттинг Хилл|1999",
@@ -2918,75 +2824,55 @@
         "уязвимость",
         "ромком",
         "тихое признание",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "1:55:31",
-      "timecode_seconds": 6931,
-      "timecode_end_label": "1:56:17",
-      "timecode_end_seconds": 6977,
-      "duration_seconds": 46.2,
-      "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Notting-Hill-1999.csv#love_confession_50",
-      "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Notting-Hill-1999.csv",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "0feb5d395724a9932b4f69a244853d634bbb343b",
-      "line_index": 1678,
-      "match_score": 0.435,
-      "intent_score": 3.28,
-      "confidence": 3.28,
-      "consensus": 2,
+      "timecode_label": "1:45:47",
+      "timecode_seconds": 6347,
+      "timecode_end_label": "1:46:22",
+      "timecode_end_seconds": 6382,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/notting-hill-1999/i-live-in-notting-hill/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "2133c44ddab0169d7cceebb53257ea7d82a71d13",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
+      "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/notting-hill-1999/i-live-in-notting-hill/",
         "https://clip.cafe/notting-hill-1999/standing-in-front-of-a-boy/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешние ориентиры около 01:45:47 / 01:48:01, не проверено.",
+      "external_time": "1:45:47",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 2,
-        "negative_markers": 0,
-        "lines": 10,
-        "duration_seconds": 46.2,
-        "context_score": 1.44,
-        "emotion_tags": [
-          "робость",
-          "уязвимость",
-          "ромком",
-          "тихое признание",
-          "подготовленный кандидат"
-        ],
-        "context": "Очень уязвимое, тихое объяснение книготорговца и кинозвезды. Внешние страницы дают ориентиры около 01:45:47 и 01:48:01; локальный SRT может быть смещён. Clip.Cafe: внешние ориентиры около 01:45:47 / 01:48:01, не проверено.",
-        "moment_label": "Анна просит Уильяма просто любить её, несмотря на славу",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "1:45:47",
         "external_refs": [
           "https://clip.cafe/notting-hill-1999/i-live-in-notting-hill/",
           "https://clip.cafe/notting-hill-1999/standing-in-front-of-a-boy/"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "anniversary_long_love",
-          "female_friendship"
-        ],
-        "curated_anchor": "Просьба «просто девушка, стоящая перед парнем»",
-        "category_label": "Признание в любви и чувства",
-        "genre": "ромком",
-        "description": "Скромный книготорговец влюбляется в голливудскую звезду.",
-        "why_fits": "Ромком о «обычном парне и необычной любви».",
-        "imdb_id": "tt0125439",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешние ориентиры около 01:45:47 / 01:48:01, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 7440,
+        "film_url": ""
       },
+      "starting_label": "1:45:47",
+      "starting_seconds": 6347,
       "batch_rank": 32,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7440
     },
     {
       "key": "О чём говорят мужчины 2|2011",
@@ -3074,8 +2960,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:24:56",
+      "starting_seconds": 5096,
       "batch_rank": 33,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5700
     },
     {
       "key": "Питер FM|2006",
@@ -3105,10 +2995,10 @@
         "начальный ориентир",
         "не проверено"
       ],
-      "timecode_label": "1:24:37",
-      "timecode_seconds": 5077,
-      "timecode_end_label": "1:25:12",
-      "timecode_end_seconds": 5112,
+      "timecode_label": "1:23:45",
+      "timecode_seconds": 5025,
+      "timecode_end_label": "1:24:20",
+      "timecode_end_seconds": 5060,
       "duration_seconds": 35,
       "source": "catalog-orienteer|love_confession_50",
       "evidence_source": "data/timecode_library/scene_intents.json",
@@ -3167,8 +3057,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:23:45",
+      "starting_seconds": 5025,
       "batch_rank": 34,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5100
     },
     {
       "key": "Пираты Карибского моря|2003",
@@ -3200,7 +3094,7 @@
       "timecode_seconds": 1636,
       "timecode_end_label": "0:28:06",
       "timecode_end_seconds": 1686,
-      "duration_seconds": 50.5,
+      "duration_seconds": 50,
       "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Pirates%20of%20the%20Caribbean%3A%20The%20Curse%20of%20the%20Black%20Pearl.srt#love_confession_50",
       "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Adventure/Pirates%20of%20the%20Caribbean%3A%20The%20Curse%20of%20the%20Black%20Pearl.srt",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -3254,8 +3148,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "0:27:16",
+      "starting_seconds": 1636,
       "batch_rank": 35,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8580
     },
     {
       "key": "После дождя|2001",
@@ -3349,8 +3247,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:34:24",
+      "starting_seconds": 5664,
       "batch_rank": 36,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6000
     },
     {
       "key": "Привидение|1990",
@@ -3377,73 +3279,53 @@
         "нежность",
         "светлая грусть",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "0:51:20",
-      "timecode_seconds": 3080,
-      "timecode_end_label": "0:52:09",
-      "timecode_end_seconds": 3129,
-      "duration_seconds": 49.2,
-      "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Ghost.srt#love_confession_50",
-      "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Romance/Ghost.srt",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "5aa6c7ec61108f4f94ef4295ab0d3dd3416cd642",
-      "line_index": 823,
-      "match_score": 0.605,
-      "intent_score": 3.76,
-      "confidence": 3.76,
-      "consensus": 3,
+      "timecode_label": "0:10:20",
+      "timecode_seconds": 620,
+      "timecode_end_label": "0:10:55",
+      "timecode_end_seconds": 655,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/ghost-1990/i-love-you-s38/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "813d9a617a4085ddd347b7fd2582f653d22a620d",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
+      "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/ghost-1990/i-love-you-s38/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 00:10:20, не проверено.",
+      "external_time": "0:10:20",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 2,
-        "negative_markers": 0,
-        "lines": 27,
-        "duration_seconds": 49.2,
-        "context_score": 1.14,
-        "emotion_tags": [
-          "прощание",
-          "нежность",
-          "светлая грусть",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "Романтическая драма о любви сильнее смерти: уязвимое признание и последующее прощание через медиума. Внешняя страница ориентирует короткую фразуоколо 00:10:20. Clip.Cafe: внешний ориентир около 00:10:20, не проверено.",
-        "moment_label": "Сэм и Молли: короткое «я люблю» перед тем, как всё изменится",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "0:10:20",
         "external_refs": [
           "https://clip.cafe/ghost-1990/i-love-you-s38/"
         ],
-        "primary_intent": "quiet_farewell",
-        "secondary_intents": [
-          "memory_war",
-          "anniversary_long_love"
-        ],
-        "curated_anchor": "Прощание Сэма и Молли через медиума",
-        "category_label": "Признание в любви и чувства",
-        "genre": "фэнтези",
-        "description": "Погибший банкир и медиум.",
-        "why_fits": "Любовь сильнее смерти.",
-        "imdb_id": "tt0099653",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 00:10:20, не проверено.",
-        "curated_orienteer": false
+        "runtime_seconds": 7620,
+        "film_url": ""
       },
+      "starting_label": "0:10:20",
+      "starting_seconds": 620,
       "batch_rank": 37,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7620
     },
     {
       "key": "Притяжение|2017",
@@ -3531,8 +3413,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:52:51",
+      "starting_seconds": 6771,
       "batch_rank": 38,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7920
     },
     {
       "key": "Сибирский цирюльник|1998",
@@ -3626,8 +3512,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:33:14",
+      "starting_seconds": 5594,
       "batch_rank": 39,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 10740
     },
     {
       "key": "Служебный роман|1977",
@@ -3725,8 +3615,12 @@
         "external_note": "Внешний контекст: статья о лирической линии фильма, без проверенного таймкода.",
         "external_time": ""
       },
+      "starting_label": "1:05:30",
+      "starting_seconds": 3930,
       "batch_rank": 40,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/9b8a20607f7a35bde58aaf51fd9d8348/",
+      "runtime_seconds": 9540
     },
     {
       "key": "Стиляги|2008",
@@ -3820,8 +3714,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:31:35",
+      "starting_seconds": 5495,
       "batch_rank": 41,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 7200
     },
     {
       "key": "Титаник|1997",
@@ -3848,73 +3746,53 @@
         "восторг",
         "романтика",
         "трогательно",
-        "подготовленный кандидат"
+        "подготовленный кандидат",
+        "внешний ориентир",
+        "не проверено"
       ],
-      "timecode_label": "2:42:32",
-      "timecode_seconds": 9752,
-      "timecode_end_label": "2:43:22",
-      "timecode_end_seconds": 9802,
-      "duration_seconds": 50.1,
-      "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Titanic-1997.csv#love_confession_50",
-      "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Titanic-1997.csv",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "evidence_sha1": "236bd79380828663b653ce7b3fa018d039c3b471",
-      "line_index": 1898,
-      "match_score": 0.515,
-      "intent_score": 3.5,
-      "confidence": 3.5,
+      "timecode_label": "1:20:03",
+      "timecode_seconds": 4803,
+      "timecode_end_label": "1:20:38",
+      "timecode_end_seconds": 4838,
+      "duration_seconds": 35,
+      "source": "external-orienteer|love_confession_50",
+      "evidence_source": "https://clip.cafe/titanic-1997/gimme-hand/",
+      "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+      "evidence_sha1": "45d418ff249903779c3139345ebdb842d9c31208",
+      "line_index": 0,
+      "match_score": 0.0,
+      "intent_score": 999.0,
+      "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
       "status": "pending",
       "verified": 0,
-      "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+      "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
       "external_refs": [
         "https://clip.cafe/titanic-1997/gimme-hand/"
       ],
-      "evidence_kind": "srt_window",
-      "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
+      "evidence_kind": "external_orienteer",
+      "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 01:20:03, не проверено. Другая версия может сместить время.",
+      "external_time": "1:20:03",
       "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
-        "centered_on": "love/feelings phrase",
-        "strong_hits": 2,
-        "lexicon_hits": 4,
-        "negative_markers": 0,
-        "lines": 12,
-        "duration_seconds": 50.1,
-        "context_score": 1.44,
-        "emotion_tags": [
-          "доверие",
-          "восторг",
-          "романтика",
-          "трогательно",
-          "подготовленный кандидат"
-        ],
-        "context": "Самая узнаваемая сцена доверия и восторга. Внешняя страница ориентирует эпизодоколо 01:20:03; другая версия монтажа может дать иной таймкод. Clip.Cafe: внешний ориентир около 01:20:03, не проверено. Другая версия может сместить время.",
-        "moment_label": "Джек и Роза на носу корабля: доверие и «полёт» над океаном",
-        "version_hint": "Сверь издание/реставрацию/серию: таймкод может сдвинуться. version_note обязателен.",
+        "centered_on": "external_orienteer",
+        "curated_orienteer": false,
+        "external_time": "1:20:03",
         "external_refs": [
           "https://clip.cafe/titanic-1997/gimme-hand/"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "nostalgia_classic",
-          "anniversary_long_love"
-        ],
-        "curated_anchor": "«Я лечу» на носу корабля и разговор о доверии",
-        "category_label": "Признание в любви и чувства",
-        "genre": "драма",
-        "description": "История любви на фоне крушения легендарного лайнера.",
-        "why_fits": "Классика «я лечу» — для романтического повода.",
-        "imdb_id": "tt0120338",
-        "evidence_kind": "srt_window",
-        "evidence_note": "Окно 25–75 секунд вокруг строки локального SRT; sha1 и номер строки сохранены, текст — нет.",
-        "external_note": "Clip.Cafe: внешний ориентир около 01:20:03, не проверено. Другая версия может сместить время.",
-        "curated_orienteer": false
+        "runtime_seconds": 11700,
+        "film_url": ""
       },
+      "starting_label": "1:20:03",
+      "starting_seconds": 4803,
       "batch_rank": 42,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 11700
     },
     {
       "key": "Тихий Дон|1957",
@@ -4006,8 +3884,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "4:20:50",
+      "starting_seconds": 15650,
       "batch_rank": 43,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 21000
     },
     {
       "key": "Формула любви|1984",
@@ -4099,8 +3981,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:10:00",
+      "starting_seconds": 4200,
       "batch_rank": 44,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5400
     },
     {
       "key": "Форрест Гамп|1994",
@@ -4132,7 +4018,7 @@
       "timecode_seconds": 1533,
       "timecode_end_label": "0:26:26",
       "timecode_end_seconds": 1586,
-      "duration_seconds": 52.6,
+      "duration_seconds": 53,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Forrest-Gump-1994.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Forrest-Gump-1994.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -4190,8 +4076,12 @@
         "external_note": "Внешний контекст: Clip.Cafe описывает сцену общей луны; без проверенного таймкода.",
         "curated_orienteer": false
       },
+      "starting_label": "0:25:33",
+      "starting_seconds": 1533,
       "batch_rank": 45,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 8520
     },
     {
       "key": "Холодное сердце|2013",
@@ -4224,7 +4114,7 @@
       "timecode_seconds": 4503,
       "timecode_end_label": "1:15:53",
       "timecode_end_seconds": 4553,
-      "duration_seconds": 50.8,
+      "duration_seconds": 50,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Frozen-2013.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Frozen-2013.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -4279,8 +4169,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:15:03",
+      "starting_seconds": 4503,
       "batch_rank": 46,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6120
     },
     {
       "key": "Холодное сердце 2|2019",
@@ -4322,7 +4216,7 @@
       "evidence_sha1": "442b1597a9d58d441ba92aea6dcd6e21adefc639",
       "line_index": 0,
       "match_score": 0.0,
-      "intent_score": 0.0,
+      "intent_score": 999.0,
       "confidence": 0.0,
       "consensus": 1,
       "auto": 0,
@@ -4337,51 +4231,25 @@
       "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
       "external_note": "Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
       "external_time": "1:27:02",
-      "curated_orienteer": true,
+      "curated_orienteer": false,
       "evidence_features": {
         "batch_id": "love_confession_50",
         "centered_on": "external_orienteer",
-        "curated_orienteer": true,
-        "strong_hits": 0,
-        "lexicon_hits": 0,
-        "negative_markers": 0,
-        "lines": 0,
-        "duration_seconds": 35,
-        "context_score": 1.56,
-        "emotion_tags": [
-          "робкое признание",
-          "нерешительность",
-          "нежность",
-          "сказка",
-          "подготовленный кандидат",
-          "внешний ориентир",
-          "не проверено"
-        ],
-        "context": "Сиквел оставляет место для очень робкого, почти сорванного объяснения; трогает именно нерешительность. Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
-        "moment_label": "Кристофф собирается сказать Анне главное",
-        "version_hint": "Начальный ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
+        "curated_orienteer": false,
+        "external_time": "1:27:02",
         "external_refs": [
           "https://clip.cafe/frozen-ii-2019/you-are-the-most-extraordinary-person-ive-ever-known/",
           "https://clip.cafe/frozen-ii-2019/anna-i-need-to-ask-you-a-question-s1/"
         ],
-        "primary_intent": "love_confession",
-        "secondary_intents": [
-          "children_animation",
-          "holiday_comedy"
-        ],
-        "curated_anchor": "Эпизод: Сиквел.. Искать: признание в любви я люблю тебя ты мне нужен объяснение в чувствах робкое признание не могу молчать",
-        "category_label": "Признание в любви и чувства",
-        "genre": "мультфильм",
-        "description": "Сиквел.",
-        "why_fits": "—",
-        "imdb_id": "tt4520988",
-        "evidence_kind": "external_orienteer",
-        "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
-        "external_note": "Clip.Cafe: внешний ориентир около 01:27:02 для предложения Кристоффа, не проверено.",
-        "external_time": "1:27:02"
+        "runtime_seconds": 6180,
+        "film_url": ""
       },
+      "starting_label": "1:27:02",
+      "starting_seconds": 5222,
       "batch_rank": 47,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 6180
     },
     {
       "key": "Чародеи|1982",
@@ -4475,8 +4343,12 @@
         "external_note": "",
         "external_time": ""
       },
+      "starting_label": "1:15:39",
+      "starting_seconds": 4539,
       "batch_rank": 48,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "https://rutube.ru/video/86cb082c5389dcebe58829bda54eba7a/",
+      "runtime_seconds": 9600
     },
     {
       "key": "Шрек|2001",
@@ -4508,7 +4380,7 @@
       "timecode_seconds": 4338,
       "timecode_end_label": "1:13:10",
       "timecode_end_seconds": 4390,
-      "duration_seconds": 52.3,
+      "duration_seconds": 52,
       "source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Shrek.srt#love_confession_50",
       "evidence_source": "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/Comedy/Shrek.srt",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -4562,8 +4434,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "1:12:18",
+      "starting_seconds": 4338,
       "batch_rank": 49,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5400
     },
     {
       "key": "Шрек 2|2004",
@@ -4596,7 +4472,7 @@
       "timecode_seconds": 343,
       "timecode_end_label": "0:06:31",
       "timecode_end_seconds": 391,
-      "duration_seconds": 48.2,
+      "duration_seconds": 48,
       "source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Shrek-2-2004.csv#love_confession_50",
       "evidence_source": "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Shrek-2-2004.csv",
       "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
@@ -4651,8 +4527,12 @@
         "external_note": "",
         "curated_orienteer": false
       },
+      "starting_label": "0:05:43",
+      "starting_seconds": 343,
       "batch_rank": 50,
-      "batch_id": "love_confession_50"
+      "batch_id": "love_confession_50",
+      "film_url": "",
+      "runtime_seconds": 5580
     }
   ]
 }

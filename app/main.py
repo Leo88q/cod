@@ -11,6 +11,8 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+
 from fastapi import FastAPI, HTTPException, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
@@ -22,9 +24,10 @@ from . import config, payments, scheduler, search as semantic
 from .db import connect, init_db, new_code, row_to_dict, enqueue_notification
 from .flowwow import watch_links, order_link
 from .intent_taxonomy import intent_for, load_taxonomy
-from .moderation_board import build_board, build_love_batch
+from .moderation_board import LOVE_BATCH_ID, build_board, build_love_table
 from .moderation_links import (
     build_moderation_links, load_official_videos, moderation_coverage, moderation_targets,
+    normalize_watch_url,
 )
 from .qr import qr_svg
 from .security import request_user, require_admin, log_consent, require_self, require_shop, require_metrics
@@ -1801,6 +1804,14 @@ class CuratorTimecode(BaseModel):
     source_url: Optional[str] = None
 
 
+class LoveBatchRowEdit(BaseModel):
+    """Сохранить исправления строки БЕЗ проверки: verified остаётся 0."""
+    timecode_label: str
+    timecode_end_label: Optional[str] = None
+    film_url: Optional[str] = None
+    version_note: Optional[str] = None
+
+
 class ModerationConfirm(BaseModel):
     """Единое действие на экране модерации: подтвердить / отклонить / пропустить."""
     scene_id: int
@@ -1901,19 +1912,59 @@ def admin_moderation_board(request: Request):
 
 @app.get("/api/admin/moderation/love-confession")
 def admin_love_confession_batch(request: Request):
-    """Блок №1: 50 подготовленных отрывков «признание в любви и чувства».
+    """Совместимый алиас компактной таблицы (старые карточки с поиском удалены)."""
+    return admin_love_confession_table(request)
 
-    Часть окон построена по локальным SRT, часть — уникальные непроверенные
-    начальные ориентиры. Кандидаты уже лежат в `timecode_candidates`
-    со статусом `pending`,
-    `batch_id='love_confession_50'` и `verified=0`. Подтверждение — только
-    вручную через общий `/api/admin/moderation/confirm` с `version_note`.
-    """
+
+@app.get("/api/admin/moderation/love-confession/table")
+def admin_love_confession_table(request: Request):
+    """Компактная таблица модератора: 50 фильмов, ссылка, редактируемые таймкоды."""
     require_admin(request)
     conn = connect(config.DB_PATH)
-    batch = build_love_batch(conn, load_official_videos())
+    table = build_love_table(conn, load_official_videos())
     conn.close()
-    return batch
+    return table
+
+
+@app.post("/api/admin/moderation/love-confession/{candidate_id}/edit")
+def admin_love_confession_edit(request: Request, candidate_id: int, body: LoveBatchRowEdit):
+    """Сохранить таймкоды и прямую ссылку, НЕ ставя verified=1."""
+    require_admin(request)
+    start = tc_label_to_seconds(body.timecode_label)
+    end = tc_label_to_seconds(body.timecode_end_label) if body.timecode_end_label else None
+    if start is None or (body.timecode_end_label and end is None):
+        raise HTTPException(400, "Некорректный таймкод: используй формат 0:32:56")
+    if end is not None and end <= start:
+        raise HTTPException(400, "Конец отрезка должен быть позже начала")
+    film_url = (body.film_url or "").strip()
+    if film_url:
+        p = urlsplit(film_url)
+        host = (p.netloc or "").lower()
+        is_vk = any(h in host for h in ("vkvideo.ru", "vk.com", "vk.ru")) and "/video" in p.path
+        is_rutube = "rutube.ru" in host and "/video/" in p.path
+        if p.scheme not in ("http", "https") or not (is_vk or is_rutube):
+            raise HTTPException(400, "Нужна прямая ссылка VK Видео или Rutube на фильм")
+        q = [(k, v) for k, v in parse_qsl(p.query, keep_blank_values=True)
+             if k not in ("t", "start", "end")]
+        film_url = urlunsplit((p.scheme, p.netloc, p.path, urlencode(q), p.fragment))
+    conn = connect(config.DB_PATH)
+    cand = conn.execute("SELECT * FROM timecode_candidates WHERE id=? AND batch_id=?",
+                        (candidate_id, LOVE_BATCH_ID)).fetchone()
+    if not cand:
+        conn.close()
+        raise HTTPException(404, "Строка блока не найдена")
+    conn.execute(
+        "UPDATE timecode_candidates SET timecode_label=?, timecode_seconds=?,"
+        " timecode_end_label=?, timecode_end_seconds=?, film_url=?, version_note=? WHERE id=?",
+        (body.timecode_label.strip(), start, body.timecode_end_label or None, end,
+         film_url, (body.version_note or "").strip(), candidate_id),
+    )
+    conn.commit()
+    conn.close()
+    return {"ok": True, "candidate_id": candidate_id,
+            "timecode_label": body.timecode_label.strip(),
+            "timecode_end_label": body.timecode_end_label or None,
+            "film_url": film_url, "verified": 0}
 
 
 @app.post("/api/admin/moderation/curate")
@@ -2039,13 +2090,14 @@ def admin_moderation_confirm(request: Request, body: ModerationConfirm):
              now_iso(), now_iso()),
         )
         cid = cur.lastrowid
+    watch_url = normalize_watch_url(body.watch_url or "", start) if body.watch_url else None
     conn.execute(
         "UPDATE scenes SET timecode_label=?, timecode_seconds=?, timecode_end_label=?,"
         " timecode_end_seconds=?, service=?, verified=1, verified_at=?, version_note=?,"
         " watch_url=COALESCE(?, watch_url) WHERE id=?",
         (body.timecode_label, start, body.timecode_end_label, end,
          scene["service"] or "manual", now_iso(), (body.version_note or "").strip(),
-         body.watch_url, body.scene_id),
+         watch_url, body.scene_id),
     )
     conn.commit()
     conn.close()

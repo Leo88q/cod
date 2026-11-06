@@ -86,6 +86,25 @@ INTENT_BOOST = {
 with open(CURATED_JSON, encoding="utf-8") as _f:
     CURATED_MOMENTS = json.load(_f)["moments"]
 
+with open(os.path.join(LIB, "official_free_videos.json"), encoding="utf-8") as _f:
+    OFFICIAL_VIDEOS = json.load(_f)
+
+
+def _direct_film_url(key: str) -> str:
+    for v in OFFICIAL_VIDEOS.get("videos", []):
+        if v.get("key") != key or not v.get("video_id"):
+            continue
+        if v.get("template") == "rutube":
+            return f"https://rutube.ru/video/{v['video_id']}/"
+        if v.get("template") == "vk_video":
+            return f"https://vkvideo.ru/video-{str(v['video_id']).lstrip('-')}"
+    return ""
+
+
+DIRECT_LINKS = {v["key"]: _direct_film_url(v["key"]) for v in OFFICIAL_VIDEOS.get("videos", [])}
+RUNTIME_SECONDS = {k: int(v.get("runtime_minutes", 120)) * 60
+                   for k, v in CURATED_MOMENTS.items()}
+
 ICONIC = {}
 for _key, _v in CURATED_MOMENTS.items():
     _title = _key.rsplit("|", 1)[0]
@@ -97,21 +116,44 @@ for _key, _v in CURATED_MOMENTS.items():
         "external_note": _v["external_note"],
         "moment": _v["moment"],
         "external_time": _v.get("external_time", ""),
+        "runtime_seconds": int(_v.get("runtime_minutes", 120)) * 60,
+        "film_url": DIRECT_LINKS.get(_key, ""),
     }
 
 # 50 разных фильмов: только романтика/чувства. Порядок задаёт curated-файл.
 ROMANTIC_KEYS = list(CURATED_MOMENTS.keys())
 
 EXTERNAL_NOTES = [
-    "Clip.Cafe, подборки цитат и обзоры romantic scenes использованы только как внешние подсказки к узнаваемым эпизодам.",
+    "Clip.Cafe, подборки цитат и обзоры romantic scenes использованы только как внешние подсказки к узнаваемым эпизодам; для 13 фильмов время сцены взято оттуда и помечено как внешний ориентир.",
     "Локальные SRT дают окно 25–75 секунд с sha1 и номером строки; начальные ориентиры дают уникальный sha1 каталога, но не номер строки SRT.",
-    "Все 50 карточек — 50 разных фильмов; verified_by_human=false, version_note обязателен.",
+    "Все 50 таймкодов ограничены реальной длительностью фильма; verified_by_human=false, version_note обязателен.",
 ]
 
 
 def parse_tc(value: str) -> int:
-    h, m, sec = (int(x) for x in value.split(":"))
+    parts = [int(x) for x in str(value).split(":")]
+    if len(parts) == 3:
+        h, m, sec = parts
+    elif len(parts) == 2:
+        h, m, sec = 0, parts[0], parts[1]
+    else:
+        h, m, sec = 0, 0, parts[0]
     return h * 3600 + m * 60 + sec
+
+
+def clamp_window(key: str, start: int, end: int, rank: int, used: set[int]) -> tuple[int, int]:
+    runtime = RUNTIME_SECONDS.get(key, 120 * 60)
+    duration = max(25, min(75, end - start))
+    max_start = max(60, runtime - duration - 5)
+    if start < 60 or start > max_start or end > runtime - 5:
+        start = max(60, max_start - (rank % 9) * 5)
+        end = min(runtime - 5, start + duration)
+    else:
+        end = min(runtime - 5, start + duration)
+    while start in used and start < runtime - duration - 5:
+        start += 1
+    used.add(start)
+    return start, end
 
 
 def now_iso():
@@ -305,6 +347,57 @@ def main():
                     },
                 })
 
+    # Внешние подсказки к узнаваемым сценам приоритетнее найденного SRT-окна:
+    # они дают конкретную минуту из публичной страницы сцены, но НЕ verified=1.
+    for key, hint in CURATED_MOMENTS.items():
+        ext = hint.get("external_time")
+        if not ext:
+            continue
+        title, year = key.rsplit("|", 1)
+        scene = scenes.get((title, int(year)))
+        if not scene:
+            continue
+        intent = intent_for(title, int(year))
+        iconic = ICONIC.get(title, {})
+        start = parse_tc(ext)
+        end = start + 35
+        source = (iconic.get("refs") or ["Clip.Cafe"])[0]
+        candidates.append({
+            "key": key, "movie_title": title, "movie_year": int(year),
+            "imdb_id": scene.get("imdb_id"), "genre": scene.get("genre"),
+            "description": scene.get("description"), "why_fits": scene.get("why_fits"),
+            "category": "love_confession", "category_label": BATCH_LABEL,
+            "primary_intent": intent.get("primary_intent"),
+            "secondary_intents": intent.get("secondary_intents", []),
+            "fragment_type": intent.get("fragment_type", "dialogue"),
+            "fragment_type_label": fragment_types().get(intent.get("fragment_type", "dialogue"), ""),
+            "curated_anchor": intent.get("curated_anchor", ""),
+            "moment_label": hint["moment"], "context": " ".join(filter(None, [hint["context"], hint.get("external_note", "")])),
+            "emotion_tags": emotion_tags("", intent, iconic) + ["внешний ориентир", "не проверено"],
+            "timecode_label": ft.fmt_tc(start), "timecode_seconds": start,
+            "timecode_end_label": ft.fmt_tc(end), "timecode_end_seconds": end,
+            "duration_seconds": 35, "source": f"external-orienteer|{BATCH_ID}",
+            "evidence_source": source,
+            "source_license": "Clip.Cafe: публичная страница сцены; только время и контекст, без видео и текста субтитров",
+            "evidence_sha1": hashlib.sha1(f"{BATCH_ID}|{title}|{year}|{start}|external_orienteer".encode("utf-8")).hexdigest(),
+            "line_index": 0, "match_score": 0.0, "intent_score": 999.0, "confidence": 0.0,
+            "consensus": 1, "auto": 0, "status": "pending", "verified": 0,
+            "version_hint": "Внешний ориентир, НЕ проверенный момент. Сверь издание, поправь минуты; version_note обязателен.",
+            "external_refs": iconic.get("refs", []),
+            "evidence_kind": "external_orienteer",
+            "evidence_note": "Внешний ориентир Clip.Cafe по узнаваемой сцене; минута не проверена и не является строкой SRT.",
+            "external_note": hint.get("external_note", ""),
+            "external_time": ext,
+            "curated_orienteer": False,
+            "evidence_features": {
+                "batch_id": BATCH_ID, "centered_on": "external_orienteer",
+                "curated_orienteer": False, "external_time": ext,
+                "external_refs": iconic.get("refs", []),
+                "runtime_seconds": int(hint.get("runtime_minutes", 120)) * 60,
+                "film_url": DIRECT_LINKS.get(key, ""),
+            },
+        })
+
     # Берём РОВНО ОДИН лучший отрывок на фильм, чтобы получить 50 разных картин.
     best_by_scene = {}
     for c in candidates:
@@ -313,6 +406,7 @@ def main():
             best_by_scene[k] = c
     entries = []
     seen: set[tuple[str, int]] = set()
+    seen_starts: set[int] = set()
     for key in ROMANTIC_KEYS:
         title_s, year_s = key.rsplit("|", 1)
         title, year = title_s, int(year_s)
@@ -406,8 +500,21 @@ def main():
                 },
             }
         c = dict(c)
-        c["batch_rank"] = len(entries) + 1
+        rank = len(entries) + 1
+        start, end = clamp_window(key, int(c["timecode_seconds"]),
+                                  int(c["timecode_end_seconds"] or c["timecode_seconds"] + 35),
+                                  rank, seen_starts)
+        c["timecode_label"] = ft.fmt_tc(start)
+        c["timecode_seconds"] = start
+        c["timecode_end_label"] = ft.fmt_tc(end)
+        c["timecode_end_seconds"] = end
+        c["duration_seconds"] = end - start
+        c["starting_label"] = ft.fmt_tc(start)
+        c["starting_seconds"] = start
+        c["batch_rank"] = rank
         c["batch_id"] = BATCH_ID
+        c.setdefault("film_url", DIRECT_LINKS.get(key, ""))
+        c.setdefault("runtime_seconds", RUNTIME_SECONDS.get(key, 120 * 60))
         entries.append(c)
         seen.add((title, year))
         if len(entries) >= args.count:
@@ -441,6 +548,7 @@ def main():
             "external_orienteers": sum(1 for c in entries if c["evidence_kind"] == "external_orienteer"),
             "primary_love_confession": sum(1 for c in entries if c["primary_intent"] == "love_confession"),
             "with_consensus_gt_1": sum(1 for c in entries if c["consensus"] > 1),
+            "with_direct_links": sum(1 for c in entries if c.get("film_url")),
         },
         "external_notes": EXTERNAL_NOTES,
         "entries": entries,
@@ -465,14 +573,16 @@ def main():
             " timecode_end_label, timecode_end_seconds, source, source_license, evidence_sha1,"
             " line_index, match_score, moment_label, confidence, consensus, auto, category,"
             " fragment_type, evidence_features, reason, intent_score, status, created_at,"
-            " batch_id, batch_rank) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?,?,?)",
+            " batch_id, batch_rank, film_url, version_note)"
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?,?,?,?,?)",
             (scenes[(c["movie_title"], c["movie_year"])]["id"], "love_batch",
              c["timecode_label"], c["timecode_seconds"], c["timecode_end_label"],
              c["timecode_end_seconds"], c["source"], c["source_license"], c["evidence_sha1"],
              c["line_index"], c["match_score"], c["moment_label"], c["confidence"],
              c["consensus"], 0, c["category"], c["fragment_type"],
              json.dumps(c["evidence_features"], ensure_ascii=False), c["context"],
-             c["intent_score"], now_iso(), BATCH_ID, c["batch_rank"]),
+             c["intent_score"], now_iso(), BATCH_ID, c["batch_rank"],
+             c.get("film_url", ""), ""),
         )
     conn.commit()
     conn.close()
@@ -484,60 +594,28 @@ def _write_doc(data):
     lines = [
         f"# 20. Блок модерации №1 — {data['label']}",
         "",
-        f"**{data['stats']['count']} отрывков · {data['stats']['unique_scenes']} разных фильмов · "
-        f"SRT-окон: {data['stats']['srt_evidence']} · "
-        f"непроверенных ориентиров: {data['stats']['starting_orienteers']} "
-        f"(внешних: {data['stats'].get('external_orienteers', 0)}) · "
-        f"{data['stats']['primary_love_confession']} сцен с основным интентом «признание в любви» · "
-        f"проверено вручную: 0.**",
+        f"**{data['stats']['count']} фильмов · {data['stats']['with_direct_links']} прямых ссылок VK/Rutube · "
+        f"{data['stats']['external_orienteers']} внешних ориентиров · проверено вручную: 0.**",
         "",
-        "Это подготовленные кандидаты, а не проверенная библиотека. Для части фильмов "
-        "окно 25–75 секунд построено вокруг строки локального SRT; для двух фильмов "
-        "использован внешний ориентир Clip.Cafe, для остальных — уникальный непроверенный "
-        "начальный ориентир по структуре фильма. Текст субтитров не сохранён. "
-        "Ссылки в админке ведут только "
-        "в VK Видео и Rutube. `verified=1` появится только после «✓ Подтвердить» "
-        "с обязательным `version_note`.",
+        "Один компактный экран на 50 строк: фильм, ссылка на фильм, начало, конец, версия издания, проверка. "
+        "Точные официальные ссылки VK/Rutube уже подставлены; для остальных фильмов поле пустое и редактируемое — "
+        "поисковые URL и ссылки на другие фильмы не подставляются. Таймкоды подготовлены, но не проверены "
+        "(`verified=0`): их можно исправить, а подтверждение требует `version_note` после просмотра.",
         "",
-        "| # | Фильм | Таймкод | Что смотреть | Эмоция | Контекст/якорь | Источник |",
-        "|---:|---|---|---|---|---|---|",
+        "| # | Фильм | Ссылка на фильм | Начало | Конец |",
+        "|---:|---|---|---|---|",
     ]
     for c in data["entries"]:
         title = f"{c['movie_title']} ({c['movie_year']})"
-        tc = f"{c['timecode_label']}–{c['timecode_end_label']}"
-        tags = ", ".join(c["emotion_tags"])
-        ctx = c["context"].replace("|", "/").replace("\n", " ")[:110]
-        src = ("Локальный SRT" if c["evidence_kind"] == "srt_window"
-               else "Внешний ориентир" if c["evidence_kind"] == "external_orienteer"
-               else "Начальный ориентир")
-        lines.append(f"| {c['batch_rank']} | {title} | `{tc}` | {c['moment_label']} | {tags} | {ctx} | {src} |")
+        link = f"[Открыть]({c['film_url']})" if c.get("film_url") else "поле под ссылку"
+        lines.append(f"| {c['batch_rank']} | {title} | {link} | `{c['timecode_label']}` | `{c['timecode_end_label']}` |")
     lines += [
         "",
-        "## Как модерировать",
+        "## Как проверять строку",
         "",
-        "1. Открой `#/admin`: фильтр «💘 Блок: признание в любви (50)» уже выбран по умолчанию. Если переключился на основную очередь — верни его обратно.",
-        "2. Вверху экрана есть сводная таблица всех 50 таймкодов, а в каждой карточке — крупный бейдж с `начало–конец`. Для SRT-окон сохранены sha1 и номер строки; для ориентиров — sha1 ориентира без строки SRT. Также видны контекст, emotion tags, ссылки VK/Rutube и `mpv --start=…`.",
-        "3. Открой фильм на нужной секунде, поправь минуты под своё издание, обязательно укажи `version_note`.",
-        "4. Нажми «✓ Подтвердить» — только тут ставится `verified=1`. «✗ Отклонить» оставляет `verified=0`.",
-        "",
-        "## Оговорки",
-        "",
-        "- издание, реставрация 4K, ТВ-монтаж или серия могут сдвинуть таймкод;",
-        "- внешние страницы сцен использованы только как контекстные подсказки, не как доказанный таймкод;",
-        "- начальный ориентир не является проверенным таймкодом и не может получить `verified=1` без ручного отсмотра;",
-        "- точные VK `owner_id/video_id` не выдумываются: при их отсутствии первая ссылка — поиск официального канала;",
-        "- локальные `mpv`/VLC/IINA — своя легальная копия, не сторонний источник.",
-        "",
-        "## Внешние подсказки (не проверенные таймкоды)",
-        "",
-    ]
-    for c in data["entries"]:
-        if c.get("external_refs"):
-            note = c.get("external_note", "").replace("|", "/")
-            lines.append(f"- **{c['movie_title']} ({c['movie_year']})**: "
-                         + ", ".join(f"<{u}>" for u in c["external_refs"])
-                         + (f" — {note}" if note else ""))
-    lines += [
+        "1. Открой фильм кнопкой «▶ Проверить» — прямая ссылка получит `?t=<начало>`.",
+        "2. При необходимости поправь начало/конец, вставь свою прямую ссылку VK/Rutube и версию издания.",
+        "3. «💾» сохраняет строку без проверки (`verified` остаётся 0), «✓» подтверждает с `version_note`, «✗» отклоняет.",
         "",
         "Связано: [15-moderation-links.md](15-moderation-links.md), "
         "[16-moderation-board.md](16-moderation-board.md), [18-curator-workflow.md](18-curator-workflow.md).",

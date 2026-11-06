@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated_by": "scripts/build_love_confession_batch.py",
-  "comment": "Кураторские описания romantically meaningful moments. Не текст субтитров, не human-verified timecodes. Внешние ссылки — только best-effort контекст.",
+  "comment": "Кураторские описания romantically meaningful moments. Не текст субтитров, не human-verified timecodes. Внешние ссылки — только best-effort контекст. Таймкоды внешних подсказок и длительности фильмов добавлены для редактируемой таблицы модератора; всё равно не проверено вручную.",
   "moments": {
     "Амели|2001": {
       "moment": "Нино узнаёт, что Амели влюблена; робость превращается в узнавание",
@@ -15,7 +15,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 01:12:31, не проверено.",
       "refs": [
         "https://clip.cafe/amelie-2001/shes-in-love/"
-      ]
+      ],
+      "external_time": "1:12:31",
+      "runtime_minutes": 122
     },
     "Асса|1987": {
       "moment": "Тихая сцена ревности и выбора между двумя привязанностями",
@@ -26,7 +28,8 @@
         "уязвимость"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 153
     },
     "Афоня|1975": {
       "moment": "Возвращение к Кате и робкая просьба о прощении",
@@ -37,7 +40,8 @@
         "тёплое чувство"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 92
     },
     "ВАЛЛ-И|2008": {
       "moment": "ВАЛЛ-И бережно ухаживает за Евой, пока она не отвечает",
@@ -49,7 +53,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 98
     },
     "Вверх|2009": {
       "moment": "Монтаж всей совместной жизни Карла и Элли",
@@ -61,7 +66,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 96
     },
     "Величайшее шоу на Земле|2017": {
       "moment": "Барнум и Чарити: тихое обещание быть рядом несмотря на риск",
@@ -73,7 +79,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 105
     },
     "Виноваты звёзды|2014": {
       "moment": "Хейзел и Огастус признаются, что боятся привязаться",
@@ -85,7 +92,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 126
     },
     "Властелин колец: Возвращение короля|2003": {
       "moment": "Арагорн и Арвен: выбор смертной жизни ради любви",
@@ -100,7 +108,8 @@
       "refs": [
         "https://clip.cafe/the-lord-of-the-rings-the-return-of-the-king-2003/arwen-i-choose-a-mortal-life-s1/"
       ],
-      "external_time": "1:15:15"
+      "external_time": "1:15:15",
+      "runtime_minutes": 201
     },
     "Война и мир|1966": {
       "moment": "Наташа и князь Андрей: робкое возрождение чувства после утрат",
@@ -112,7 +121,8 @@
         "возрождение"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 420
     },
     "Вторжение|2020": {
       "moment": "Герои выбирают друг друга вопреки страху и давлению",
@@ -124,7 +134,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 134
     },
     "Грязные танцы|1987": {
       "moment": "Джонни говорит Бэби, что рядом с ней он чувствует себя живым",
@@ -138,7 +149,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 00:55:45, не проверено.",
       "refs": [
         "https://clip.cafe/dirty-dancing-1987/im-scared-of-everything-im-scared-of-what-i-saw/"
-      ]
+      ],
+      "external_time": "0:55:45",
+      "runtime_minutes": 100
     },
     "Гусарская баллада|1962": {
       "moment": "Шурочка и Ржевский: узнавание после маскарада",
@@ -150,7 +163,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 96
     },
     "Десять причин моей ненависти|2017": {
       "moment": "Прощание и запоздалое письмо о первом чувстве",
@@ -162,7 +176,8 @@
         "светлая грусть"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 97
     },
     "Дневник памяти|2004": {
       "moment": "Старый муж читает дневник жене, чтобы вернуть их историю",
@@ -177,7 +192,9 @@
       "refs": [
         "https://clip.cafe/the-notebook-2004/they-fell-in-love/",
         "https://clip.cafe/the-notebook-2004/now-thats-a-damn-picture-there/"
-      ]
+      ],
+      "external_time": "0:19:06",
+      "runtime_minutes": 123
     },
     "Ешь, молись, люби|2010": {
       "moment": "Героиня решает снова позволить себе близость",
@@ -189,7 +206,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 133
     },
     "Жестокий романс|2008": {
       "moment": "Лариса и Паратов: тихое прощание без обещаний",
@@ -201,7 +219,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 142
     },
     "Зависть богов|2000": {
       "moment": "Любовь и карьера: разговор, после которого нельзя остаться прежними",
@@ -213,7 +232,8 @@
         "пауза"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 132
     },
     "Звезда родилась|2018": {
       "moment": "Джек и Элли: тихое признание в том, что они нашли друг друга",
@@ -228,7 +248,9 @@
       "refs": [
         "https://clip.cafe/a-star-is-born-2018/you-know-its-like/",
         "https://clip.cafe/a-star-is-born-2018/tearfully-its-i-idolized-it-wasnt-dad/"
-      ]
+      ],
+      "external_time": "1:11:26",
+      "runtime_minutes": 136
     },
     "Игры разума|2001": {
       "moment": "Алисия и Джон: от формулы доказательства к объяснению в чувствах",
@@ -242,7 +264,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 00:52:52, не проверено.",
       "refs": [
         "https://clip.cafe/a-beautiful-mind-2001/alicia-does-our-relationship-warrant-long-term-commitment"
-      ]
+      ],
+      "external_time": "0:52:52",
+      "runtime_minutes": 135
     },
     "Интерстеллар|2014": {
       "moment": "Купер говорит дочери, что любовь остаётся даже сквозь время",
@@ -254,7 +278,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 169
     },
     "Ирония судьбы, или С лёгким паром!|1975": {
       "moment": "Женя признаётся Наде и просит её стать женой",
@@ -269,7 +294,8 @@
       "refs": [
         "https://nsportal.ru/shkola/stsenarii-prazdnikov/library/2013/01/26/ironiya-sudby-ili-s-legkim-parom",
         "https://www.inpearls.ru/327445"
-      ]
+      ],
+      "runtime_minutes": 192
     },
     "Ирония судьбы. Продолжение|2007": {
       "moment": "Новое поколение героев повторяет старую историю влюблённости",
@@ -280,7 +306,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 114
     },
     "Кавказская пленница|1966": {
       "moment": "Шурик и Нина: нежное узнавание поверх комедийного похищения",
@@ -292,7 +319,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 82
     },
     "Когда Гарри встретил Салли|1989": {
       "moment": "Новогоднее признание Гарри: список мелочей, которые он любит",
@@ -306,7 +334,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 01:29:04, не проверено.",
       "refs": [
         "https://clip.cafe/when-harry-met-sally-1989/ive-been-doin-a-lot-of-thinkin-the-thing-i-love-you"
-      ]
+      ],
+      "external_time": "1:29:04",
+      "runtime_minutes": 96
     },
     "Красотка|1990": {
       "moment": "Эдвард и Вивиан: тихий вечер, после которого отношения перестают быть сделкой",
@@ -320,7 +350,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 00:57:00, не проверено.",
       "refs": [
         "https://clip.cafe/pretty-woman-1990/lets-watch-old-movies-all-night/"
-      ]
+      ],
+      "external_time": "0:57:00",
+      "runtime_minutes": 119
     },
     "Курьер|1986": {
       "moment": "Иван и Катя: первое чувство поверх чужого быта",
@@ -332,7 +364,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 88
     },
     "Ла-Ла Ленд|2016": {
       "moment": "Мия и Себастьян тихо обещают всегда любить друг друга",
@@ -346,7 +379,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 01:42:55, не проверено.",
       "refs": [
         "https://clip.cafe/la-la-land-2016/im-always-gonna-love-you/"
-      ]
+      ],
+      "external_time": "1:42:55",
+      "runtime_minutes": 128
     },
     "Любовь и голуби|1984": {
       "moment": "Вася возвращается к Наде: по-домашнему тёплое примирение",
@@ -358,7 +393,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 107
     },
     "Любовь-морковь|2007": {
       "moment": "Супруги заново узнают друг друга после обмена телами",
@@ -370,7 +406,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 104
     },
     "Москва слезам не верит|1979": {
       "moment": "Катерина и Гоша: позднее робкое чувство после долгой самостоятельности",
@@ -382,7 +419,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 150
     },
     "Начало|2010": {
       "moment": "Кобб и Мэл: любовь, память и невозможность отпустить",
@@ -394,7 +432,8 @@
         "сновидение"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 148
     },
     "Ноттинг Хилл|1999": {
       "moment": "Анна просит Уильяма просто любить её, несмотря на славу",
@@ -409,7 +448,9 @@
       "refs": [
         "https://clip.cafe/notting-hill-1999/i-live-in-notting-hill/",
         "https://clip.cafe/notting-hill-1999/standing-in-front-of-a-boy/"
-      ]
+      ],
+      "external_time": "1:45:47",
+      "runtime_minutes": 124
     },
     "О чём говорят мужчины 2|2011": {
       "moment": "Отпускной разговор о жёнах, любви и том, что остаётся за шутками",
@@ -421,7 +462,8 @@
         "пауза"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 95
     },
     "Питер FM|2006": {
       "moment": "Максим и Маша: городская робость перед тем, как сказать главное",
@@ -433,7 +475,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 85
     },
     "Пираты Карибского моря|2003": {
       "moment": "Уилл и Элизабет: выбор друг друга вопреки долгу и проклятию",
@@ -445,7 +488,8 @@
         "первое чувство"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 143
     },
     "После дождя|2001": {
       "moment": "Выпускники вспоминают школьную любовь спустя годы",
@@ -457,7 +501,8 @@
         "светлая грусть"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 100
     },
     "Привидение|1990": {
       "moment": "Сэм и Молли: короткое «я люблю» перед тем, как всё изменится",
@@ -471,7 +516,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 00:10:20, не проверено.",
       "refs": [
         "https://clip.cafe/ghost-1990/i-love-you-s38/"
-      ]
+      ],
+      "external_time": "0:10:20",
+      "runtime_minutes": 127
     },
     "Притяжение|2017": {
       "moment": "Юля и Хэкон: выбор земного чувства вопреки чужой миссии",
@@ -483,7 +530,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 132
     },
     "Сибирский цирюльник|1998": {
       "moment": "Андрей и Джейн объясняются перед разлукой",
@@ -495,7 +543,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 179
     },
     "Служебный роман|1977": {
       "moment": "Новосельцев признаётся Калугиной, что любит по-настоящему",
@@ -509,7 +558,8 @@
       "external_note": "Внешний контекст: статья о лирической линии фильма, без проверенного таймкода.",
       "refs": [
         "http://dengoroda-nn.ru/kulturnaya-sreda/sluzhebnyj-roman-poyut-plyashut-i-govoryat-o-lyubvi"
-      ]
+      ],
+      "runtime_minutes": 159
     },
     "Стиляги|2008": {
       "moment": "Мэлс и Полина: признание поверх запретов и яркой музыки",
@@ -521,7 +571,8 @@
         "смелость"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 120
     },
     "Титаник|1997": {
       "moment": "Джек и Роза на носу корабля: доверие и «полёт» над океаном",
@@ -535,7 +586,9 @@
       "external_note": "Clip.Cafe: внешний ориентир около 01:20:03, не проверено. Другая версия может сместить время.",
       "refs": [
         "https://clip.cafe/titanic-1997/gimme-hand/"
-      ]
+      ],
+      "external_time": "1:20:03",
+      "runtime_minutes": 195
     },
     "Тихий Дон|1957": {
       "moment": "Григорий и Аксинья: позднее, почти молчаливое объяснение",
@@ -547,7 +600,8 @@
         "классическая любовь"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 350
     },
     "Формула любви|1984": {
       "moment": "Калиостро и Мария: ирония уступает место настоящему чувству",
@@ -559,7 +613,8 @@
         "выбор"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 90
     },
     "Форрест Гамп|1994": {
       "moment": "Форрест и Дженни смотрят на одну и ту же луну",
@@ -573,7 +628,8 @@
       "external_note": "Внешний контекст: Clip.Cafe описывает сцену общей луны; без проверенного таймкода.",
       "refs": [
         "https://clip.cafe/forrest-gump-1994/when-i-in-china-on-the-all-america-ping-pong-team/"
-      ]
+      ],
+      "runtime_minutes": 142
     },
     "Холодное сердце|2013": {
       "moment": "Анна и Кристофф: маленькая нежность посреди ледяной сказки",
@@ -585,7 +641,8 @@
         "сказка"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 102
     },
     "Холодное сердце 2|2019": {
       "moment": "Кристофф собирается сказать Анне главное",
@@ -601,7 +658,8 @@
         "https://clip.cafe/frozen-ii-2019/you-are-the-most-extraordinary-person-ive-ever-known/",
         "https://clip.cafe/frozen-ii-2019/anna-i-need-to-ask-you-a-question-s1/"
       ],
-      "external_time": "1:27:02"
+      "external_time": "1:27:02",
+      "runtime_minutes": 103
     },
     "Чародеи|1982": {
       "moment": "Иван и Алёна: волшебный бал и робкое сближение",
@@ -613,7 +671,8 @@
         "нежность"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 160
     },
     "Шрек|2001": {
       "moment": "Шрек и Фиона узнают друг друга без масок",
@@ -625,7 +684,8 @@
         "сказка"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 90
     },
     "Шрек 2|2004": {
       "moment": "Шрек и Фиона: тихое напоминание, почему они выбрали друг друга",
@@ -637,7 +697,8 @@
         "трогательно"
       ],
       "external_note": "",
-      "refs": []
+      "refs": [],
+      "runtime_minutes": 93
     }
   }
 }

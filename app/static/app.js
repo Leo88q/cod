@@ -1191,15 +1191,7 @@
         const unv = await adminApi("/api/admin/scenes?status=approved&verified=0");
         const tcs = await adminApi("/api/admin/timecodes?status=pending");
         const lib = await adminApi("/api/admin/timecode-library");
-        const board = await adminApi("/api/admin/moderation");
-        const loveBatch = await adminApi("/api/admin/moderation/love-confession");
-        const boardItems = board && Array.isArray(board.items) ? board.items : [];
-        const boardStats = board && board.stats ? board.stats : {};
-        const boardCats = board && Array.isArray(board.categories) ? board.categories : [];
-        const loveItems = loveBatch && Array.isArray(loveBatch.items) ? loveBatch.items : [];
-        const loveStats = loveBatch && loveBatch.stats ? loveBatch.stats : {};
-        const allItems = loveItems.map(it => ({...it, _batch: true}))
-          .concat(boardItems.map(it => ({...it, _batch: false})));
+        const loveTable = await adminApi("/api/admin/moderation/love-confession/table");
         const libCat = lib && lib.catalog ? lib.catalog : {};
         const libCand = lib && lib.candidates ? lib.candidates : {};
         const libMan = lib && lib.manifests ? lib.manifests : {};
@@ -1207,90 +1199,34 @@
         const libTargets = Array.isArray(libMod.targets) ? libMod.targets : [];
         const libFull = libMan.full || {};
         const libStatus = libCand.by_status || {};
-        body.innerHTML = `<section class="panel" id="moderation-board"><h3>🎬 Модерация таймкодов — ${Number(boardStats.total ?? 0)} сцен</h3>
-          <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:8px">
-            <span class="btn ok small">▶ К отсмотру: ${Number(boardStats.pending ?? 0)}</span>
-            <span class="btn ghost small">📌 Нет таймкода — куратор: ${Number(boardStats.needs_curator ?? 0)}</span>
-            <span class="btn ghost small">✅ Проверено: ${Number(boardStats.verified ?? 0)}</span>
-            <span class="muted">Таймкодов: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · начальных ориентиров: ${Number(boardStats.with_starting_timecode ?? 0)} (уникальных ${Number(boardStats.unique_starting_timecodes ?? 0)}) · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)} · источники: VK + Rutube</span>
-          </div>
-          <section class="panel" style="background:rgba(255,105,150,.08);border:1px solid rgba(255,105,150,.25)">
-            <h3>💘 Блок №1 — ${esc(loveBatch.label || "Признание в любви и чувства")}</h3>
-            <p><b>${Number(loveStats.total ?? 0)} подготовленных отрывков</b> · ${Number(loveStats.unique_scenes ?? 0)} разных фильмов · SRT-окон: ${Number(loveStats.srt_evidence ?? 0)} · непроверенных ориентиров: ${Number(loveStats.starting_orienteers ?? 0)} (внешних: ${Number(loveStats.external_orienteers ?? 0)}) · проверено вручную: ${Number(loveStats.verified ?? 0)}.</p>
-            <p class="muted">Это не проверенная библиотека. Таймкод, метка момента, контекст, emotion tags, sha1/строка SRT или sha1 ориентира, ссылки VK/Rutube и <code>mpv --start=…</code> уже в карточке. Поправь минуты под издание, укажи <b>version_note *</b> и нажми «✓ Подтвердить». Внешние подсказки — только контекст, не источник просмотра фильма.</p>
-            <h4>⏱ Таймкоды всех ${Number(loveStats.total ?? 0)} отрывков</h4>
-            <div class="mod-time-table-wrap" style="max-height:260px;overflow:auto;margin-top:4px">
-              <table class="mod-time-table" style="width:100%;border-collapse:collapse;font-size:.92em">
-                <thead><tr><th align="left">#</th><th align="left">Фильм</th><th align="left">Таймкод</th><th align="left">Вид времени</th><th align="left">Момент</th></tr></thead>
-                <tbody>
-                  ${loveItems.map(it => `<tr><td>${Number(it.batch_rank ?? 0)}</td><td>${esc(it.movie_title)} (${Number(it.movie_year ?? 0)})</td><td><b>${esc(it.proposed_label || it.starting_label || "")}–${esc(it.proposed_end_label || "")}</b></td><td>${esc(it.source_label || it.evidence_kind || "")}</td><td>${esc(it.moment_label || "")}</td></tr>`).join("") || '<tr><td colspan="5" class="muted">Отрывки не загрузились.</td></tr>'}
-                </tbody>
-              </table>
-            </div>
-          </section>
-          <section class="panel" style="background:rgba(127,127,127,.06)"><h3>Как куратору отбирать — коротко</h3>
-            <p><b>1. Карточки «▶ К отсмотру»</b>: таймкод и кнопка «Открыть на …» уже в карточке. Открой момент, поправь начало/конец, укажи <b>версию издания *</b>, жми «✓ Подтвердить».</p>
-            <p><b>2. Карточки «📌 Нет таймкода»</b>: у каждой есть <b>свой начальный ориентир</b> (не 0:32:56 всем подряд), <b>якорь эпизода</b> и <b>ссылки VK + Rutube</b>. Первая кнопка ведёт в VK Видео, вторая — на Rutube (для 10 фильмов сразу на ориентир через ?t=). Команда mpv --start=… тоже открывает уникальную минуту. Поправь её после просмотра и жми «➕ Добавить таймкод в отсмотр».</p>
-            <p class="muted">Ориентир — стартовая точка, НЕ проверенный момент. Рандомных минут нет: ориентир считается по категории и структуре фильма. Проверенных таймкодов пока ${Number(boardStats.verified ?? 0)}: «Добавить» ≠ «Подтвердить».</p>
-          </section>
-          <div class="row" style="margin-bottom:8px">
-            <input id="mod-search" class="search-input" style="max-width:190px" placeholder="поиск по названию">
-            <select id="mod-filter" class="search-input" style="max-width:210px">
-              <option value="love_batch" selected>💘 Блок: признание в любви (50)</option>
-              <option value="all">Все 146 (основная очередь)</option>
-              <option value="pending">▶ С таймкодом / к отсмотру</option>
-              <option value="needs_curator">📌 Без таймкода / куратору</option>
-              <option value="verified">✅ Проверенные</option>
-            </select>
-            <select id="mod-category" class="search-input" style="max-width:190px">
-              <option value="all">Все категории</option>
-              ${boardCats.map(c => `<option value="${esc(c.id)}">${esc(c.label)}</option>`).join("")}
-            </select>
-            <span id="mod-visible" class="muted"></span>
-          </div>
-          <div id="mod-list">
-          ${allItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-batch="${it._batch ? "love" : ""}" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-film="${esc(it.film_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}" data-starting="${esc(it.starting_label || "")}" data-starting-cmd="${esc(it.starting_command || "")}">
-            <p class="mod-time-badge" style="margin:2px 0 4px"><span class="btn ok small" style="font-size:1.12em;font-weight:800">⏱ ${esc(it.proposed_label || it.starting_label || "")}${it.proposed_end_label ? `–${esc(it.proposed_end_label)}` : ""}</span>${it._batch ? ` · <span class="muted">${esc(it.source_label || it.evidence_kind || "подготовленный кандидат")}</span>` : ""}</p>
-            <p><b>${esc(it.movie_title)}</b> (${Number(it.movie_year ?? 0)}) ${it.imdb_id ? `· ${esc(it.imdb_id)}` : ""} · <span class="muted mod-category">${esc(it.category_label)}</span> · <b>${esc(it.status_label)}</b></p>
-            <p class="muted">${esc(it.description || "")}</p>
-            ${it._batch ? `<p><b>💘 БЛОК ${esc(it.batch_label || "Признание в любви и чувства")} · № ${Number(it.batch_rank ?? 0)}</b> · ${esc(it.source_label || "подготовленный кандидат")} · ${esc(it.status_label)} · <span class="muted">verified_by_human: false</span></p>
-              <p><b>ЧТО СМОТРЕТЬ:</b> ${esc(it.moment_label || "")} · <b>ЭМОЦИЯ:</b> ${(it.emotion_tags || []).map(t => esc(t)).join(", ") || "трогательно"}</p>
-              <p class="muted"><b>КОНТЕКСТ:</b> ${esc(it.context || it.reason || "")}</p>
-              <p class="muted"><b>ДОКАЗАТЕЛЬСТВО:</b> ${esc(it.evidence_note || it.proposal_note || "")} <b>SHA1:</b> <code>${esc(it.evidence_sha1 || "")}</code>${it.evidence_kind === "srt_window" ? ` · строка SRT: ${Number(it.line_index ?? 0)}` : " · без строки SRT"}</p>
-              <p class="muted"><b>ИСТОЧНИК/ЛИЦЕНЗИЯ:</b> ${esc(it.candidate_source || "")} · ${esc(it.source_license || "")}</p>
-              <p class="muted"><b>ВЕРСИЯ:</b> ${esc(it.version_hint || "Сверь издание и укажи version_note.")}</p>
-              ${(it.external_refs || []).length ? `<p class="muted"><b>ВНЕШНЯЯ ПОДСКАЗКА (не просмотр фильма):</b> ${esc(it.external_note || "")} ${(it.external_refs || []).slice(0, 3).map((u, idx) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">источник ${idx + 1}</a>`).join(" · ")}</p>` : ""}
-            ` : ""}
-            <p><b>ТАЙМКОД:</b> ${it.proposed_label ? `<b>${esc(it.proposed_label)}–${esc(it.proposed_end_label)}</b>` : `<b>— нет проверенного таймкода</b>`} · <b>НАЧАЛЬНЫЙ ОРИЕНТИР:</b> <b>${esc(it.starting_label || "—")}</b> (${esc(it.starting_kind || "")}, не подтверждён) · <b>КАТЕГОРИЯ:</b> ${esc(it.category_label)} · <b>ТИП:</b> ${esc(it.fragment_type_label || it.fragment_type || "")}</p>
-            <p class="muted">${esc(it.starting_note || "")}</p>
-            <p class="muted"><b>ПОЧЕМУ:</b> ${esc(it.reason || it.proposal_note || "")} ${esc(it.open_note || "")}</p>
-            ${it.curated_anchor ? `<p class="muted"><b>ЯКОРЬ ЭПИЗОДА:</b> ${esc(it.curated_anchor)}</p>` : ""}
-            <p class="muted"><b>ССЫЛКИ:</b>
-              ${it.open_url ? `<a href="${esc(it.open_url)}" target="_blank" rel="noopener noreferrer">▶ ${esc(it.open_provider || "VK/Rutube")} · ${esc(it.proposed_label)}</a> · ` : ""}
-              ${!it.open_url && it.starting_open_url ? `<a href="${esc(it.starting_open_url)}" target="_blank" rel="noopener noreferrer">▶ VK/Rutube · ориентир ${esc(it.starting_label)}</a> · ` : ""}
-              ${(it.film_links || []).slice(0, 4).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.note || "")}">${esc(l.label)}</a>`).join(" · ")}
-              · <span class="muted">только VK/Rutube</span>
-            </p>
-            <div class="row" style="margin-top:4px"><button class="btn ghost small start-local">⏱ mpv --start=${esc(it.starting_label)} (ориентир)</button><button class="btn ghost small start-copy">⏱ Копировать ориентир ${esc(it.starting_label)}</button>${it.local_command ? `<button class="btn ghost small mod-local">⏱ mpv точного момента ${esc(it.proposed_label)}</button><button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать точное время</button>` : ""}</div>
-            ${it.status === 'needs_curator' ? `<div class="row" style="margin-top:6px;flex-wrap:wrap">
-              <span class="muted">${esc(it.curator_instruction || "Поправь ориентир под якорь эпизода")} Старт уже подставлен: <b>${esc(it.starting_label || "")}</b>.</span>
-              <input class="search-input cur-start" style="max-width:100px" value="${esc(it.starting_label || "")}" title="Уникальный начальный ориентир — поправь после просмотра">
-              <input class="search-input cur-end" style="max-width:100px" placeholder="конец">
-              <input class="search-input cur-label" style="max-width:230px" value="${esc(it.moment_label || "")}" placeholder="метка / якорь">
-              <button class="btn ok small cur-add">➕ Добавить таймкод в отсмотр</button>
-              <button class="btn ghost small mod-anchor">📌 Копировать якорь</button>
-            </div>` : `<div class="row" style="margin-top:4px">
-              <input class="search-input mod-start" style="max-width:95px" value="${esc(it.proposed_label)}">
-              <input class="search-input mod-end" style="max-width:95px" value="${esc(it.proposed_end_label)}">
-              <input class="search-input mod-version" style="max-width:150px" placeholder="версия издания *" value="${esc(it.scene_version_note || "")}">
-              <input class="search-input mod-label" style="max-width:220px" placeholder="метка момента" value="${esc(it.moment_label || "")}">
-              <button class="btn ok small mod-confirm">✓ Подтвердить</button>
-              <button class="btn ghost small mod-reject">✗ Отклонить</button>
-              <button class="btn ghost small mod-anchor">📌 Копировать якорь</button>
-            </div>`}
-          </article>`).join("") || '<p class="muted">Сцены не загрузились.</p>'}
-          </div>
-          </section><details open><summary class="muted">Служебные панели и старые очереди</summary><section class="panel"><h3>📚 Библиотека таймкодов</h3>
+        const loveRows = loveTable && Array.isArray(loveTable.items) ? loveTable.items : [];
+        const loveTableStats = loveTable && loveTable.stats ? loveTable.stats : {};
+        const rowHtml = (it) => `<tr class="love-row" data-candidate="${Number(it.candidate_id ?? 0)}" data-scene="${Number(it.scene_id ?? 0)}" data-status="${esc(it.status)}">
+            <td>${Number(it.batch_rank ?? 0)}</td>
+            <td><b>${esc(it.film_title || it.movie_title)}</b></td>
+            <td>
+              <input class="search-input love-url" style="width:100%;min-width:190px" placeholder="прямая ссылка VK/Rutube" value="${esc(it.film_url || "")}">
+              ${it.film_url ? `<a class="love-open-link muted" href="${esc(it.film_url)}" target="_blank" rel="noopener noreferrer">${esc(it.film_provider || "Открыть")}</a>` : ""}
+            </td>
+            <td><input class="search-input love-start" style="width:92px" value="${esc(it.timecode_label || "")}"></td>
+            <td><input class="search-input love-end" style="width:92px" value="${esc(it.timecode_end_label || "")}"></td>
+            <td><input class="search-input love-version" style="width:130px" placeholder="издание *" value="${esc(it.version_note || "")}"></td>
+            <td class="love-actions">
+              <button class="btn ghost small love-check">▶ Проверить</button>
+              <button class="btn ghost small love-save">💾</button>
+              <button class="btn ok small love-confirm">✓</button>
+              <button class="btn ghost small love-reject">✗</button>
+              <span class="love-status muted">${esc(it.status_label || it.status)}</span>
+            </td>
+          </tr>`;
+        body.innerHTML = `<section class="panel" id="moderation-board"><h3>💘 ${esc(loveTable.label || "Признание в любви и чувства")}</h3>
+          <p class="muted">${Number(loveTableStats.total ?? 0)} фильмов · ${Number(loveTableStats.direct_links ?? 0)} прямых ссылок VK/Rutube · ${Number(loveTableStats.empty_link_fields ?? 0)} полей под ссылку · проверено: ${Number(loveTableStats.verified ?? 0)} · version_note обязателен</p>
+          <p class="muted">Точные официальные ссылки уже подставлены, остальные поля пустые и редактируемые. Таймкоды подготовлены, но не проверены: «💾» сохраняет строку, «✓» подтверждает после просмотра.</p>
+          <div style="overflow:auto"><table class="mod-time-table" style="width:100%;border-collapse:collapse;font-size:.9em">
+            <thead><tr><th align="left">#</th><th align="left">Фильм</th><th align="left">Ссылка на фильм</th><th align="left">Начало</th><th align="left">Конец</th><th align="left">Версия издания</th><th align="left">Проверка</th></tr></thead>
+            <tbody>${loveRows.map(rowHtml).join("") || '<tr><td colspan="7" class="muted">Строки не загрузились.</td></tr>'}</tbody>
+          </table></div>
+          </section><details><summary class="muted">Служебные панели и старые очереди</summary><section class="panel"><h3>📚 Библиотека таймкодов</h3>
           <p>Каталог: ${Number(libCat.total ?? 0)} сцен · IMDb ID: ${Number(libCat.with_imdb ?? 0)} · с реальным таймкодом: ${Number(libCat.with_timecode ?? 0)} · проверено вручную: ${Number(libCat.verified ?? 0)}</p>
           <p>Кандидаты: pending ${Number(libStatus.pending ?? 0)}, approved ${Number(libStatus.approved ?? 0)}, rejected ${Number(libStatus.rejected ?? 0)} · сцен в очереди: ${Number(libCand.scenes_with_candidates ?? 0)}</p>
           <p class="muted">Пилот: ${Number(libMan.pilot_scenes ?? 0)} сцен · полный манифест: ${Number(libFull.matched_scenes ?? 0)} из ${Number(libFull.catalog_scenes ?? 0)} · файлов субтитров: ${Number(libFull.subtitle_files ?? 0)} · сомнительных: ${Number(libMan.ambiguous_count ?? 0)} · исключено ложных: ${Number(libMan.excluded_count ?? 0)}</p>
@@ -1298,8 +1234,8 @@
           ${((lib.sources && lib.sources.registry) ? lib.sources.registry : []).map(s =>
             `<p class="muted">${esc(s.id)}: ${Number(s.count ?? 0)} файлов · ${esc((s.license || '').slice(0, 90))}</p>`).join('')}
           <p class="muted">${esc((lib && lib.note) || 'Ручная сверка обязательна.')}</p>
-          </section><section class="panel"><h3>🎬 Легальные полные версии для ручного поиска момента</h3>
-          <p class="muted">Здесь фильмы, для которых есть официальная бесплатная полная версия (Мосфильм и др.), но GitHub-SRT часто ничего не нашёл. Открой фильм, найди момент сам и добавь кандидата в очередь — он останется pending до «✓ Подтвердить». Пиратские зеркала не используются.</p>
+          </section><section class="panel"><h3>🎬 Официальные полные версии (служебная очередь)</h3>
+          <p class="muted">Служебная панель для фильмов с официальной бесплатной полной версией: здесь можно завести отдельного кандидата. Пиратские зеркала не используются.</p>
           ${libTargets.map(t => `<article class="reply-item md-target" data-title="${esc(t.movie_title)}" data-year="${Number(t.movie_year)}" data-url="${esc(t.url || "")}" data-source="${esc(t.url || "")}" data-imdb="${esc(t.imdb_id || "")}">
             <p><b>${esc(t.movie_title)}</b> (${Number(t.movie_year)})${t.imdb_id ? ` · ${esc(t.imdb_id)}` : ""} · ${esc(t.provider || "официальный источник")} · в очереди: ${Number(t.pending_candidates ?? 0)}</p>
             <p class="muted">${esc((t.version_hint || "").slice(0, 140))}</p>
@@ -1403,108 +1339,73 @@
                 </div></div>`;
             }).join("") || '<p class="muted">Очередь пуста ✅</p>'}
           </div></details>`;
-        const modSearch = document.getElementById('mod-search');
-        const modFilter = document.getElementById('mod-filter');
-        const modCategory = document.getElementById('mod-category');
-        const modVisible = document.getElementById('mod-visible');
-        const applyModFilter = () => {
-          const q = (modSearch && modSearch.value || '').toLowerCase();
-          const f = modFilter && modFilter.value || 'all';
-          const c = modCategory && modCategory.value || 'all';
-          let n = 0;
-          body.querySelectorAll('.mod-item').forEach(el => {
-            const isLove = el.dataset.batch === 'love';
-            const show = (!q || (el.dataset.search || '').includes(q))
-              && (f === 'love_batch' ? isLove : !isLove && (f === 'all' || el.dataset.status === f))
-              && (c === 'all' || el.dataset.category === c);
-            el.style.display = show ? '' : 'none';
-            if (show) n++;
-          });
-          if (modVisible) modVisible.textContent = `Показано: ${n}`;
+        const loveSeconds = (value) => {
+          const parts = String(value || "").split(":").map(Number);
+          if (parts.some(n => !Number.isFinite(n))) return null;
+          if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+          if (parts.length === 2) return parts[0] * 60 + parts[1];
+          if (parts.length === 1) return parts[0];
+          return null;
         };
-        if (modSearch) modSearch.oninput = applyModFilter;
-        if (modFilter) modFilter.onchange = applyModFilter;
-        if (modCategory) modCategory.onchange = applyModFilter;
-        applyModFilter();
-        body.querySelectorAll('.mod-open').forEach((b) => (b.onclick = () => {
-          const box = b.closest('.mod-item');
-          if (box && box.dataset.open) openLink(box.dataset.open);
-        }));
-        body.querySelectorAll('.mod-local').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          try { await navigator.clipboard.writeText(box.dataset.cmd || ''); toast('Команда скопирована: замени путь к файлу ⏱'); }
-          catch (e) { toast('Скопируй команду вручную'); }
-        }));
-        body.querySelectorAll('.mod-copy').forEach((b) => (b.onclick = async () => {
-          try { await navigator.clipboard.writeText(b.dataset.tc || ''); toast('Время скопировано ⏱'); }
-          catch (e) { toast('Скопируй время вручную'); }
-        }));
-        body.querySelectorAll('.mod-anchor').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          try { await navigator.clipboard.writeText(box.dataset.anchor || ''); toast('Якорь эпизода скопирован 📌'); }
-          catch (e) { toast('Скопируй якорь вручную'); }
-        }));
-        body.querySelectorAll('.start-local').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          try { await navigator.clipboard.writeText(box.dataset.startingCmd || ''); toast('Команда с начальным ориентиром скопирована ⏱'); }
-          catch (e) { toast('Скопируй команду вручную'); }
-        }));
-        body.querySelectorAll('.start-copy').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          try { await navigator.clipboard.writeText(box.dataset.starting || ''); toast('Начальный ориентир скопирован ⏱'); }
-          catch (e) { toast('Скопируй время вручную'); }
-        }));
-        body.querySelectorAll('.cur-add').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          const payload = {
-            scene_id: Number(box.dataset.scene),
-            timecode_label: (box.querySelector('.cur-start').value || '').trim(),
-            timecode_end_label: (box.querySelector('.cur-end').value || '').trim() || null,
-            moment_label: (box.querySelector('.cur-label').value || '').trim() || null,
-            source_url: box.dataset.film || null,
-          };
-          if (!payload.timecode_label) { toast('Впиши таймкод якоря, например 0:32:56'); return; }
+        const loveDeepLink = (url, label) => {
+          const raw = String(url || "").trim();
+          const sec = loveSeconds(label);
+          if (!raw || sec === null) return raw;
           try {
-            await adminApi('/api/admin/moderation/curate', { method: 'POST', body: payload });
-            toast('Таймкод добавлен в отсмотр ▶ теперь карточка с deep link');
-            document.getElementById('adm-load').click();
-          } catch (e) { toast(e.message); }
-        }));
-        body.querySelectorAll('.mod-confirm').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          const payload = {
-            scene_id: Number(box.dataset.scene),
-            action: 'confirm',
-            candidate_id: box.dataset.candidate ? Number(box.dataset.candidate) : null,
-            timecode_label: (box.querySelector('.mod-start').value || '').trim(),
-            timecode_end_label: (box.querySelector('.mod-end').value || '').trim() || null,
-            version_note: (box.querySelector('.mod-version').value || '').trim(),
-            moment_label: (box.querySelector('.mod-label').value || '').trim() || null,
-            source_url: box.dataset.source || null,
-            watch_url: box.dataset.open && /vkvideo\.ru|vk\.com|vk\.ru|rutube\.ru/.test(box.dataset.open) ? box.dataset.open : null,
-          };
-          if (!payload.timecode_label) { toast('Нет доказательного отрезка: сначала нужен кураторский якорь'); return; }
-          if (!payload.version_note) { toast('Укажи версию издания'); return; }
+            const u = new URL(raw);
+            u.searchParams.delete("t"); u.searchParams.delete("start"); u.searchParams.delete("end");
+            const h = u.hostname.toLowerCase();
+            if (h.includes("vkvideo.ru") || h.includes("vk.com") || h.includes("vk.ru")) u.searchParams.set("t", `${sec}s`);
+            else if (h.includes("rutube.ru")) u.searchParams.set("t", String(sec));
+            return u.toString();
+          } catch (e) { return raw; }
+        };
+        const loveValues = (row) => ({
+          candidate_id: Number(row.dataset.candidate), scene_id: Number(row.dataset.scene),
+          timecode_label: (row.querySelector(".love-start").value || "").trim(),
+          timecode_end_label: (row.querySelector(".love-end").value || "").trim() || null,
+          film_url: (row.querySelector(".love-url").value || "").trim(),
+          version_note: (row.querySelector(".love-version").value || "").trim(),
+        });
+        const loveReload = () => document.getElementById("adm-load").click();
+        body.querySelectorAll(".love-check").forEach(b => b.onclick = () => {
+          const row = b.closest(".love-row"); const v = loveValues(row);
+          const url = loveDeepLink(v.film_url, v.timecode_label);
+          if (!url) { toast("Вставь прямую ссылку VK Видео или Rutube"); return; }
+          openLink(url);
+        });
+        body.querySelectorAll(".love-save").forEach(b => b.onclick = async () => {
+          const row = b.closest(".love-row"); const v = loveValues(row);
+          if (!v.timecode_label) { toast("Укажи начало таймкода"); return; }
           try {
-            await adminApi('/api/admin/moderation/confirm', { method: 'POST', body: payload });
-            toast('Таймкод подтверждён ✅ verified=1');
-            document.getElementById('adm-load').click();
+            await adminApi(`/api/admin/moderation/love-confession/${v.candidate_id}/edit`, {method:"POST", body:v});
+            toast("Строка сохранена, verified не менялся"); loveReload();
           } catch (e) { toast(e.message); }
-        }));
-        body.querySelectorAll('.mod-reject').forEach((b) => (b.onclick = async () => {
-          const box = b.closest('.mod-item');
-          const payload = {
-            scene_id: Number(box.dataset.scene), action: 'reject',
-            candidate_id: box.dataset.candidate ? Number(box.dataset.candidate) : null,
-            timecode_label: (box.querySelector('.mod-start').value || '').trim(),
-            timecode_end_label: (box.querySelector('.mod-end').value || '').trim() || null,
-          };
-          if (!payload.timecode_label) { toast('Нет кандидата для отклонения'); return; }
+        });
+        body.querySelectorAll(".love-confirm").forEach(b => b.onclick = async () => {
+          const row = b.closest(".love-row"); const v = loveValues(row);
+          if (!v.timecode_label) { toast("Укажи начало таймкода"); return; }
+          if (!v.version_note) { toast("Укажи версию издания"); return; }
           try {
-            await adminApi('/api/admin/moderation/confirm', { method: 'POST', body: payload });
-            toast('Отклонено'); document.getElementById('adm-load').click();
+            await adminApi("/api/admin/moderation/confirm", {method:"POST", body:{
+              scene_id: v.scene_id, candidate_id: v.candidate_id, action: "confirm",
+              timecode_label: v.timecode_label, timecode_end_label: v.timecode_end_label,
+              version_note: v.version_note, watch_url: loveDeepLink(v.film_url, v.timecode_label),
+            }});
+            toast("Подтверждено ✅ verified=1"); loveReload();
           } catch (e) { toast(e.message); }
-        }));
+        });
+        body.querySelectorAll(".love-reject").forEach(b => b.onclick = async () => {
+          const row = b.closest(".love-row"); const v = loveValues(row);
+          if (!v.timecode_label) { toast("Укажи начало таймкода"); return; }
+          try {
+            await adminApi("/api/admin/moderation/confirm", {method:"POST", body:{
+              scene_id: v.scene_id, candidate_id: v.candidate_id, action: "reject",
+              timecode_label: v.timecode_label, timecode_end_label: v.timecode_end_label,
+            }});
+            toast("Отклонено"); loveReload();
+          } catch (e) { toast(e.message); }
+        });
         body.querySelectorAll('.notification-retry').forEach(button => button.onclick = async () => {
           if (!window.confirm('Вернуть уведомление в очередь? Сначала устраните причину ошибки. Если Telegram уже принял сообщение до сбоя, возможен дубль.')) return;
           button.disabled = true;

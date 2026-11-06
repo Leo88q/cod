@@ -94,11 +94,11 @@ def test_unknown_film_gets_two_searches_and_local_command_only():
 
 def test_moderation_coverage_counts_curated_legal_videos():
     cov = moderation_coverage()
-    assert cov["official_videos"] == 10
-    assert cov["scenes_with_official_deep"] == 10
+    assert cov["official_videos"] == 14
+    assert cov["scenes_with_official_deep"] == 14
     assert cov["requires_version_check"] is True
     assert cov["verified_by_human"] is False
-    assert set(cov["sources"]) == {"vk_mosfilm", "rutube_mosfilm"}
+    assert set(cov["sources"]) == {"vk_mosfilm", "rutube_mosfilm", "rutube_russia1"}
     assert "vkvideo.ru" in cov["vk_search"] and "rutube.ru" in cov["rutube_search"]
 
 
