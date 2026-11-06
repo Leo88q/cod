@@ -87,8 +87,8 @@ open "http://localhost:8000/app/#/admin"
 
 ## Проверки
 
-- 112 pytest / 7 warnings, 13 UI, `bash scripts/check.sh` → 5/5;
+- 113 pytest / 7 warnings, 13 UI, `bash scripts/check.sh` → 5/5;
 - тесты проверяют: 14 категорий, кураторские оверрайды («Матрица» → `inspiration_dream`, «Шрек» → `children_animation`), отсутствие `draft`/случайного времени, `needs_curator` без `open_url`, 400 без `version_note`, `verified=1` только после confirm;
 - `verified_by_human` остаётся `false` до ручного подтверждения.
 
-Связано: [16-moderation-board.md](16-moderation-board.md), [15-moderation-links.md](15-moderation-links.md), [13-timecode-verification.md](13-timecode-verification.md).
+Пошаговый сценарий куратора: [18-curator-workflow.md](18-curator-workflow.md). Связано: [16-moderation-board.md](16-moderation-board.md), [15-moderation-links.md](15-moderation-links.md), [13-timecode-verification.md](13-timecode-verification.md).

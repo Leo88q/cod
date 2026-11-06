@@ -21,7 +21,7 @@ from . import bot as bot_module
 from . import config, payments, scheduler, search as semantic
 from .db import connect, init_db, new_code, row_to_dict, enqueue_notification
 from .flowwow import watch_links, order_link
-from .intent_taxonomy import intent_for
+from .intent_taxonomy import intent_for, load_taxonomy
 from .moderation_board import build_board
 from .moderation_links import (
     build_moderation_links, load_official_videos, moderation_coverage, moderation_targets,
@@ -1788,6 +1788,19 @@ class ManualTimecodeCandidate(BaseModel):
     watch_url: Optional[str] = None
 
 
+class CuratorTimecode(BaseModel):
+    """Куратор зафиксировал конкретный эпизод и вписал его минуту.
+
+    Это НЕ `verified=1`: кандидат уходит в общую очередь «к отсмотру» и
+    получает deep link на указанное время. Рандомного времени не бывает.
+    """
+    scene_id: int
+    timecode_label: str
+    timecode_end_label: Optional[str] = None
+    moment_label: Optional[str] = None
+    source_url: Optional[str] = None
+
+
 class ModerationConfirm(BaseModel):
     """Единое действие на экране модерации: подтвердить / отклонить / пропустить."""
     scene_id: int
@@ -1884,6 +1897,52 @@ def admin_moderation_board(request: Request):
     board = build_board(conn, load_official_videos())
     conn.close()
     return board
+
+
+@app.post("/api/admin/moderation/curate")
+def admin_moderation_curate(request: Request, body: CuratorTimecode):
+    """Куратор вписал минуту под конкретный якорь эпизода.
+
+    Карточка без таймкода превращается в карточку «к отсмотру»: candidate
+    получает категорию сцены, человекочитаемую причину и время. `verified=1`
+    НЕ ставится — оператор всё равно должен открыть момент и подтвердить его
+    с `version_note`.
+    """
+    require_admin(request)
+    start = tc_label_to_seconds(body.timecode_label)
+    end = tc_label_to_seconds(body.timecode_end_label) if body.timecode_end_label else None
+    if start is None or (body.timecode_end_label and end is None):
+        raise HTTPException(400, "Некорректный таймкод: используй формат 0:32:56")
+    conn = connect(config.DB_PATH)
+    scene = conn.execute("SELECT * FROM scenes WHERE id=? AND status='approved'", (body.scene_id,)).fetchone()
+    if not scene:
+        conn.close()
+        raise HTTPException(404, "Сцена не найдена")
+    intent = intent_for(scene["movie_title"], scene["movie_year"])
+    gate = float(load_taxonomy().get("gate_threshold", 0.45))
+    reason = f"Куратор зафиксировал эпизод: {intent['curated_anchor'][:120]}. Время указано вручную, проверь издание."
+    digest = hashlib.sha1(
+        f"curator|{scene['movie_title']}|{scene['movie_year']}|{body.timecode_label}".encode("utf-8")
+    ).hexdigest()
+    cur = conn.execute(
+        "INSERT OR IGNORE INTO timecode_candidates (scene_id, service, timecode_label, timecode_seconds,"
+        " timecode_end_label, timecode_end_seconds, source, source_license, evidence_sha1,"
+        " line_index, match_score, moment_label, confidence, consensus, auto,"
+        " category, fragment_type, evidence_features, reason, intent_score, status, created_at)"
+        " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'pending',?)",
+        (scene["id"], "curator", body.timecode_label, start, body.timecode_end_label, end,
+         body.source_url or "curator-anchor",
+         "Официальная/легальная версия; эпизод и время зафиксированы куратором, текст субтитров не хранится",
+         digest, 0, 0.0, body.moment_label or intent["curated_anchor"][:120], 0.0, 1, 0,
+         intent["primary_intent"], intent["fragment_type"],
+         json.dumps({"curated": True, "lexicon_hits": 0, "source": "curator"}, ensure_ascii=False),
+         reason, gate, now_iso()),
+    )
+    conn.commit()
+    cid = cur.lastrowid
+    conn.close()
+    return {"ok": True, "candidate_id": cid, "scene_id": scene["id"],
+            "status": "pending", "timecode_label": body.timecode_label}
 
 
 @app.post("/api/admin/moderation/confirm")

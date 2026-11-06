@@ -1205,45 +1205,60 @@
         const libFull = libMan.full || {};
         const libStatus = libCand.by_status || {};
         body.innerHTML = `<section class="panel" id="moderation-board"><h3>🎬 Модерация таймкодов — ${Number(boardStats.total ?? 0)} сцен</h3>
-          <p class="muted">Одна очередь на весь каталог. Карточка получает таймкод только если у неё есть <b>категория</b>, <b>тип фрагмента</b> и <b>доказательный отрезок</b> из субтитров. Рандомных таймкодов и «ищи момент с нуля» больше нет.</p>
-          <p class="muted">✅ ${Number(boardStats.with_real_timecode ?? 0)} сцен с доказательным фрагментом · ⛔ ${Number(boardStats.needs_curator ?? 0)} «нужен куратор» (без времени) · ▶ ${Number(boardStats.with_open_url ?? 0)} с автозапуском · ⏱ ${Number(boardStats.with_local_command ?? 0)} с командой mpv · проверено ${Number(boardStats.verified ?? 0)}</p>
+          <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <span class="btn ok small">▶ К отсмотру: ${Number(boardStats.pending ?? 0)}</span>
+            <span class="btn ghost small">📌 Нет таймкода — куратор: ${Number(boardStats.needs_curator ?? 0)}</span>
+            <span class="btn ghost small">✅ Проверено: ${Number(boardStats.verified ?? 0)}</span>
+            <span class="muted">Таймкодов сейчас: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)}</span>
+          </div>
+          <section class="panel" style="background:rgba(127,127,127,.06)"><h3>Как куратору отбирать — коротко</h3>
+            <p><b>1. Карточки «▶ К отсмотру»</b>: таймкод и кнопка «Открыть на …» уже в карточке. Открой момент, поправь начало/конец, укажи <b>версию издания *</b>, жми «✓ Подтвердить».</p>
+            <p><b>2. Карточки «📌 Нет таймкода»</b>: время не выдумано. В карточке есть <b>якорь эпизода</b> и <b>ссылки на фильм</b>. Открой фильм, найди этот якорь, впиши минуту в поле и жми «➕ Добавить таймкод в отсмотр» — карточка сразу перейдёт в первый блок и получит deep link на момент.</p>
+            <p class="muted">Рандомных минут больше нет. Проверенных таймкодов пока ${Number(boardStats.verified ?? 0)}: «Добавить» ≠ «Подтвердить».</p>
+          </section>
           <div class="row" style="margin-bottom:8px">
-            <input id="mod-search" class="search-input" style="max-width:200px" placeholder="поиск по названию">
-            <select id="mod-filter" class="search-input" style="max-width:160px">
-              <option value="all">Все</option>
-              <option value="pending">К проверке</option>
-              <option value="needs_curator">Нужен куратор</option>
-              <option value="verified">Проверенные</option>
+            <input id="mod-search" class="search-input" style="max-width:190px" placeholder="поиск по названию">
+            <select id="mod-filter" class="search-input" style="max-width:210px">
+              <option value="all">Все 146</option>
+              <option value="pending">▶ С таймкодом / к отсмотру</option>
+              <option value="needs_curator">📌 Без таймкода / куратору</option>
+              <option value="verified">✅ Проверенные</option>
             </select>
-            <select id="mod-category" class="search-input" style="max-width:200px">
+            <select id="mod-category" class="search-input" style="max-width:190px">
               <option value="all">Все категории</option>
               ${boardCats.map(c => `<option value="${esc(c.id)}">${esc(c.label)}</option>`).join("")}
             </select>
             <span id="mod-visible" class="muted"></span>
           </div>
           <div id="mod-list">
-          ${boardItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}">
+          ${boardItems.map(it => `<article class="tl-item mod-item" style="margin-top:8px" data-scene="${Number(it.scene_id)}" data-candidate="${it.candidate_id ?? ""}" data-status="${esc(it.status)}" data-category="${esc(it.category)}" data-search="${esc((it.movie_title + " " + it.movie_year).toLowerCase())}" data-open="${esc(it.open_url || "")}" data-source="${esc(it.source_url || "")}" data-film="${esc(it.film_url || "")}" data-cmd="${esc(it.local_command || "")}" data-anchor="${esc(it.curated_anchor || "")}">
             <p><b>${esc(it.movie_title)}</b> (${Number(it.movie_year ?? 0)}) ${it.imdb_id ? `· ${esc(it.imdb_id)}` : ""} · <span class="muted mod-category">${esc(it.category_label)}</span> · <b>${esc(it.status_label)}</b></p>
             <p class="muted">${esc(it.description || "")}</p>
-            <p>⏱ <b>${it.proposed_label ? `${esc(it.proposed_label)}–${esc(it.proposed_end_label)}` : "—"}</b> · ${esc(it.fragment_type_label || "")} · ${esc(it.open_provider)}</p>
-            <p class="muted">${esc(it.reason || it.proposal_note || "")} ${esc(it.open_note || "")}</p>
-            ${it.curated_anchor ? `<p class="muted">📌 Якорь эпизода: ${esc(it.curated_anchor)}</p>` : ""}
-            <div class="row" style="margin-top:4px">
-              ${it.open_url ? `<button class="btn ghost small mod-open">▶ Открыть на ${esc(it.proposed_label)}</button>` : ""}
-              ${it.local_command ? `<button class="btn ghost small mod-local">⏱ Локально (mpv)</button>` : ""}
-              ${it.proposed_label ? `<button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать время</button>` : ""}
-              ${it.curated_anchor ? `<button class="btn ghost small mod-anchor">📌 Копировать якорь</button>` : ""}
-              <a class="muted" href="${esc(it.search_url || "#")}" target="_blank" rel="noopener noreferrer">🔍 Поиск</a>
-              ${it.imdb_url ? `<a class="muted" href="${esc(it.imdb_url)}" target="_blank" rel="noopener noreferrer">IMDb</a>` : ""}
-            </div>
-            ${it.proposed_label ? `<div class="row" style="margin-top:4px">
+            <p><b>ТАЙМКОД:</b> ${it.proposed_label ? `<b>${esc(it.proposed_label)}–${esc(it.proposed_end_label)}</b>` : `<b>— нет таймкода</b>`} · <b>КАТЕГОРИЯ:</b> ${esc(it.category_label)} · <b>ТИП:</b> ${esc(it.fragment_type_label || it.fragment_type || "")}</p>
+            <p class="muted"><b>ПОЧЕМУ:</b> ${esc(it.reason || it.proposal_note || "")} ${esc(it.open_note || "")}</p>
+            ${it.curated_anchor ? `<p class="muted"><b>ЯКОРЬ ЭПИЗОДА:</b> ${esc(it.curated_anchor)}</p>` : ""}
+            <p class="muted"><b>ССЫЛКИ:</b>
+              ${it.open_url ? `<a href="${esc(it.open_url)}" target="_blank" rel="noopener noreferrer">▶ Открыть на ${esc(it.proposed_label)}</a> · ` : ""}
+              ${(it.film_links || []).slice(0, 4).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.note || "")}">${esc(l.label)}</a>`).join(" · ")}
+              ${it.imdb_url ? `· <a href="${esc(it.imdb_url)}" target="_blank" rel="noopener noreferrer">IMDb</a>` : ""}
+            </p>
+            ${it.local_command ? `<div class="row" style="margin-top:4px"><button class="btn ghost small mod-local">⏱ mpv --start=${esc(it.proposed_label)}</button><button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать время</button></div>` : ""}
+            ${it.status === 'needs_curator' ? `<div class="row" style="margin-top:6px;flex-wrap:wrap">
+              <span class="muted">${esc(it.curator_instruction || "Впиши минуту под якорь эпизода")}</span>
+              <input class="search-input cur-start" style="max-width:100px" placeholder="0:32:56 *">
+              <input class="search-input cur-end" style="max-width:100px" placeholder="конец">
+              <input class="search-input cur-label" style="max-width:230px" value="${esc(it.moment_label || "")}" placeholder="метка / якорь">
+              <button class="btn ok small cur-add">➕ Добавить таймкод в отсмотр</button>
+              <button class="btn ghost small mod-anchor">📌 Копировать якорь</button>
+            </div>` : `<div class="row" style="margin-top:4px">
               <input class="search-input mod-start" style="max-width:95px" value="${esc(it.proposed_label)}">
               <input class="search-input mod-end" style="max-width:95px" value="${esc(it.proposed_end_label)}">
               <input class="search-input mod-version" style="max-width:150px" placeholder="версия издания *" value="${esc(it.scene_version_note || "")}">
               <input class="search-input mod-label" style="max-width:220px" placeholder="метка момента" value="${esc(it.moment_label || "")}">
               <button class="btn ok small mod-confirm">✓ Подтвердить</button>
               <button class="btn ghost small mod-reject">✗ Отклонить</button>
-            </div>` : `<p class="muted">⛔ Без доказательного фрагмента подтверждать нечего: куратор фиксирует конкретный эпизод, затем SRT-скоринг предложит время.</p>`}
+              <button class="btn ghost small mod-anchor">📌 Копировать якорь</button>
+            </div>`}
           </article>`).join("") || '<p class="muted">Сцены не загрузились.</p>'}
           </div>
           </section><details open><summary class="muted">Служебные панели и старые очереди</summary><section class="panel"><h3>📚 Библиотека таймкодов</h3>
@@ -1398,6 +1413,22 @@
           const box = b.closest('.mod-item');
           try { await navigator.clipboard.writeText(box.dataset.anchor || ''); toast('Якорь эпизода скопирован 📌'); }
           catch (e) { toast('Скопируй якорь вручную'); }
+        }));
+        body.querySelectorAll('.cur-add').forEach((b) => (b.onclick = async () => {
+          const box = b.closest('.mod-item');
+          const payload = {
+            scene_id: Number(box.dataset.scene),
+            timecode_label: (box.querySelector('.cur-start').value || '').trim(),
+            timecode_end_label: (box.querySelector('.cur-end').value || '').trim() || null,
+            moment_label: (box.querySelector('.cur-label').value || '').trim() || null,
+            source_url: box.dataset.film || null,
+          };
+          if (!payload.timecode_label) { toast('Впиши таймкод якоря, например 0:32:56'); return; }
+          try {
+            await adminApi('/api/admin/moderation/curate', { method: 'POST', body: payload });
+            toast('Таймкод добавлен в отсмотр ▶ теперь карточка с deep link');
+            document.getElementById('adm-load').click();
+          } catch (e) { toast(e.message); }
         }));
         body.querySelectorAll('.mod-confirm').forEach((b) => (b.onclick = async () => {
           const box = b.closest('.mod-item');

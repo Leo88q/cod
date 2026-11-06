@@ -103,14 +103,24 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/scenes?status=draft': {scenes:[]},
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
     '/api/admin/timecodes?status=pending': {candidates:[]},
-'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_real_timecode:44,with_open_url:10,with_local_command:44,by_category:{love_confession:17,female_friendship:8}},
+'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:1,with_local_command:44,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
       categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
-      items:[{scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'к проверке',description:'Новогодняя Москва',why_fits:'',
+      items:[
+        {scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'есть таймкод — к отсмотру',description:'Новогодняя Москва',why_fits:'',
         category:'love_confession',category_label:'Признание в любви',fragment_type:'monologue',fragment_type_label:'Одна длинная реплика / монолог',secondary_intents:[],curated_anchor:'Робкое объяснение в чувствах',intent_confidence:0.95,intent_source:'manual',
-        candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
+        candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',evidence_kind:'srt',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
         proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,moment_label:'Женя у двери',
         open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',open_provider:'youtube_mosfilm',open_kind:'youtube',open_note:'Официальная версия',
-        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''}]},
+        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_links:[{label:'▶ Мосфильм',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',note:'Официально'}],
+        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''},
+        {scene_id:2,movie_title:'Девчата',movie_year:1961,imdb_id:'tt0054790',status:'needs_curator',status_label:'нет таймкода — куратор',description:'Работницы общежития',why_fits:'женская дружба',
+        category:'female_friendship',category_label:'Женская дружба / сестринство',fragment_type:'dialogue',fragment_type_label:'Живой диалог',secondary_intents:[],curated_anchor:'Девушки в общежитии спорят о замужестве Тоси',intent_confidence:0.95,intent_source:'manual',
+        candidate_id:null,candidate_status:null,candidate_source:null,intent_score:0,proposal_kind:'none',evidence_kind:'none',proposal_note:'Таймкода пока нет',reason:'',
+        proposed_label:'',proposed_seconds:null,proposed_end_label:'',proposed_end_seconds:null,moment_label:'Разговор подруг',
+        open_url:null,open_provider:'no_timecode',open_kind:'no_timecode',open_note:'Таймкод не задан',
+        source_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_links:[{label:'📄 Мосфильм',url:'https://www.mosfilm.ru/',note:'Официально'},{label:'🔍 kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query=x',note:'Поиск'}],
+        local_command:null,gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0054790/',scene_version_note:''}
+      ]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:0},scenes_with_candidates:0,total:0},
       moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
@@ -135,11 +145,17 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.ok(dom.window.document.querySelector('.mod-item'));
     assert.match(dom.window.document.querySelector('.mod-item').dataset.open, /t=1976s/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Признание в любви/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /к проверке/);
-    assert.match(dom.window.document.querySelector('#adm-body').textContent, /сцен с доказательным фрагментом/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /есть таймкод — к отсмотру/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Как куратору отбирать/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ТАЙМКОД:/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /ССЫЛКИ:/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /нет таймкода/);
     assert.ok(dom.window.document.querySelector('.mod-category'));
     assert.match(dom.window.document.querySelector('.mod-category').textContent, /Признание в любви/);
     assert.ok(dom.window.document.querySelector('.mod-anchor'));
+    assert.ok(dom.window.document.querySelector('.cur-add'), 'у сцены без таймкода должна быть форма куратора');
+    assert.ok(dom.window.document.querySelector('.cur-start'));
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /Девчата/);
   } finally { dom.window.close(); }
 });
 
@@ -166,14 +182,24 @@ test('admin timecode queue supports manual verification fields', async () => {
         {kind:'local',priority:3,label:'⏱ Открыть локальный файл на моменте',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
       ]
     }]},
-'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_real_timecode:44,with_open_url:10,with_local_command:44,by_category:{love_confession:17,female_friendship:8}},
+'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:1,with_local_command:44,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
       categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
-      items:[{scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'к проверке',description:'Новогодняя Москва',why_fits:'',
+      items:[
+        {scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'есть таймкод — к отсмотру',description:'Новогодняя Москва',why_fits:'',
         category:'love_confession',category_label:'Признание в любви',fragment_type:'monologue',fragment_type_label:'Одна длинная реплика / монолог',secondary_intents:[],curated_anchor:'Робкое объяснение в чувствах',intent_confidence:0.95,intent_source:'manual',
-        candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
+        candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',evidence_kind:'srt',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
         proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,moment_label:'Женя у двери',
         open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',open_provider:'youtube_mosfilm',open_kind:'youtube',open_note:'Официальная версия',
-        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''}]},
+        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_links:[{label:'▶ Мосфильм',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',note:'Официально'}],
+        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''},
+        {scene_id:2,movie_title:'Девчата',movie_year:1961,imdb_id:'tt0054790',status:'needs_curator',status_label:'нет таймкода — куратор',description:'Работницы общежития',why_fits:'женская дружба',
+        category:'female_friendship',category_label:'Женская дружба / сестринство',fragment_type:'dialogue',fragment_type_label:'Живой диалог',secondary_intents:[],curated_anchor:'Девушки в общежитии спорят о замужестве Тоси',intent_confidence:0.95,intent_source:'manual',
+        candidate_id:null,candidate_status:null,candidate_source:null,intent_score:0,proposal_kind:'none',evidence_kind:'none',proposal_note:'Таймкода пока нет',reason:'',
+        proposed_label:'',proposed_seconds:null,proposed_end_label:'',proposed_end_seconds:null,moment_label:'Разговор подруг',
+        open_url:null,open_provider:'no_timecode',open_kind:'no_timecode',open_note:'Таймкод не задан',
+        source_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_links:[{label:'📄 Мосфильм',url:'https://www.mosfilm.ru/',note:'Официально'},{label:'🔍 kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query=x',note:'Поиск'}],
+        local_command:null,gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0054790/',scene_version_note:''}
+      ]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:1},scenes_with_candidates:1,total:1},
       moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
@@ -184,7 +210,7 @@ test('admin timecode queue supports manual verification fields', async () => {
   });
   try {
     dom.window.localStorage.setItem('scena_admin_token', 'test-admin');
-    let opened = null, posted = null, manualPosted = null;
+    let opened = null, posted = null, manualPosted = null, curatorPosted = null;
     dom.window.open = (url) => { opened = url; };
     const originalFetch = dom.window.fetch;
     dom.window.fetch = async (path, opts) => {
@@ -195,6 +221,10 @@ test('admin timecode queue supports manual verification fields', async () => {
       if (opts && opts.method === 'POST' && String(path).includes('/timecodes/manual')) {
         manualPosted = JSON.parse(opts.body);
         return { ok: true, json: async () => ({ok:true,id:999}) };
+      }
+      if (opts && opts.method === 'POST' && String(path).includes('/moderation/curate')) {
+        curatorPosted = JSON.parse(opts.body);
+        return { ok: true, json: async () => ({ok:true,candidate_id:1000}) };
       }
       return originalFetch(path, opts);
     };
@@ -239,6 +269,12 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.equal(posted.body.service, 'kinopoisk');
     assert.equal(posted.body.version_note, 'театральная, Kinopoisk 2024');
     assert.equal(posted.body.moment_label, 'момент, где Форрест бежит');
+    doc.querySelector('.cur-start').value = '0:17:42';
+    doc.querySelector('.cur-add').click();
+    await new Promise(resolve => setTimeout(resolve, 40));
+    assert.ok(curatorPosted, 'кураторская минута должна уйти на /moderation/curate');
+    assert.equal(curatorPosted.scene_id, 2);
+    assert.equal(curatorPosted.timecode_label, '0:17:42');
   } finally { dom.window.close(); }
 });
 

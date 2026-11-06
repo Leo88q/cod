@@ -53,6 +53,7 @@ def test_board_gates_all_scenes_without_evidence(client):
         if it["proposal_kind"] == "none":
             assert it["proposed_label"] == "" and it["proposed_seconds"] is None
             assert it["local_command"] is None and it["open_url"] is None
+            assert it["film_links"] and it["film_url"]  # ссылки есть даже без таймкода
             assert it["status"] in ("needs_curator", "verified")
     # ни одной случайной минуты / черновика
     assert all(i["proposal_kind"] != "draft" for i in board["items"])
@@ -120,3 +121,42 @@ def test_admin_moderation_endpoint_and_confirm(client):
     assert row["primary_intent"] == intent["primary_intent"]
     assert "Мосфильм" in row["version_note"]
     assert cand["status"] == "approved" and cand["category"] == intent["primary_intent"]
+
+
+def test_curator_adds_timecode_and_gets_deep_link(client):
+    """Куратор вписывает минуту под якорь → карточка получает таймкод и ссылку."""
+    conn = connect(config.DB_PATH)
+    scene = conn.execute(
+        "SELECT id, movie_title, movie_year, verified FROM scenes WHERE movie_title=? AND movie_year=?",
+        ("Девчата", 1961),
+    ).fetchone()
+    assert scene is not None
+    conn.close()
+    r = client.post(
+        "/api/admin/moderation/curate", headers={"X-Admin-Token": "test-admin"},
+        json={"scene_id": scene["id"], "timecode_label": "0:17:42",
+              "timecode_end_label": "0:18:15", "moment_label": "Разговор подруг",
+              "source_url": "https://www.kinopoisk.ru/"},
+    )
+    assert r.status_code == 200
+    cid = r.json()["candidate_id"]
+    conn = connect(config.DB_PATH)
+    cand = conn.execute(
+        "SELECT tc.status AS status, tc.category AS category, tc.evidence_features AS evidence_features,"
+        " tc.intent_score AS intent_score, tc.timecode_seconds AS timecode_seconds, s.verified AS verified"
+        " FROM timecode_candidates tc JOIN scenes s ON s.id=tc.scene_id WHERE tc.id=?", (cid,),
+    ).fetchone()
+    conn.close()
+    assert cand["status"] == "pending" and cand["verified"] == 0
+    assert cand["category"] == "female_friendship"
+    assert cand["timecode_seconds"] == 1062
+    assert json.loads(cand["evidence_features"])["curated"] is True
+    assert cand["intent_score"] >= load_taxonomy()["gate_threshold"]
+
+    board = client.get("/api/admin/moderation", headers={"X-Admin-Token": "test-admin"}).json()
+    item = next(i for i in board["items"] if i["scene_id"] == scene["id"])
+    assert item["status"] == "pending"
+    assert item["proposed_label"] == "0:17:42"
+    assert item["evidence_kind"] == "curator"
+    assert item["open_url"] and "8CYY8EM5xYE" in item["open_url"] and "t=1062s" in item["open_url"]
+    assert item["film_links"] and item["film_url"]
