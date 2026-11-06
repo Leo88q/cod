@@ -99,7 +99,7 @@ ID взяты из поисковой выдачи официального ка
 
 ## Проверки и юридические оговорки
 
-- `117 passed` pytest, `14 passed` Node/jsdom; `bash scripts/check.sh` с живым
+- `118 passed` pytest, `14 passed` Node/jsdom; `bash scripts/check.sh` с живым
   сервером — 5/5, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - Тесты проверяют нормализацию `?t=` только для VK/Rutube, порядок VK→Rutube,
   отсутствие YouTube/Кинопоиска/ivi/Okko/IMDb в ссылках, 14 deep links,

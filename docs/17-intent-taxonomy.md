@@ -97,7 +97,7 @@ open "http://localhost:8000/app/#/admin"
 
 ## Проверки
 
-- 117 pytest / 7 warnings, 14 UI, `bash scripts/check.sh` → 5/5;
+- 118 pytest / 7 warnings, 14 UI, `bash scripts/check.sh` → 5/5;
 - тесты проверяют: 14 категорий, кураторские оверрайды («Матрица» → `inspiration_dream`, «Шрек» → `children_animation`), отсутствие `draft`/случайного времени, `needs_curator` без `open_url`, 400 без `version_note`, `verified=1` только после confirm;
 - `verified_by_human` остаётся `false` до ручного подтверждения.
 

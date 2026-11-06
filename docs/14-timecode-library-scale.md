@@ -178,7 +178,7 @@ curl -s -H 'X-Admin-Token: local-admin' \
 
 ## 9. Проверки
 
-- `117 passed` pytest, `14 passed` Node/jsdom.
+- `118 passed` pytest, `14 passed` Node/jsdom.
 - `bash scripts/check.sh` с живым сервером: 5/5 шагов, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - `git diff --exit-code db/seed_catalog.sql` — чисто.
 - `full_manifest.json` / `imdb_map_full.json` / OPUS-адаптер / admin coverage endpoint / raw→API fallback загрузчика покрыты отдельными тестами.

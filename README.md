@@ -20,7 +20,7 @@
 - `app/scheduler.py` — отложенные открытия, «сгорание» подарков, напоминания о датах, рассылка уведомлений
 - `app/payments.py` — оплаты (ЮKassa в проде, dev-подтверждение локально): пачки карточек, подписки студий, премиум «ваш фильм»; идемпотентные эффекты
 - `app/security.py` — валидация Telegram initData (HMAC), админ-токен
-- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (109 тестов) + `tests/ui/` (Node/jsdom): `npm test` (13 тестов)
+- `tests/` — автотесты API (pytest): `.venv/bin/python -m pytest tests/ -q` (118 тестов) + `tests/ui/` (Node/jsdom): `npm test` (14 тестов)
 - `Dockerfile` — прод-образ: `docker build -t scena . && docker run -p 8000:8000 -e BOT_TOKEN=... scena`
 - `app/static/landing.html` — лендинг продукта на `/`
 - `scripts/import_scenes.py` / `scripts/export_scenes.py` — импорт/экспорт каталога сцен в CSV (`db/scenes_template.csv` — шаблон)
@@ -82,7 +82,7 @@ bash scripts/dev.sh                                    # затем #/admin с A
 
 ## Актуальный чек-лист реализации
 
-[Функции, код, дизайн и очередь до пилота — 04.11.2026](docs/09-implementation-checklist.md).
+[Функции, код, дизайн и очередь до пилота — аудит 04.11.2026, актуализация 06.11.2026](docs/09-implementation-checklist.md). В шапке документа — таблица factual-проверок (`py_compile`, 118 pytest, 14 UI, `CATALOG_CLEAN`, `SMOKE OK`, restore drill).
 Статусы разделяют реализованный код, частичную готовность и неподтверждённый продакшен; актуальнее ранних оценок в `docs/08-prod-gaps.md`.
 
 Пакет подготовки к production (worker, TLS ingress, preflight, диагностика, проверка backup и внешняя приёмка): [docs/10-deploy-readiness.md](docs/10-deploy-readiness.md).

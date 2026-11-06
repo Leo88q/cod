@@ -97,7 +97,7 @@ bash scripts/check.sh
 
 ## Проверки
 
-- 117 pytest / 7 warnings, 14 UI, live `bash scripts/check.sh` → 5/5, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`, `CATALOG_CLEAN`;
+- 118 pytest / 7 warnings, 14 UI, live `bash scripts/check.sh` → 5/5, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`, `CATALOG_CLEAN`;
 - каталог не меняется: `git diff --exit-code db/seed_catalog.sql` чист;
 - тексты субтитров не коммитятся и не хранятся в БД.
 

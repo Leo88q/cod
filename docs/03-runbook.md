@@ -94,3 +94,9 @@ BOT_TOKEN=... .venv/bin/python -m app.bot   # бот отдельно
 - [ ] Договоры с агрегаторами/студиями (агентский, поручение на обработку ПДн)
 - [ ] Юрист по авторскому праву: только фильм/год/таймкод/описание, без реплик и видео
 - [ ] Мониторинг: /health, логи шедулера, алерты на очередь notifications
+
+**Локально проверено 06.11.2026 (не закрывает пункты выше):** `/health` и `/ready` отвечают,
+JSON access-лог с `X-Request-ID` пишется (`app/observability.py`), `bash scripts/backup.sh`
++ `scripts/verify_backup.py` дают `RESTORE CHECK OK` на временной копии. Внешний мониторинг,
+алерты 5xx, HTTPS/ingress, эквайринг, уведомление Роскомнадзора и юридическая приёмка
+остаются задачами деплоя; см. [09-implementation-checklist.md](09-implementation-checklist.md) §6.
