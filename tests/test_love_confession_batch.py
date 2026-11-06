@@ -47,6 +47,10 @@ def inserted_batch(isolated_db):
     data = json.load(open(ARTIFACT, encoding="utf-8"))
     conn = connect(isolated_db)
     conn.execute("DELETE FROM timecode_candidates WHERE batch_id=?", (BATCH_ID,))
+    # БД модуля общая на все тесты: сбрасываем следы предыдущего подтверждения.
+    conn.execute("UPDATE scenes SET verified=0, verified_at=NULL, watch_url=NULL,"
+                 " version_note=NULL, timecode_label=NULL, timecode_seconds=NULL,"
+                 " timecode_end_label=NULL, timecode_end_seconds=NULL")
     scene_ids = {
         (r["movie_title"], r["movie_year"]): r["id"]
         for r in conn.execute("SELECT id, movie_title, movie_year FROM scenes").fetchall()
@@ -249,3 +253,46 @@ def test_love_table_edit_saves_without_verifying_and_confirm_requires_version(cl
     row = next(i for i in final["items"] if i["candidate_id"] == cid)
     assert row["status"] == "verified" and row["verified"] is True
     assert final["stats"]["verified"] == 1
+
+
+def test_love_table_reject_marks_row_and_keeps_scene_unverified(client, inserted_batch):
+    """Отклонение и сохранение строки не меняют сцену и не ставят verified."""
+    selected, candidate_ids = inserted_batch
+    rows = client.get("/api/admin/moderation/love-confession/table", headers=HEADERS).json()["items"]
+    item = rows[1]
+    cid, scene_id = item["candidate_id"], item["scene_id"]
+    edit_path = f"/api/admin/moderation/love-confession/{cid}/edit"
+
+    saved = client.post(edit_path, headers=HEADERS, json={
+        "timecode_label": "1:00:00", "timecode_end_label": "1:00:35",
+        "film_url": "https://vkvideo.ru/video-227210256_456239068?t=123s",
+        "version_note": "ТВ-монтаж"})
+    assert saved.status_code == 200
+    assert saved.json()["film_url"] == "https://vkvideo.ru/video-227210256_456239068"
+    assert saved.json()["verified"] == 0
+
+    mid = client.get("/api/admin/moderation/love-confession/table", headers=HEADERS).json()
+    mid_row = next(i for i in mid["items"] if i["candidate_id"] == cid)
+    assert mid_row["film_provider"] == "VK Видео"
+    assert mid_row["status"] == "pending"
+    assert mid["stats"]["verified"] == 0
+
+    rejected = client.post("/api/admin/moderation/confirm", headers=HEADERS, json={
+        "scene_id": scene_id, "action": "reject", "candidate_id": cid,
+        "timecode_label": "1:00:00", "timecode_end_label": "1:00:35"})
+    assert rejected.status_code == 200
+    assert rejected.json()["action"] == "reject"
+
+    final = client.get("/api/admin/moderation/love-confession/table", headers=HEADERS).json()
+    row = next(i for i in final["items"] if i["candidate_id"] == cid)
+    assert row["status"] == "rejected" and row["status_label"] == "отклонено"
+    assert row["verified"] is False
+    assert final["stats"]["rejected"] == 1
+    assert final["stats"]["pending"] == 2
+    assert final["stats"]["verified"] == 0
+
+    conn = connect(config.DB_PATH)
+    scene = conn.execute("SELECT verified, watch_url FROM scenes WHERE id=?", (scene_id,)).fetchone()
+    conn.close()
+    assert scene["verified"] == 0
+    assert not scene["watch_url"]

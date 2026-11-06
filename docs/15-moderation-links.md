@@ -1,5 +1,11 @@
 # 15. Открываем фильм для модерации: VK Видео + Rutube
 
+> **Актуальный основной экран** — компактная таблица на 50 строк «признание в любви и чувства»
+> ([18-curator-workflow.md](18-curator-workflow.md), [20-love-confession-batch.md](20-love-confession-batch.md)):
+> там только точные прямые ссылки VK/Rutube, а для фильмов без точного ID — пустое редактируемое поле.
+> Поисковые URL и «Мосфильм»-префиксы в таблицу не попадают. Ниже описана **служебная очередь
+> всех 146 сцен**, которая в админке свёрнута в закрытый `<details>`.
+
 ## Решение куратора
 
 Площадки переориентированы: **VK Видео — основной источник, Rutube — второй**.
@@ -25,8 +31,8 @@ LordFilm / «зеркала» / неофициальные плееры по-п�
    подтверждён разбором плеера в
    [feedsweep #1668](https://github.com/macieklamberski/feedsweep/pull/1668);
    для поисковой ссылки автоперемотка не гарантируется.
-3. **Rutube — вторая ссылка.** Для 10 кураторских полных версий Мосфильма
-   строим `https://rutube.ru/video/<uuid>/?t=<секунды>`; параметр `t` описан в
+3. **Rutube — вторая ссылка.** Для 14 кураторских полных версий (10 «Мосфильм»
+   + 4 «Россия-1») строим `https://rutube.ru/video/<uuid>/?t=<секунды>`; параметр `t` описан в
    [документации Rutube Player API](https://github.com/evikza/Rutube-Player-JS-API-Doc)
    и [плагине Bg RuTube Embed](https://wordpress.com/plugins/bg-rutube-embed).
    Остальным сценам даём поиск `https://rutube.ru/search/?query=...` по
@@ -47,12 +53,15 @@ LordFilm / «зеркала» / неофициальные плееры по-п�
 
 `data/timecode_library/official_free_videos.json`:
 
-- `sources`: `vk_mosfilm`, `rutube_mosfilm`;
+- `sources`: `vk_mosfilm`, `rutube_mosfilm`, `rutube_russia1`;
 - `provider_templates`: `vk_video`, `rutube`;
-- 10 best-effort Rutube `video_id` для «Иронии судьбы», «Ивана Васильевича»,
-  «Москвы слезам не верит», «Служебного романа», «Операции «Ы»»,
-  «Любови и голуби», «Кин-дза-дза!», «Девчат», «Белого солнца пустыни»,
-  «Войны и мира» (фильм 1);
+- 14 best-effort Rutube `video_id`: 10 «Мосфильм» («Ирония судьбы»,
+  «Иван Васильевич», «Москва слезам не верит», «Служебный роман»,
+  «Операция «Ы»», «Любовь и голуби», «Кин-дза-дза!», «Девчата»,
+  «Белое солнце пустыни», «Война и мир») + 4 «Россия-1» («Афоня»,
+  «Кавказская пленница», «Курьер», «Чародеи»);
+- из этих 14 точных ID 9 попадают в блок «признание в любви и чувства»;
+  остальные 41 строка блока оставляют поле ссылки пустым,
 - `requires_version_check: true`, `verified_by_human: false`.
 
 ID взяты из поисковой выдачи официального канала, но человеком ещё не сверены.
@@ -66,8 +75,11 @@ ID взяты из поисковой выдачи официального ка
   вторая — Rutube. `with_starting_open_url = 146`, `with_film_links = 146`,
   `unique_starting_timecodes = 146`.
 - `GET /api/admin/timecodes`: `moderation_links[]` содержит только VK/Rutube и локальную команду.
-- `GET /api/admin/timecode-library`: `moderation.sources = ["vk_mosfilm","rutube_mosfilm"]`,
-  10 `targets[]` с Rutube deep link.
+- `GET /api/admin/timecode-library`: `moderation.sources = ["vk_mosfilm","rutube_mosfilm","rutube_russia1"]`,
+  14 `targets[]` с Rutube deep link.
+- `GET /api/admin/moderation/love-confession/table`: 50 строк, `film_url` — точная
+  прямая ссылка или `""`; поля `film_link_kind` (`direct` / `empty`), редактируемые
+  таймкоды и `version_note`. Поисковых URL в ответе нет.
 - `#/admin`: в карточке явно написано «источники: VK + Rutube» и «только VK/Rutube»;
   выпадающий список сервисов теперь `vkvideo` / `rutube`.
 - `watch_links()` в пользовательском API тоже отдаёт только VK Видео и Rutube.
@@ -87,10 +99,10 @@ ID взяты из поисковой выдачи официального ка
 
 ## Проверки и юридические оговорки
 
-- `113 passed` pytest, `13 passed` Node/jsdom; `bash scripts/check.sh` с живым
+- `117 passed` pytest, `14 passed` Node/jsdom; `bash scripts/check.sh` с живым
   сервером — 5/5, `SMOKE OK`, `ВСЁ ЗЕЛЁНО ✅`.
 - Тесты проверяют нормализацию `?t=` только для VK/Rutube, порядок VK→Rutube,
-  отсутствие YouTube/Кинопоиска/ivi/Okko/IMDb в ссылках, 10 deep links,
+  отсутствие YouTube/Кинопоиска/ivi/Okko/IMDb в ссылках, 14 deep links,
   локальную команду и ручное подтверждение с `version_note`.
 - Бесплатная официальная публикация ≠ общественное достояние. Перед продуктовым
   использованием нужна юридическая проверка конкретных ссылок.
