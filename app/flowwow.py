@@ -1,27 +1,16 @@
-"""Интеграционный слой агрегаторов цветов (Flowwow и др.).
-
-Механики (см. docs/02-flowwow-playbook.md):
-- витрина букетов — наш кэш ссылок агрегатора (таблица bouquets);
-- заказ — deep link на товар агрегатора с нашим ref/utm: заказ идёт по прямой ссылке
-  магазина, комиссия Flowwow = 0%, а комиссию нам платит магазин по агентскому договору;
-- «смотреть сцену» — ссылки поиска в легальных плеерах (+ прямой watch_url, если проверен).
-"""
+"""Поисковые ссылки «где смотреть» и партнёрная ссылка заказа букета."""
 from urllib.parse import quote, urlencode
 
-# Поиск фильма в легальных плеерах (service -> шаблон URL)
 SERVICE_SEARCH = {
-    "kinopoisk": "https://www.kinopoisk.ru/index.php?kp_query={q}",
-    "ivi": "https://www.ivi.ru/search/?q={q}",
-    "okko": "https://okko.tv/search?query={q}",
-    "youtube": "https://www.youtube.com/results?search_query={q}",
     "vkvideo": "https://vkvideo.ru/search?query={q}",
+    "rutube": "https://rutube.ru/search/?query={q}",
 }
 
-ALL_SERVICES = ["kinopoisk", "ivi", "okko", "youtube"]
+ALL_SERVICES = ["vkvideo", "rutube"]
 
 
 def watch_links(scene: dict) -> list[dict]:
-    """Куда вести пользователя смотреть сцену. Приоритет — проверенному watch_url."""
+    """Куда вести пользователя смотреть сцену: VK Видео + Rutube."""
     out = []
     if scene.get("watch_url"):
         out.append({"service": scene.get("service") or "плеер", "url": scene["watch_url"], "direct": True})

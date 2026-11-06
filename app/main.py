@@ -1755,7 +1755,7 @@ def admin_overview(request: Request):
 
 
 class SceneVerify(BaseModel):
-    service: Optional[str] = None        # kinopoisk / ivi / okko / youtube
+    service: Optional[str] = None        # vkvideo / rutube
     version_note: Optional[str] = None   # версия издания, для которой верен таймкод
     imdb_id: Optional[str] = None
     tmdb_id: Optional[str] = None
@@ -1835,7 +1835,7 @@ def admin_timecodes(request: Request, status: str = "pending"):
             "watch_url": None,
         })
         # Легальные deep links для модерации: официальные бесплатные полные версии
-        # с &t=<секунда>, локальная копия, поиск в сервисах, IMDb/TMDB.
+        # с ?t=<секунда> в VK/Rutube, локальная копия и ориентир.
         d["moderation_links"] = build_moderation_links(d)
         out.append(d)
     return {"candidates": out}

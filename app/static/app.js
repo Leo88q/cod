@@ -47,12 +47,10 @@
     else window.open(parsed.href, "_blank", "noopener,noreferrer");
   };
 
-  // Поиск фильма в легальном плеере для ручной сверки таймкода.
+  // По решению куратора: только VK Видео и Rutube.
   const PLAYER_SEARCH = {
-    kinopoisk: q => `https://www.kinopoisk.ru/index.php?kp_query=${encodeURIComponent(q)}`,
-    ivi: q => `https://www.ivi.ru/search/?q=${encodeURIComponent(q)}`,
-    okko: q => `https://okko.tv/search?query=${encodeURIComponent(q)}`,
-    youtube: q => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,
+    vkvideo: q => `https://vkvideo.ru/search?query=${encodeURIComponent(q)}`,
+    rutube: q => `https://rutube.ru/search/?query=${encodeURIComponent(q)}`,
   };
 
   // ---------- состояние ----------
@@ -1209,11 +1207,11 @@
             <span class="btn ok small">▶ К отсмотру: ${Number(boardStats.pending ?? 0)}</span>
             <span class="btn ghost small">📌 Нет таймкода — куратор: ${Number(boardStats.needs_curator ?? 0)}</span>
             <span class="btn ghost small">✅ Проверено: ${Number(boardStats.verified ?? 0)}</span>
-            <span class="muted">Таймкодов: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · начальных ориентиров: ${Number(boardStats.with_starting_timecode ?? 0)} (уникальных ${Number(boardStats.unique_starting_timecodes ?? 0)}) · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)}</span>
+            <span class="muted">Таймкодов: ${Number(boardStats.with_timecode ?? boardStats.with_real_timecode ?? 0)} · начальных ориентиров: ${Number(boardStats.with_starting_timecode ?? 0)} (уникальных ${Number(boardStats.unique_starting_timecodes ?? 0)}) · ссылок на фильм: ${Number(boardStats.with_film_links ?? 0)} · источники: VK + Rutube</span>
           </div>
           <section class="panel" style="background:rgba(127,127,127,.06)"><h3>Как куратору отбирать — коротко</h3>
             <p><b>1. Карточки «▶ К отсмотру»</b>: таймкод и кнопка «Открыть на …» уже в карточке. Открой момент, поправь начало/конец, укажи <b>версию издания *</b>, жми «✓ Подтвердить».</p>
-            <p><b>2. Карточки «📌 Нет таймкода»</b>: у каждой есть <b>свой начальный ориентир</b> (не 0:32:56 всем подряд), <b>якорь эпизода</b> и <b>ссылки на фильм</b>. Кнопка «▶ Открыть с ориентира» и команда mpv --start=… уже ведут на эту уникальную минуту. Поправь её после просмотра и жми «➕ Добавить таймкод в отсмотр» — карточка получит deep link на исправленный момент.</p>
+            <p><b>2. Карточки «📌 Нет таймкода»</b>: у каждой есть <b>свой начальный ориентир</b> (не 0:32:56 всем подряд), <b>якорь эпизода</b> и <b>ссылки VK + Rutube</b>. Первая кнопка ведёт в VK Видео, вторая — на Rutube (для 10 фильмов сразу на ориентир через ?t=). Команда mpv --start=… тоже открывает уникальную минуту. Поправь её после просмотра и жми «➕ Добавить таймкод в отсмотр».</p>
             <p class="muted">Ориентир — стартовая точка, НЕ проверенный момент. Рандомных минут нет: ориентир считается по категории и структуре фильма. Проверенных таймкодов пока ${Number(boardStats.verified ?? 0)}: «Добавить» ≠ «Подтвердить».</p>
           </section>
           <div class="row" style="margin-bottom:8px">
@@ -1239,14 +1237,14 @@
             <p class="muted"><b>ПОЧЕМУ:</b> ${esc(it.reason || it.proposal_note || "")} ${esc(it.open_note || "")}</p>
             ${it.curated_anchor ? `<p class="muted"><b>ЯКОРЬ ЭПИЗОДА:</b> ${esc(it.curated_anchor)}</p>` : ""}
             <p class="muted"><b>ССЫЛКИ:</b>
-              ${it.open_url ? `<a href="${esc(it.open_url)}" target="_blank" rel="noopener noreferrer">▶ Открыть на ${esc(it.proposed_label)}</a> · ` : ""}
-              ${!it.open_url && it.starting_open_url ? `<a href="${esc(it.starting_open_url)}" target="_blank" rel="noopener noreferrer">▶ Открыть с ориентира ${esc(it.starting_label)}</a> · ` : ""}
+              ${it.open_url ? `<a href="${esc(it.open_url)}" target="_blank" rel="noopener noreferrer">▶ ${esc(it.open_provider || "VK/Rutube")} · ${esc(it.proposed_label)}</a> · ` : ""}
+              ${!it.open_url && it.starting_open_url ? `<a href="${esc(it.starting_open_url)}" target="_blank" rel="noopener noreferrer">▶ VK/Rutube · ориентир ${esc(it.starting_label)}</a> · ` : ""}
               ${(it.film_links || []).slice(0, 4).map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.note || "")}">${esc(l.label)}</a>`).join(" · ")}
-              ${it.imdb_url ? `· <a href="${esc(it.imdb_url)}" target="_blank" rel="noopener noreferrer">IMDb</a>` : ""}
+              · <span class="muted">только VK/Rutube</span>
             </p>
-            <div class="row" style="margin-top:4px"><button class="btn ghost small start-local">⏱ mpv --start=${esc(it.starting_label)} (ориентир)</button><button class="btn ghost small start-copy">⏱ Копироватьориентир ${esc(it.starting_label)}</button>${it.local_command ? `<button class="btn ghost small mod-local">⏱ mpv точного момента ${esc(it.proposed_label)}</button><button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать точное время</button>` : ""}</div>
+            <div class="row" style="margin-top:4px"><button class="btn ghost small start-local">⏱ mpv --start=${esc(it.starting_label)} (ориентир)</button><button class="btn ghost small start-copy">⏱ Копировать ориентир ${esc(it.starting_label)}</button>${it.local_command ? `<button class="btn ghost small mod-local">⏱ mpv точного момента ${esc(it.proposed_label)}</button><button class="btn ghost small mod-copy" data-tc="${esc(it.proposed_label)}">⏱ Копировать точное время</button>` : ""}</div>
             ${it.status === 'needs_curator' ? `<div class="row" style="margin-top:6px;flex-wrap:wrap">
-              <span class="muted">${esc(it.curator_instruction || "Поправьориентир под якорь эпизода")} Старт уже подставлен: <b>${esc(it.starting_label || "")}</b>.</span>
+              <span class="muted">${esc(it.curator_instruction || "Поправь ориентир под якорь эпизода")} Старт уже подставлен: <b>${esc(it.starting_label || "")}</b>.</span>
               <input class="search-input cur-start" style="max-width:100px" value="${esc(it.starting_label || "")}" title="Уникальный начальный ориентир — поправь после просмотра">
               <input class="search-input cur-end" style="max-width:100px" placeholder="конец">
               <input class="search-input cur-label" style="max-width:230px" value="${esc(it.moment_label || "")}" placeholder="метка / якорь">
@@ -1325,7 +1323,7 @@
               <b>${esc(s.movie_title)}</b> (${s.movie_year || "?"}) — сейчас ⏱ ${esc(s.timecode_label || "0:00:00")}<br>
               <div class="row" style="margin-top:6px">
                 <select class="search-input v-service" style="max-width:110px">
-                  ${["kinopoisk", "ivi", "okko", "youtube"].map((x) => `<option ${x === s.service ? "selected" : ""}>${x}</option>`).join("")}
+                  ${["vkvideo", "rutube"].map((x) => `<option ${x === s.service ? "selected" : ""}>${x}</option>`).join("")}
                 </select>
                 <input class="search-input v-tc" style="max-width:90px" placeholder="1:23:45" value="${esc(s.timecode_label || "")}">
                 <input class="search-input v-sec" style="max-width:80px" type="number" placeholder="сек" value="${s.timecode_seconds ?? ""}">
@@ -1353,7 +1351,7 @@
                 <span class="muted">Источник: <a href="${esc(src || "#")}" target="_blank" rel="noopener noreferrer">${esc(src.slice(0, 90) || "—")}</a> · лицензия: ${esc((c.source_license || "").slice(0, 90))}</span>
                 <div class="row" style="margin-top:6px">
                   <select class="search-input tc-service" style="max-width:110px">
-                    ${["kinopoisk", "ivi", "okko", "youtube"].map((x) => `<option ${x === (c.service || "kinopoisk") ? "selected" : ""}>${x}</option>`).join("")}
+                    ${["vkvideo", "rutube"].map((x) => `<option ${x === (c.service || "vkvideo") ? "selected" : ""}>${x}</option>`).join("")}
                   </select>
                   <button class="btn ghost small tc-open">🔍 Найти фильм в плеере</button>
                   <button class="btn ghost small tc-copy" data-tc="${esc(range)}">⏱ Копировать время</button>
@@ -1453,7 +1451,7 @@
             version_note: (box.querySelector('.mod-version').value || '').trim(),
             moment_label: (box.querySelector('.mod-label').value || '').trim() || null,
             source_url: box.dataset.source || null,
-            watch_url: box.dataset.open && box.dataset.open.includes('youtube.com') ? box.dataset.open : null,
+            watch_url: box.dataset.open && /vkvideo\.ru|vk\.com|vk\.ru|rutube\.ru/.test(box.dataset.open) ? box.dataset.open : null,
           };
           if (!payload.timecode_label) { toast('Нет доказательного отрезка: сначала нужен кураторский якорь'); return; }
           if (!payload.version_note) { toast('Укажи версию издания'); return; }
@@ -1505,7 +1503,7 @@
           const box = b.closest(".tl-item");
           const service = box.querySelector(".tc-service").value;
           const q = `${box.dataset.title || ""} ${box.dataset.year || ""}`.trim();
-          const make = PLAYER_SEARCH[service] || PLAYER_SEARCH.kinopoisk;
+          const make = PLAYER_SEARCH[service] || PLAYER_SEARCH.vkvideo;
           openLink(make(q));
         }));
         body.querySelectorAll(".tc-copy").forEach((b) => (b.onclick = async () => {

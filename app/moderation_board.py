@@ -1,14 +1,14 @@
-"""Единый экран модерации: все 146 сцен, явные таймкоды и ссылки.
+"""Единый экран модерации: все 146 сцен, ориентиры и ссылки VK/Rutube.
 
 Правила:
-  * у каждой сцены есть один основной интент + ожидаемый тип фрагмента;
-  * карточка с таймкодом = либо SRT-окно, прошедшее gate, либо якорь,
-    зафиксированный куратором с конкретной минутой;
-  * у КАЖДОЙ сцены есть уникальный НАЧАЛЬНЫЙ ОРИЕНТИР (не `0:32:56` всем подряд):
-    у 44 он совпадает с кандидатом, у остальных рассчитан по структуре фильма
-    и категории. Это стартовая точка отсмотра, а не проверенный момент;
-  * ссылки/`mpv --start` открывают именноориентир; `verified=1` ставится только
-    оператором через `/api/admin/moderation/confirm`.
+  * у каждой сцены один основной интент + ожидаемый тип фрагмента;
+  * карточка с таймкодом = SRT-окно, прошедшее gate, или якорь куратора;
+  * у КАЖДОЙ сцены есть уникальный НАЧАЛЬНЫЙ ОРИЕНТИР, а не общий
+    `0:32:56`; ориентир детерминирован, но НЕ считается проверенным моментом;
+  * источники просмотра переориентированы: VK Видео — первая ссылка,
+    Rutube — вторая. YouTube/Кинопоиск/ivi/Okko/IMDb из карточек убраны;
+  * `mpv --start=...` и deep link Rutube/VK открывают ориентир; `verified=1`
+    ставится только оператором через `/api/admin/moderation/confirm`.
 """
 import json
 from urllib.parse import quote
@@ -20,7 +20,7 @@ from .intent_taxonomy import (
 )
 from .moderation_links import (
     LOCAL_PLACEHOLDER, build_moderation_links, load_official_videos,
-    normalize_watch_url, youtube_deep_link,
+    normalize_watch_url, rutube_deep_link, vk_deep_link,
 )
 
 
@@ -44,12 +44,23 @@ def _best_candidate(conn, scene_id: int):
 
 
 def _official_video(title: str, year: int | None, imdb: str | None, official: dict):
+    """Кураторская полная версия на Rutube / VK Видео (не YouTube)."""
     key = f"{title}|{year}" if title and year else ""
     for v in official.get("videos", []):
-        if v.get("template") != "youtube":
+        if v.get("template") not in ("rutube", "vk_video"):
             continue
         if (key and v.get("key") == key) or (imdb and v.get("imdb_id") == imdb):
             return v
+    return None
+
+
+def _deep_link(video: dict, seconds: int | None) -> str | None:
+    if not video or seconds is None:
+        return None
+    if video.get("template") == "rutube":
+        return rutube_deep_link(video.get("video_id", ""), seconds)
+    if video.get("template") == "vk_video":
+        return vk_deep_link(video.get("video_id", ""), seconds)
     return None
 
 
@@ -102,7 +113,7 @@ def build_board(conn, official: dict | None = None) -> dict:
             proposal_kind = "none"
             evidence_kind = "none"
             proposal_note = ("Проверенного таймкода пока нет. Ниже уникальный начальный "
-                             "ориентир, якорь эпизода, ссылки и поле для реальной минуты.")
+                             "ориентир, якорь эпизода, ссылки VK/Rutube и поле для реальной минуты.")
             reason = ""
             candidate_id = None
             candidate_status = None
@@ -113,9 +124,9 @@ def build_board(conn, official: dict | None = None) -> dict:
                 title, year, cat["id"], s["genre"])
             starting_kind = "estimate"
             starting_note = ("Начальный ориентир по структуре фильма и категории, "
-                             "НЕ проверенный момент. Поправь после просмотра.")
+                             "НЕ проверенный момент. Поправь после просмотра в VK/Rutube.")
 
-        # Гарантируем: 146 разных стартов и ни одного надоевшего 0:32:56.
+        # Гарантируем 146 разных стартов и ни одного надоевшего 0:32:56.
         if starting_seconds == 1976:
             starting_seconds += 13
         while starting_seconds in seen_starts:
@@ -125,25 +136,28 @@ def build_board(conn, official: dict | None = None) -> dict:
 
         q = quote(f"{title} {year or ''}".strip())
         q_full = quote(f"{title} {year or ''} полный фильм".strip())
+        vk_search_url = SERVICE_SEARCH["vkvideo"].format(q=q_full)
+        rutube_search_url = SERVICE_SEARCH["rutube"].format(q=q_full)
         video = _official_video(title, year, imdb, official)
 
         if cand and video:
-            open_url = youtube_deep_link(video.get("video_id", ""), start)
-            open_provider = video.get("provider") or "official_youtube"
-            open_kind = "youtube"
-            open_note = f"Официальная версия откроется сразу на {start_label}. {video.get('version_hint') or ''}"
+            open_url = _deep_link(video, start)
+            open_provider = "VK Видео" if video.get("template") == "vk_video" else "Rutube"
+            open_kind = video.get("template") or "deep"
+            open_note = (f"Официальная версия {open_provider} откроется сразу на "
+                         f"{start_label}. {video.get('version_hint') or ''}")
             source_url = open_url
         elif cand and s["watch_url"]:
             open_url = normalize_watch_url(s["watch_url"], start) or s["watch_url"]
-            open_provider = "watch_url"
+            open_provider = "VK/Rutube watch_url"
             open_kind = "direct"
-            open_note = "Ссылка сцены; таймкод добавлен, если провайдер поддерживает deep link."
+            open_note = "Ссылка сцены; таймкод добавлен, если это VK Видео или Rutube."
             source_url = s["watch_url"]
         elif cand:
-            open_url = None
-            open_provider = "local"
-            open_kind = "local"
-            open_note = "Автозапуска нет, но команда mpv уже содержит --start с нужной секунды."
+            open_url = vk_search_url
+            open_provider = "VK Видео"
+            open_kind = "vk_search"
+            open_note = f"Поиск полной версии в VK Видео; ориентир {start_label} указан в карточке."
             source_url = None
         else:
             open_url = None
@@ -152,16 +166,16 @@ def build_board(conn, official: dict | None = None) -> dict:
             open_note = "Проверенного таймкода нет; ссылки ниже открывают начальный ориентир."
             source_url = None
 
-        # Ссылка/команда на начальный ориентир есть у ВСЕХ карточек.
+        # Ссылка/команда наориентир есть у ВСЕХ карточек.
         if video:
-            starting_open_url = youtube_deep_link(video.get("video_id", ""), starting_seconds)
+            starting_open_url = _deep_link(video, starting_seconds)
         elif s["watch_url"]:
             starting_open_url = normalize_watch_url(s["watch_url"], starting_seconds) or s["watch_url"]
         else:
-            starting_open_url = None
+            starting_open_url = vk_search_url
         starting_command = f'mpv --start={starting_label} "{LOCAL_PLACEHOLDER}"'
 
-        # Ссылки на фильм тоже есть у всех; для ориентира подставляем его секунду.
+        # Ссылки на фильм тоже есть у всех; дляориентира подставляем его секунду.
         link_candidate = {
             "movie_title": title, "movie_year": year, "imdb_id": imdb,
             "timecode_label": start_label or starting_label,
@@ -173,7 +187,7 @@ def build_board(conn, official: dict | None = None) -> dict:
             for l in build_moderation_links(link_candidate, official)
             if l.get("url")
         ][:6]
-        film_url = film_links[0]["url"] if film_links else SERVICE_SEARCH["kinopoisk"].format(q=q)
+        film_url = film_links[0]["url"] if film_links else vk_search_url
         local_command = f'mpv --start={start_label} "{LOCAL_PLACEHOLDER}"' if cand else None
 
         if s["verified"]:
@@ -215,12 +229,14 @@ def build_board(conn, official: dict | None = None) -> dict:
             "film_url": film_url, "film_links": film_links,
             "local_command": local_command,
             "gate_threshold": gate,
-            "curator_instruction": ("Открой фильм с начального ориентира, найди якорь эпизода, "
-                                   "поправь минуту и нажми «Добавить таймкод в отсмотр». "
+            "curator_instruction": ("Открой фильм сориентира в VK Видео или Rutube, найди якорь "
+                                   "эпизода, поправь минуту и нажми «Добавить таймкод в отсмотр». "
                                    "Карточка получит deep link на исправленный момент."),
-            "search_url": SERVICE_SEARCH["kinopoisk"].format(q=q),
-            "youtube_search_url": SERVICE_SEARCH["youtube"].format(q=q_full),
-            "imdb_url": f"https://www.imdb.com/title/{imdb}/" if imdb else None,
+            "search_url": vk_search_url,
+            "vk_search_url": vk_search_url,
+            "rutube_search_url": rutube_search_url,
+            "youtube_search_url": None,
+            "imdb_url": None,
         })
 
     items.sort(key=lambda i: (

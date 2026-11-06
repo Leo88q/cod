@@ -103,28 +103,28 @@ test('admin operational view renders failed notifications, audit and timecode qu
     '/api/admin/scenes?status=draft': {scenes:[]},
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
     '/api/admin/timecodes?status=pending': {candidates:[]},
-'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:1,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:10,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
+'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:44,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:146,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
       categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
       items:[
         {scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'есть таймкод — к отсмотру',description:'Новогодняя Москва',why_fits:'',
         category:'love_confession',category_label:'Признание в любви',fragment_type:'monologue',fragment_type_label:'Одна длинная реплика / монолог',secondary_intents:[],curated_anchor:'Робкое объяснение в чувствах',intent_confidence:0.95,intent_source:'manual',
         candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',evidence_kind:'srt',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
         proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,moment_label:'Женя у двери',
-        open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',open_provider:'youtube_mosfilm',open_kind:'youtube',open_note:'Официальная версия',
-        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_links:[{label:'▶ Мосфильм',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',note:'Официально'}],
-        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',starting_label:'0:32:56',starting_seconds:1976,starting_kind:'srt',starting_note:'Старт совпадает с кандидатом',starting_open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',starting_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''},
+        open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',open_provider:'rutube_mosfilm',open_kind:'rutube',open_note:'Официальная версия',
+        source_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'▶ Rutube · 0:32:56',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',note:'Официально'}],
+        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',starting_label:'0:32:56',starting_seconds:1976,starting_kind:'srt',starting_note:'Старт совпадает с кандидатом',starting_open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',starting_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''},
         {scene_id:2,movie_title:'Девчата',movie_year:1961,imdb_id:'tt0054790',status:'needs_curator',status_label:'нет таймкода — куратор',description:'Работницы общежития',why_fits:'женская дружба',
         category:'female_friendship',category_label:'Женская дружба / сестринство',fragment_type:'dialogue',fragment_type_label:'Живой диалог',secondary_intents:[],curated_anchor:'Девушки в общежитии спорят о замужестве Тоси',intent_confidence:0.95,intent_source:'manual',
         candidate_id:null,candidate_status:null,candidate_source:null,intent_score:0,proposal_kind:'none',evidence_kind:'none',proposal_note:'Таймкода пока нет',reason:'',
         proposed_label:'',proposed_seconds:null,proposed_end_label:'',proposed_end_seconds:null,moment_label:'Разговор подруг',
         open_url:null,open_provider:'no_timecode',open_kind:'no_timecode',open_note:'Таймкод не задан',
-        source_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_links:[{label:'📄 Мосфильм',url:'https://www.mosfilm.ru/',note:'Официально'},{label:'🔍 kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query=x',note:'Поиск'}],
-        local_command:null,starting_label:'0:47:12',starting_seconds:2832,starting_kind:'estimate',starting_note:'Начальный ориентир, не проверенный момент',starting_open_url:'https://www.youtube.com/watch?v=8CYY8EM5xYE&t=2832s',starting_command:'mpv --start=0:47:12 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0054790/',scene_version_note:''}
+        source_url:'https://vkvideo.ru/search?query=x',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'🔍 Rutube',url:'https://rutube.ru/search/?query=x',note:'Поиск'}],
+        local_command:null,starting_label:'0:47:12',starting_seconds:2832,starting_kind:'estimate',starting_note:'Начальный ориентир, не проверенный момент',starting_open_url:'https://rutube.ru/video/86bda3b43e24e96bcf93a620862d8236/?t=2832',starting_command:'mpv --start=0:47:12 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''}
       ]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:0},scenes_with_candidates:0,total:0},
-      moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
-        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=0s',provider:'youtube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://www.youtube.com/watch?v=sDdrTIp8mxs',pending_candidates:0}]},
+      moderation:{official_videos:10,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['vk_mosfilm','rutube_mosfilm'],
+        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=0',provider:'rutube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/',pending_candidates:0}]},
       sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
       manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
       files:[],note:'Ручная сверка обязательна.'}
@@ -142,8 +142,10 @@ test('admin operational view renders failed notifications, audit and timecode qu
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Легальные полные версии для ручного поиска момента/);
     assert.ok(dom.window.document.querySelector('.md-target'));
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Модерация таймкодов — 146 сцен/);
+    assert.match(dom.window.document.querySelector('#adm-body').textContent, /источники: VK \+ Rutube/);
+    assert.doesNotMatch(dom.window.document.querySelector('#adm-body').textContent, /youtube\.com|kinopoisk|ivi\.ru|okko\.tv|imdb\.com/);
     assert.ok(dom.window.document.querySelector('.mod-item'));
-    assert.match(dom.window.document.querySelector('.mod-item').dataset.open, /t=1976s/);
+    assert.match(dom.window.document.querySelector('.mod-item').dataset.open, /\?t=1976$/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Признание в любви/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /есть таймкод — к отсмотру/);
     assert.match(dom.window.document.querySelector('#adm-body').textContent, /Как куратору отбирать/);
@@ -177,39 +179,40 @@ test('admin timecode queue supports manual verification fields', async () => {
     '/api/admin/scenes?status=approved&verified=0': {scenes:[]},
     '/api/admin/timecodes?status=pending': {candidates:[{
       id:7, movie_title:'Форрест Гамп', movie_year:1994, imdb_id:'tt0109830',
-      timecode_label:'0:50:19', timecode_end_label:'0:50:56', service:'kinopoisk',
+      timecode_label:'0:50:19', timecode_end_label:'0:50:56', service:'vkvideo',
       description:'Форрест бежит через страну', why_fits:'для поддержки',
       source:'https://github.com/o/r/blob/sha/Forrest.srt',
       source_license:'OpenSubtitles community subtitles, GitHub mirror',
       line_index:512, confidence:1.25, consensus:2, auto:1,
       moment_label:'момент, где Форрест бежит', watch_links:[],
       moderation_links:[
-        {kind:'official_deep',priority:1,label:'▶ youtube_mosfilm · 0:50:19',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=3019s',note:'Сверь издание'},
-        {kind:'local',priority:3,label:'⏱ Открыть локальный файл на моменте',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
+        {kind:'official_deep',priority:2,label:'▶ Rutube · 0:50:19',url:'https://rutube.ru/video/abc/?t=3019',note:'Сверь издание'},
+        {kind:'search',priority:1,label:'🔍 VK Видео · Форрест Гамп',url:'https://vkvideo.ru/search?query=x',note:'Поиск'},
+        {kind:'local',priority:3,label:'⏱ Открыть локальный файл на ориентире',commands:[{app:'mpv',command:'mpv --start=0:50:19 "/path/to/film.mkv"'}]}
       ]
     }]},
-'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:1,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:10,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
+'/api/admin/moderation': {stats:{total:146,pending:44,needs_curator:102,verified:0,with_timecode:44,with_real_timecode:44,with_open_url:44,with_local_command:44,with_starting_timecode:146,unique_starting_timecodes:146,with_starting_open_url:146,with_film_links:146,by_category:{love_confession:17,female_friendship:8}},
       categories:[{id:'love_confession',label:'Признание в любви'},{id:'female_friendship',label:'Женская дружба / сестринство'},{id:'support_hope',label:'Поддержка'}],
       items:[
         {scene_id:1,movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',status:'pending',status_label:'есть таймкод — к отсмотру',description:'Новогодняя Москва',why_fits:'',
         category:'love_confession',category_label:'Признание в любви',fragment_type:'monologue',fragment_type_label:'Одна длинная реплика / монолог',secondary_intents:[],curated_anchor:'Робкое объяснение в чувствах',intent_confidence:0.95,intent_source:'manual',
         candidate_id:7,candidate_status:'pending',candidate_source:'https://example.com/srt',intent_score:0.62,proposal_kind:'semantic',evidence_kind:'srt',proposal_note:'Окно отобрано под категорию',reason:'Признание в любви: 3 смысловых совпадения, монолог, 32 сек',
         proposed_label:'0:32:56',proposed_seconds:1976,proposed_end_label:'0:33:21',proposed_end_seconds:2001,moment_label:'Женя у двери',
-        open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',open_provider:'youtube_mosfilm',open_kind:'youtube',open_note:'Официальная версия',
-        source_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',film_links:[{label:'▶ Мосфильм',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',note:'Официально'}],
-        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',starting_label:'0:32:56',starting_seconds:1976,starting_kind:'srt',starting_note:'Старт совпадает с кандидатом',starting_open_url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=1976s',starting_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0073179/',scene_version_note:''},
+        open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',open_provider:'rutube_mosfilm',open_kind:'rutube',open_note:'Официальная версия',
+        source_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'▶ Rutube · 0:32:56',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',note:'Официально'}],
+        local_command:'mpv --start=0:32:56 "/path/to/film.mkv"',starting_label:'0:32:56',starting_seconds:1976,starting_kind:'srt',starting_note:'Старт совпадает с кандидатом',starting_open_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=1976',starting_command:'mpv --start=0:32:56 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Впиши минуту под якорь',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''},
         {scene_id:2,movie_title:'Девчата',movie_year:1961,imdb_id:'tt0054790',status:'needs_curator',status_label:'нет таймкода — куратор',description:'Работницы общежития',why_fits:'женская дружба',
         category:'female_friendship',category_label:'Женская дружба / сестринство',fragment_type:'dialogue',fragment_type_label:'Живой диалог',secondary_intents:[],curated_anchor:'Девушки в общежитии спорят о замужестве Тоси',intent_confidence:0.95,intent_source:'manual',
         candidate_id:null,candidate_status:null,candidate_source:null,intent_score:0,proposal_kind:'none',evidence_kind:'none',proposal_note:'Таймкода пока нет',reason:'',
         proposed_label:'',proposed_seconds:null,proposed_end_label:'',proposed_end_seconds:null,moment_label:'Разговор подруг',
         open_url:null,open_provider:'no_timecode',open_kind:'no_timecode',open_note:'Таймкод не задан',
-        source_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_url:'https://www.kinopoisk.ru/index.php?kp_query=x',film_links:[{label:'📄 Мосфильм',url:'https://www.mosfilm.ru/',note:'Официально'},{label:'🔍 kinopoisk',url:'https://www.kinopoisk.ru/index.php?kp_query=x',note:'Поиск'}],
-        local_command:null,starting_label:'0:47:12',starting_seconds:2832,starting_kind:'estimate',starting_note:'Начальный ориентир, не проверенный момент',starting_open_url:'https://www.youtube.com/watch?v=8CYY8EM5xYE&t=2832s',starting_command:'mpv --start=0:47:12 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://www.kinopoisk.ru/index.php?kp_query=x',youtube_search_url:'https://www.youtube.com/results?search_query=x',imdb_url:'https://www.imdb.com/title/tt0054790/',scene_version_note:''}
+        source_url:'https://vkvideo.ru/search?query=x',film_url:'https://vkvideo.ru/search?query=x',film_links:[{label:'🔍 VK Видео',url:'https://vkvideo.ru/search?query=x',note:'Официально'},{label:'🔍 Rutube',url:'https://rutube.ru/search/?query=x',note:'Поиск'}],
+        local_command:null,starting_label:'0:47:12',starting_seconds:2832,starting_kind:'estimate',starting_note:'Начальный ориентир, не проверенный момент',starting_open_url:'https://rutube.ru/video/86bda3b43e24e96bcf93a620862d8236/?t=2832',starting_command:'mpv --start=0:47:12 "/path/to/film.mkv"',gate_threshold:0.45,curator_instruction:'Открой фильм, найди якорь, впиши минуту',search_url:'https://vkvideo.ru/search?query=x',vk_search_url:'https://vkvideo.ru/search?query=x',rutube_search_url:'https://rutube.ru/search/?query=x',youtube_search_url:null,imdb_url:null,scene_version_note:''}
       ]},
     '/api/admin/timecode-library': {catalog:{total:146,with_imdb:133,with_timecode:0,verified:0},
       candidates:{by_status:{pending:1},scenes_with_candidates:1,total:1},
-      moderation:{official_videos:12,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['mosfilm_youtube','mosfilm_cinema'],
-        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://www.youtube.com/watch?v=y5CQr_D-NZg&t=0s',provider:'youtube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://www.youtube.com/watch?v=sDdrTIp8mxs',pending_candidates:0}]},
+      moderation:{official_videos:10,scenes_with_official_deep:10,requires_version_check:true,verified_by_human:false,sources:['vk_mosfilm','rutube_mosfilm'],
+        targets:[{scene_id:1,key:'Ирония судьбы, или С лёгким паром!|1975',movie_title:'Ирония судьбы, или С лёгким паром!',movie_year:1975,imdb_id:'tt0073179',url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/?t=0',provider:'rutube_mosfilm',has_deep_link:true,version_hint:'Реставрация Мосфильм',evidence_url:'https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/',pending_candidates:0}]},
       sources:{registry:[{id:'mesu',count:39861,license:'OpenSubtitles mirror'}],optional:[],top_in_db:[]},
       manifests:{pilot_scenes:20,full:{matched_scenes:62,catalog_scenes:140,subtitle_files:105},imdb_map:{with_imdb:133},unmatched_count:78,excluded_count:6,ambiguous_count:5},
       files:[],note:'Ручная сверка обязательна.'}
@@ -240,13 +243,13 @@ test('admin timecode queue supports manual verification fields', async () => {
     assert.equal(doc.querySelector('.tc-start').value, '0:50:19');
     assert.equal(doc.querySelector('.tc-end').value, '0:50:56');
     assert.equal(doc.querySelector('.tc-label').value, 'момент, где Форрест бежит');
-    assert.equal(doc.querySelector('.tc-service').value, 'kinopoisk');
+    assert.equal(doc.querySelector('.tc-service').value, 'vkvideo');
     assert.equal(doc.querySelector('.tc-copy').dataset.tc, '0:50:19–0:50:56');
     assert.match(doc.querySelector('#adm-body').textContent, /Наш момент: Форрест бежит через страну/);
     doc.querySelector('.tc-open').click();
-    assert.ok(opened && opened.includes('kinopoisk'));
+    assert.ok(opened && opened.includes('vkvideo.ru'));
     assert.ok(doc.querySelector('.md-link'), 'должна быть легальная deep link на момент');
-    assert.match(doc.querySelector('.md-link').dataset.url, /t=3019s/);
+    assert.match(doc.querySelector('.md-link').dataset.url, /t=3019/);
     assert.ok(doc.querySelector('.md-copy'), 'должна быть команда для локального файла');
     assert.match(doc.querySelector('#adm-body').textContent, /Официальная бесплатная версия найдена/);
     doc.querySelector('.md-start').value = '0:32:56';
@@ -265,15 +268,15 @@ test('admin timecode queue supports manual verification fields', async () => {
     doc.querySelector('.tc-approve').click();
     await new Promise(resolve => setTimeout(resolve, 20));
     assert.equal(posted, null, 'без версии издания запрос не должен уходить');
-    doc.querySelector('.tc-version').value = 'театральная, Kinopoisk 2024';
+    doc.querySelector('.tc-version').value = 'театральная, VK Видео 2024';
     doc.querySelector('.tc-approve').click();
     await new Promise(resolve => setTimeout(resolve, 40));
     assert.ok(posted, 'Approve должен отправить POST');
     assert.equal(posted.body.action, 'approve');
     assert.equal(posted.body.timecode_label, '0:50:20');
     assert.equal(posted.body.timecode_end_label, '0:50:56');
-    assert.equal(posted.body.service, 'kinopoisk');
-    assert.equal(posted.body.version_note, 'театральная, Kinopoisk 2024');
+    assert.equal(posted.body.service, 'vkvideo');
+    assert.equal(posted.body.version_note, 'театральная, VK Видео 2024');
     assert.equal(posted.body.moment_label, 'момент, где Форрест бежит');
     doc.querySelector('.cur-start').value = '0:17:42';
     doc.querySelector('.cur-add').click();

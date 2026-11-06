@@ -1,47 +1,36 @@
 {
-  "comment": "Легальные бесплатные полные версии фильмов для РУЧНОЙ модерации таймкодов. НЕ пиратские зеркала. Храним только ID/ссылки официальных каналов и страниц, без видео и текстов. video_id найдены в описаниях официальных роликов/страниц Мосфильм и ПОКА не подтверждены человеком: издание/реставрация может отличаться, поэтому version_note обязателен.",
-  "license_note": "Официальный канал «Киноконцерн Мосфильм» / cinema.mosfilm.ru и официальные страницы студии. Бесплатный просмотр не отменяет авторских прав; перед продуктовым использованием нужна юридическая проверка.",
+  "comment": "Легальные бесплатные полные версии для РУЧНОЙ модерации таймкодов. По решению куратора источники переориентированы: VK Видео — основной, Rutube — второй. YouTube, Кинопоиск, ivi, Okko, Vimeo, IMDb/TMDB и страницы Мосфильма как ссылки просмотра удалены. Храним только ID/ссылки официальных каналов, без видео и текстов. Rutube video_id найдены в поисковой выдаче официального канала «Киноконцерн Мосфильм» и ПОКА не подтверждены человеком: издание/реставрация/серия может отличаться, поэтому version_note обязателен.",
+  "license_note": "Официальная группа «Мосфильм» в VK (https://vk.com/mosfilm_official), официальный канал в VK Видео (https://vkvideo.ru/@mosfilm_official) и официальный Rutube-канал «Киноконцерн Мосфильм» (https://rutube.ru/u/mosfilmofficial/). Бесплатный просмотр не отменяет авторских прав; перед продуктовым использованием нужна юридическая проверка.",
   "requires_version_check": true,
   "verified_by_human": false,
   "provider_templates": {
-    "youtube": "https://www.youtube.com/watch?v={video_id}&t={seconds}s",
-    "rutube": "https://rutube.ru/video/{video_id}/",
-    "official_page": "{url}"
+    "vk_video": "https://vkvideo.ru/video-{video_id}?t={seconds}s",
+    "rutube": "https://rutube.ru/video/{video_id}/?t={seconds}"
   },
   "sources": [
     {
-      "id": "mosfilm_youtube",
-      "name": "Киноконцерн «Мосфильм» на YouTube",
-      "url": "https://www.youtube.com/@Mosfilm",
-      "search_url": "https://www.youtube.com/results?search_query={q}"
+      "id": "vk_mosfilm",
+      "name": "Мосфильм в VK Видео",
+      "url": "https://vkvideo.ru/@mosfilm_official",
+      "search_url": "https://vkvideo.ru/search?query={q}"
     },
     {
-      "id": "mosfilm_cinema",
-      "name": "cinema.mosfilm.ru / mosfilm.ru",
-      "url": "https://cinema.mosfilm.ru/",
-      "search_url": "https://www.mosfilm.ru/search/?q={q}"
+      "id": "rutube_mosfilm",
+      "name": "Мосфильм на Rutube",
+      "url": "https://rutube.ru/u/mosfilmofficial/",
+      "search_url": "https://rutube.ru/search/?query={q}"
     }
   ],
   "videos": [
     {
       "key": "Ирония судьбы, или С лёгким паром!|1975",
       "imdb_id": "tt0073179",
-      "provider": "youtube_mosfilm",
-      "video_id": "y5CQr_D-NZg",
-      "template": "youtube",
-      "version_hint": "Реставрация/полная версия на официальном канале; сверь монтаж с изданием.",
-      "evidence_url": "https://www.youtube.com/watch?v=sDdrTIp8mxs",
-      "evidence_note": "Описание официального трейлера Мосфильм содержит ссылку на полную версию."
-    },
-    {
-      "key": "Иван Васильевич меняет профессию|1973",
-      "imdb_id": "tt0070233",
-      "provider": "youtube_mosfilm",
-      "video_id": "a50qT9bW2Qo",
-      "template": "youtube",
-      "version_hint": "Официальный канал Мосфильм; возможны разные загрузки 4K/FullHD.",
-      "evidence_url": "https://www.youtube.com/shorts/rhZldWH6DVI",
-      "evidence_note": "Описание официального shorts содержит ссылку «Смотрите фильм ... на нашем канале»."
+      "provider": "rutube_mosfilm",
+      "video_id": "2d0899d6388926b7caa66a09e9073572",
+      "template": "rutube",
+      "version_hint": "Официальный Rutube-канал Мосфильм; 1-я серия. Сверь серию и издание.",
+      "evidence_url": "https://rutube.ru/video/2d0899d6388926b7caa66a09e9073572/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: полная 1-я серия, 01:39:52."
     },
     {
       "key": "Иван Васильевич меняет профессию|1973",
@@ -49,99 +38,89 @@
       "provider": "rutube_mosfilm",
       "video_id": "d8aa512b3e650d80d8262d090bd565c0",
       "template": "rutube",
-      "version_hint": "Официальный RuTube-канал Мосфильм; deep-link с таймкодом не гарантирован.",
+      "version_hint": "Официальный Rutube-канал Мосфильм; возможны разные загрузки 4K/FullHD.",
       "evidence_url": "https://rutube.ru/video/d93fcb86e2b7153eaf644cfae3159992/",
-      "evidence_note": "В описании фрагмента указана полная версия на официальном канале."
+      "evidence_note": "Описание официального фрагмента Мосфильм содержит ссылку на полную версию."
     },
     {
       "key": "Москва слезам не верит|1979",
       "imdb_id": "tt0079579",
-      "provider": "youtube_mosfilm",
-      "video_id": "rtpOR7_XzWs",
-      "template": "youtube",
-      "version_hint": "Официальная полная версия; двухсерийный фильм, проверь серию.",
-      "evidence_url": "https://www.youtube.com/watch?v=9noEXoYStAA",
-      "evidence_note": "Описание трейлера и фрагмента Мосфильм содержит ссылку на полную версию."
+      "provider": "rutube_mosfilm",
+      "video_id": "c3f9a356e9e04ac607b4d7d295648eab",
+      "template": "rutube",
+      "version_hint": "Официальная полная версия; 1-я серия из двух, проверь серию.",
+      "evidence_url": "https://rutube.ru/video/c3f9a356e9e04ac607b4d7d295648eab/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: 1-я серия, 01:06:46."
     },
     {
       "key": "Служебный роман|1977",
       "imdb_id": "tt0076727",
-      "provider": "youtube_mosfilm",
-      "video_id": "DZ3kBL1TUHk",
-      "template": "youtube",
-      "version_hint": "Официальная полная версия; фильм из двух серий.",
-      "evidence_url": "https://www.youtube.com/watch?v=rX1JWSTTksw",
-      "evidence_note": "Описание официального трейлера Мосфильм содержит ссылку на полную версию."
+      "provider": "rutube_mosfilm",
+      "video_id": "9b8a20607f7a35bde58aaf51fd9d8348",
+      "template": "rutube",
+      "version_hint": "Официальная полная версия; 1-я серия из двух.",
+      "evidence_url": "https://rutube.ru/video/9b8a20607f7a35bde58aaf51fd9d8348/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: 1-я серия FullHD, 01:24:00."
     },
     {
       "key": "Операция «Ы» и другие приключения Шурика|1965",
       "imdb_id": "tt0059550",
-      "provider": "youtube_mosfilm",
-      "video_id": "xJ5iHFSdAU4",
-      "template": "youtube",
-      "version_hint": "Официальная полная версия Мосфильм.",
-      "evidence_url": "https://www.youtube.com/watch?v=Eu5AhZNp_Ok",
-      "evidence_note": "Описание официального фрагмента содержит ссылку на полную версию."
+      "provider": "rutube_mosfilm",
+      "video_id": "fcb693c38528938caa3b70101b7c58bf",
+      "template": "rutube",
+      "version_hint": "Официальная полная версия Мосфильм, без тифлокомментариев.",
+      "evidence_url": "https://rutube.ru/video/fcb693c38528938caa3b70101b7c58bf/",
+      "evidence_note": "Описание версии с тифлокомментариями ссылается на оригинал на основном канале Мосфильма."
     },
     {
       "key": "Любовь и голуби|1984",
       "imdb_id": "tt0087650",
-      "provider": "youtube_mosfilm",
-      "video_id": "qYPVTBIgF7Q",
-      "template": "youtube",
-      "version_hint": "Официальный канал Мосфильм; в описаниях встречается и другой ID 0KmS5gk4ve4 — сверь загрузку вручную.",
-      "evidence_url": "https://www.youtube.com/watch?v=r1-bxZlYeZ4",
-      "evidence_note": "Описание официального shorts содержит ссылку на полную версию."
+      "provider": "rutube_mosfilm",
+      "video_id": "68781d890618ea50933ec020fd5060bf",
+      "template": "rutube",
+      "version_hint": "Официальная 4K-загрузка Мосфильм; сверь монтаж с изданием.",
+      "evidence_url": "https://rutube.ru/video/68781d890618ea50933ec020fd5060bf/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: полный фильм 4K, 01:45:17."
     },
     {
       "key": "Кин-дза-дза!|1986",
       "imdb_id": "tt0091341",
-      "provider": "youtube_mosfilm",
-      "video_id": "EYHv8eJrW2Y",
-      "template": "youtube",
-      "version_hint": "Официальная полная версия; двухсерийный фильм.",
-      "evidence_url": "https://www.youtube.com/watch?v=EYHv8eJrW2Y",
-      "evidence_note": "Официальная загрузка FullHD; shorts Мосфильм ссылается на неё."
+      "provider": "rutube_mosfilm",
+      "video_id": "66de52b90e55c530e43c8c62bbd8a7aa",
+      "template": "rutube",
+      "version_hint": "Официальная полная версия; двухсерийный фильм, проверь часть.",
+      "evidence_url": "https://rutube.ru/video/66de52b90e55c530e43c8c62bbd8a7aa/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: «Кин-дза-дза!» (1986)."
     },
     {
       "key": "Девчата|1961",
       "imdb_id": "tt0054824",
-      "provider": "youtube_mosfilm",
-      "video_id": "8CYY8EM5xYE",
-      "template": "youtube",
+      "provider": "rutube_mosfilm",
+      "video_id": "86bda3b43e24e96bcf93a620862d8236",
+      "template": "rutube",
       "version_hint": "Официальная FullHD-загрузка Мосфильм; сверь цветную/чб версию.",
-      "evidence_url": "https://www.youtube.com/watch?v=MOmo-89xlKE",
-      "evidence_note": "Результат поиска указывает официальную загрузку «Девчата (FullHD, ... Мосфильм)»."
-    },
-    {
-      "key": "Гараж|1979",
-      "imdb_id": "tt0079193",
-      "provider": "youtube_mosfilm",
-      "video_id": "Xqsa4u00GXM",
-      "template": "youtube",
-      "version_hint": "Официальная полная версия Мосфильм.",
-      "evidence_url": "https://www.youtube.com/watch?v=lbreEBzPpbg",
-      "evidence_note": "Описание официального shorts содержит ссылку на полную версию."
+      "evidence_url": "https://rutube.ru/video/86bda3b43e24e96bcf93a620862d8236/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: полный фильм, 01:37:56."
     },
     {
       "key": "Белое солнце пустыни|1969",
       "imdb_id": "tt0066565",
-      "provider": "mosfilm_page",
-      "template": "official_page",
-      "url": "https://www.mosfilm.ru/cinema/films/beloe-solntse-pustyni/",
-      "version_hint": "Официальная страница фильма с легальными ссылками на YouTube/RuTube/VK; точный video_id не подтверждён.",
-      "evidence_url": "https://www.mosfilm.ru/cinema/films/beloe-solntse-pustyni/",
-      "evidence_note": "Официальная страница Мосфильм с метаданными и ссылками на просмотр."
+      "provider": "rutube_mosfilm",
+      "video_id": "e7273eab7e8c43196ce17c80f1bd4dd5",
+      "template": "rutube",
+      "version_hint": "Официальная FullHD-версия Мосфильм; сверь издание.",
+      "evidence_url": "https://rutube.ru/video/e7273eab7e8c43196ce17c80f1bd4dd5/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: полный фильм FullHD, 01:23:39."
     },
     {
       "key": "Война и мир|1966",
       "imdb_id": "tt0063794",
-      "provider": "youtube_mosfilm",
-      "video_id": "V-SAh4jdssA",
-      "template": "youtube",
-      "version_hint": "Многосерийная экранизация: это фильм 1-й, серия 1; для других моментов выбери нужную часть вручную.",
-      "evidence_url": "https://www.youtube.com/watch?v=_HBUet56gSw",
-      "evidence_note": "Описание официального фрагмента Мосфильм перечисляет полные части."
+      "provider": "rutube_mosfilm",
+      "video_id": "d52093cb69d267515044eaf5296cd62f",
+      "template": "rutube",
+      "version_hint": "Многосерийная экранизация: это фильм 1-й; для других моментов выбери нужную часть вручную.",
+      "evidence_url": "https://rutube.ru/video/d52093cb69d267515044eaf5296cd62f/",
+      "evidence_note": "Поисковая выдача официального канала Мосфильм: фильм 1, 01:40:31."
     }
   ]
 }

@@ -1,6 +1,7 @@
 """Единый экран модерации: таксономия, жёсткий gate, подтверждение вручную."""
 import json
 from datetime import datetime, timezone
+from urllib.parse import urlsplit
 
 import pytest
 from fastapi.testclient import TestClient
@@ -54,6 +55,8 @@ def test_board_gates_all_scenes_without_evidence(client):
             assert it["proposed_label"] == "" and it["proposed_seconds"] is None
             assert it["local_command"] is None and it["open_url"] is None
             assert it["film_links"] and it["film_url"]  # ссылки есть даже без таймкода
+            assert all(urlsplit(l["url"]).netloc.lower() in {"vkvideo.ru", "rutube.ru"}
+                       for l in it["film_links"])
             assert it["starting_label"] and it["starting_command"]
             assert it["starting_kind"] == "estimate"
             assert it["status"] in ("needs_curator", "verified")
@@ -144,7 +147,7 @@ def test_curator_adds_timecode_and_gets_deep_link(client):
         "/api/admin/moderation/curate", headers={"X-Admin-Token": "test-admin"},
         json={"scene_id": scene["id"], "timecode_label": "0:17:42",
               "timecode_end_label": "0:18:15", "moment_label": "Разговор подруг",
-              "source_url": "https://www.kinopoisk.ru/"},
+              "source_url": "https://rutube.ru/video/86bda3b43e24e96bcf93a620862d8236/?t=1062"},
     )
     assert r.status_code == 200
     cid = r.json()["candidate_id"]
@@ -166,5 +169,9 @@ def test_curator_adds_timecode_and_gets_deep_link(client):
     assert item["status"] == "pending"
     assert item["proposed_label"] == "0:17:42"
     assert item["evidence_kind"] == "curator"
-    assert item["open_url"] and "8CYY8EM5xYE" in item["open_url"] and "t=1062s" in item["open_url"]
+    assert item["open_url"] and "86bda3b43e24e96bcf93a620862d8236" in item["open_url"] and "?t=1062" in item["open_url"]
     assert item["film_links"] and item["film_url"]
+    hosts = {urlsplit(l["url"]).netloc.lower() for l in item["film_links"]}
+    assert hosts == {"vkvideo.ru", "rutube.ru"}
+    assert item["film_links"][0]["url"].startswith("https://vkvideo.ru/")
+    assert item["film_links"][1]["url"].startswith("https://rutube.ru/")

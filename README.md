@@ -90,3 +90,5 @@ bash scripts/dev.sh                                    # затем #/admin с A
 Следующий пакет реализации (взаимное согласие связей, владельцы студий, удаление профиля, нормализация файлов): [docs/11-product-completion.md](docs/11-product-completion.md).
 
 Эксплуатационная диагностика: [docs/12-operations.md](docs/12-operations.md) — audit, heartbeat worker, dead letters/retry и read-only мониторинг.
+
+**Источники просмотра (обновление):** карточки модерации и пользовательские «где смотреть» теперь ведут только в VK Видео и Rutube; YouTube/Кинопоиск/ivi/Okko/IMDb-ссылки удалены. Подробнее — `docs/15-moderation-links.md`.
