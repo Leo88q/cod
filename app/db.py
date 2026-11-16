@@ -70,6 +70,12 @@ MIGRATIONS = [
     ("timecode_candidates", "batch_rank", "INTEGER"),
     ("timecode_candidates", "film_url", "TEXT"),
     ("timecode_candidates", "version_note", "TEXT"),
+    ("timecode_candidates", "evidence_report", "TEXT"),
+    ("scenes", "evidence_kind", "TEXT"),
+    ("scenes", "evidence_score", "REAL DEFAULT 0"),
+    ("scenes", "evidence_editions", "INTEGER DEFAULT 0"),
+    ("scenes", "evidence_report", "TEXT"),
+    ("scenes", "evidence_at", "TEXT"),
 ]
 
 
@@ -95,6 +101,14 @@ def _migrate(conn: sqlite3.Connection) -> None:
         conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_scenes_title_year ON scenes(movie_title, movie_year)")
     except sqlite3.OperationalError:
         pass  # в старой БД уже есть дубли — индекс не создастся, сид просто пропустит дубли по title через OR IGNORE не сработает; ок для dev
+    # доказательство таймкода: несколько независимых изданий субтитров сошлись на моменте.
+    # Текст реплик здесь не хранится — только издания, доля совпадения и сдвиги.
+    for table, col, coldef in MIGRATIONS:
+        if table not in ("scenes", "timecode_candidates") or not col.startswith("evidence_"):
+            continue
+        cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
+        if cols and col not in cols:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {coldef}")
     # таблица кандидатов таймкодов (миграция для старых БД)
     conn.execute("""CREATE TABLE IF NOT EXISTS timecode_candidates (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -47,8 +47,13 @@ CREATE TABLE IF NOT EXISTS scenes (
   intent_source    TEXT,                 -- manual / rule / fallback
   status           TEXT NOT NULL DEFAULT 'draft',  -- draft / approved / rejected
   suggested_by     INTEGER REFERENCES users(id),
-  verified         INTEGER NOT NULL DEFAULT 0,     -- таймкод проверен вручную в плеере
+  verified         INTEGER NOT NULL DEFAULT 0,     -- таймкод проверен ВРУЧНУЮ в плеере (не подменяется автоматикой)
   verified_at      TEXT,
+  evidence_kind    TEXT,                 -- auto = таймкод опубликован по доказательству (несколько изданий субтитров)
+  evidence_score   REAL DEFAULT 0,       -- плотность лексикона + структура окна
+  evidence_editions INTEGER DEFAULT 0,   -- сколько независимых изданий сошлись на моменте
+  evidence_report  TEXT,                 -- JSON: издания, доля совпадения, сдвиги (без текста реплик)
+  evidence_at      TEXT,
   popularity       INTEGER NOT NULL DEFAULT 0,     -- сколько раз сцену выбирали в подарки
   created_at       TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -259,6 +264,7 @@ CREATE TABLE IF NOT EXISTS timecode_candidates (
   batch_rank INTEGER,                               -- порядок внутри блока
   film_url TEXT,                                    -- точная прямая ссылка VK/Rutube на фильм (пусто = поле под ссылку)
   version_note TEXT,                                -- версия издания, вписанная оператором в строке блока
+  evidence_report TEXT,                             -- JSON доказательства: издания, ratio, сдвиги (без текста)
   status TEXT NOT NULL DEFAULT 'pending',           -- pending / approved / rejected / archived
   created_at TEXT NOT NULL,
   reviewed_at TEXT,

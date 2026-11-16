@@ -134,7 +134,8 @@ def gift_deeplink(code: str) -> str:
 def public_scene(conn, scene_id: int, full: bool = False) -> Optional[dict]:
     cols = ("id, movie_title, movie_year, imdb_id, tmdb_id, service, version_note, timecode_label, timecode_seconds,"
             " timecode_end_label, timecode_end_seconds, watch_url, poster_url, genre, era, age_rating,"
-            " mood_tags, occasion_tags, description, why_fits, verified") if full else (
+            " mood_tags, occasion_tags, description, why_fits, verified,"
+            " evidence_kind, evidence_editions") if full else (
         "id, movie_title, movie_year, imdb_id, tmdb_id, service, version_note, timecode_label, timecode_seconds,"
         " timecode_end_label, timecode_end_seconds, watch_url, poster_url, genre, era, age_rating,"
         " mood_tags, occasion_tags, description, why_fits")
@@ -510,6 +511,8 @@ def search_scenes(body: SceneSearch):
             "timecode_label": d["timecode_label"], "timecode_seconds": d.get("timecode_seconds"),
             "timecode_end_label": d.get("timecode_end_label"),
             "service": d["service"], "verified": d.get("verified", 0),
+            "published_by_evidence": d.get("evidence_kind") == "auto",
+            "evidence_editions": d.get("evidence_editions") or 0,
             "watch_url": d.get("watch_url"), "poster_url": d.get("poster_url"),
             "genre": d["genre"], "era": d["era"], "age_rating": d["age_rating"],
             "mood_tags": d["mood_tags"], "occasion_tags": d["occasion_tags"],
@@ -533,11 +536,12 @@ def scenes_meta():
     import json as _json
     from collections import Counter
     conn = connect(config.DB_PATH)
-    rows = conn.execute("SELECT genre, era, age_rating, verified, timecode_seconds, timecode_label, mood_tags, occasion_tags"
+    rows = conn.execute("SELECT genre, era, age_rating, verified, evidence_kind, timecode_seconds,"
+                        " timecode_label, mood_tags, occasion_tags"
                         " FROM scenes WHERE status='approved'").fetchall()
     conn.close()
     genres, eras, ages, occ, mood = Counter(), Counter(), Counter(), Counter(), Counter()
-    verified = with_tc = 0
+    verified = with_tc = evidence = 0
     for r in rows:
         if r["genre"]:
             genres[r["genre"]] += 1
@@ -547,6 +551,8 @@ def scenes_meta():
             ages[r["age_rating"]] += 1
         if r["verified"]:
             verified += 1
+        elif r["evidence_kind"] == "auto":
+            evidence += 1
         # Считаем только РЕАЛЬНЫЕ таймкоды: раньше здесь лежали строки-заглушки '0:00:00'.
         if r["timecode_seconds"] is not None and r["timecode_label"]:
             with_tc += 1
@@ -558,6 +564,7 @@ def scenes_meta():
         return [{"tag": k, "count": v} for k, v in c.most_common(n)]
     return {
         "total": len(rows), "verified": verified, "with_timecode": with_tc,
+        "published_by_evidence": evidence,
         "genres": top(genres, 30), "eras": top(eras, 15), "ages": top(ages, 10),
         "occasions": top(occ), "moods": top(mood),
     }
@@ -591,6 +598,7 @@ def scenes_semantic(body: SemanticSearch):
             "timecode_label": d["timecode_label"], "timecode_seconds": d.get("timecode_seconds"),
             "timecode_end_label": d.get("timecode_end_label"),
             "service": d["service"], "verified": d.get("verified", 0),
+            "published_by_evidence": d.get("evidence_kind") == "auto",
             "genre": d["genre"], "era": d["era"], "age_rating": d["age_rating"],
             "mood_tags": d["mood_tags"], "occasion_tags": d["occasion_tags"],
             "description": d["description"], "why_fits": d["why_fits"],
@@ -2231,7 +2239,7 @@ def scene_moments(scene_id: int):
         raise HTTPException(404, "Сцена не найдена")
     cands = conn.execute(
         "SELECT id, timecode_label, timecode_seconds, timecode_end_label, timecode_end_seconds,"
-        " service, moment_label, confidence, consensus"
+        " service, moment_label, confidence, consensus, evidence_report"
         " FROM timecode_candidates WHERE scene_id=? AND status='approved' ORDER BY confidence DESC",
         (scene_id,)).fetchall()
     conn.close()

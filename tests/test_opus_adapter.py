@@ -75,3 +75,47 @@ def test_opus_dry_run_does_not_write(tmp_path):
     conn = sqlite3.connect(db)
     assert conn.execute("SELECT COUNT(*) FROM timecode_candidates").fetchone()[0] == 0
     conn.close()
+
+
+def test_parse_opus_reads_text_from_time_tail_and_documents():
+    """Регрессия: первая версия читала текст только из <w> и теряла реплики.
+
+    В корпусе v2024 встречаются все три раскладки: <w>-токены, tail у <time> и
+    текст перед <time>. Молчаливый ноль реплик делал невозможным любой отбор.
+    """
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    from import_opus_timecodes import parse_opus_documents
+
+    xml = (
+        "<opus><documents>"
+        "<document id='a'>"
+        "<s id='1'><time id='T1' value='00:01:00,000'/>I believe in you</s>"
+        "<s id='2'><time id='T2' value='00:01:10,000'/>keep going, dont give up</s>"
+        "</document>"
+        "<document id='b'>"
+        "<s id='1'><time id='T1' value='00:01:00,000'/>I am here</s>"
+        "</document>"
+        "</documents></opus>"
+    )
+    import io
+    docs = parse_opus_documents(io.BytesIO(xml.encode("utf-8")))
+    assert len(docs) == 2, "каждый <document> — отдельное издание (загрузка) субтитров"
+    assert [b[3] for b in docs[0]] == ["I believe in you", "keep going, dont give up"]
+    assert docs[1][0][1] == 60.0 and docs[1][0][3] == "I am here"
+
+
+def test_parse_opus_supports_w_tokens_and_text_before_time():
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    from import_opus_timecodes import parse_opus_documents
+
+    xml = ("<documents><document id='z'>"
+           "<s id='1' time_start='00:00:30,000' time_end='00:00:33,000'>"
+           "<w>Hang</w> <w>in</w> <w>there</w></s>"
+           "<s id='2'>We take the train<time value='00:00:40,000'/><time value='00:00:43,000'/></s>"
+           "</document></documents>")
+    import io
+    docs = parse_opus_documents(io.BytesIO(xml.encode("utf-8")))
+    texts = [b[3] for b in docs[0]]
+    assert texts[0] == "Hang in there"
+    assert texts[1].startswith("We take the train")
+    assert docs[0][1][1] == 40.0 and docs[0][1][2] == 43.0

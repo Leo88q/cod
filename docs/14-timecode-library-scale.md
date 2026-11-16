@@ -183,3 +183,11 @@ curl -s -H 'X-Admin-Token: local-admin' \
 - `git diff --exit-code db/seed_catalog.sql` — чисто.
 - `full_manifest.json` / `imdb_map_full.json` / OPUS-адаптер / admin coverage endpoint / raw→API fallback загрузчика покрыты отдельными тестами.
 - Полный импорт на чистой БД: **186 `pending` кандидатов** на 62 сцены, 133 IMDb ID, `verified=0` (с `--max-per-scene 2` — 124).
+
+## 10. Доказательный отбор (16.11.2026)
+
+Импорт и очередь кандидатов остаются для разбора, но публикация теперь идёт через
+[21-evidence-engine.md](21-evidence-engine.md): консенсус независимых изданий по
+содержанию, без ручной сверки. `scripts/build_evidence_library.py --opus-dir …`
+использует тот же корпус OPUS v2024, причём один `<imdb>.xml` режется на документы
+(разные загрузки = разные издания). Текст реплик по-прежнему не сохраняется.

@@ -127,10 +127,13 @@ def parse_opus_xml(stream) -> list[tuple[int, float, float, str]]:
                 end = times[-1] if len(times) > 1 else (start + 3.0 if start is not None else None)
             if start is None or end is None or end <= start:
                 end = (start or 0) + 3.0
-            words = [(e.text or "").strip() for e in elem.iter() if tag(e) == "w" and (e.text or "").strip()]
-            if not words:
-                words = [(elem.text or "").strip()] if (elem.text or "").strip() else []
-            text = " ".join(words)
+            # Текст реплики лежит в РАЗНЫХ местах в зависимости от версии корпуса:
+            #   <s id="1"><time .../>I love you</s>          — текст как tail у <time>
+            #   <s id="1"><time .../><w>I</w> <w>love</w></s> — токены в <w>
+            #   <s id="1">I love you<time .../></s>          — текст перед <time>
+            # Прежняя версия читала только <w> и молча отдавала 0 реплик на первом же
+            # варианте — то есть отбор таймкодов по OPUS был невозможен.
+            text = " ".join("".join(elem.itertext()).split())
             if text:
                 idx += 1
                 blocks.append((idx, float(start), float(end), text))
@@ -139,6 +142,54 @@ def parse_opus_xml(stream) -> list[tuple[int, float, float, str]]:
     except ET.ParseError:
         return blocks
     return blocks
+
+
+def parse_opus_documents(stream) -> list[list[tuple[int, float, float, str]]]:
+    """Один <imdb>.xml содержит несколько <document> — по одному на версию субтитров.
+
+    Возвращает список документов; каждый — блоки [(idx, start, end, text)].
+    Так разные загрузки одного фильма становятся независимыми изданиями, а не
+    одним потоком (иначе «консенсус» внутри одного файла был бы бессмысленным).
+    """
+    documents: list[list[tuple[int, float, float, str]]] = []
+    current: list[tuple[int, float, float, str]] = []
+    idx = 0
+    try:
+        for event, elem in ET.iterparse(stream, events=("start", "end")):
+            t = tag(elem)
+            if event == "start" and t == "document":
+                current, idx = [], 0
+                continue
+            if event != "end":
+                continue
+            if t == "s":
+                start = time_to_seconds(elem.get("time_start"))
+                end = time_to_seconds(elem.get("time_end"))
+                times = [time_to_seconds(e.get("value")) for e in elem.iter()
+                         if tag(e) == "time" and e.get("value")]
+                times = [x for x in times if x is not None]
+                if start is None:
+                    start = times[0] if times else None
+                if end is None:
+                    end = times[-1] if len(times) > 1 else (start + 3.0 if start is not None else None)
+                if start is None or end is None or end <= start:
+                    end = (start or 0) + 3.0
+                text = " ".join("".join(elem.itertext()).split())
+                if text and start is not None:
+                    idx += 1
+                    current.append((idx, float(start), float(end), text))
+                elem.clear()
+            elif t == "document" and current:
+                documents.append(current)
+                current = []
+                elem.clear()
+    except ET.ParseError:
+        if current:
+            documents.append(current)
+        return documents
+    if current:
+        documents.append(current)
+    return documents
 
 
 def load_keywords(manifest_path: str, pilot_path: str) -> dict[tuple[str, int], dict]:
