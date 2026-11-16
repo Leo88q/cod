@@ -33,6 +33,10 @@ SUPPORT_CONTACT = os.getenv("SUPPORT_CONTACT", "@scena_support")  # поддер
 # Webhook-режим бота (prod): WEBHOOK_URL=https://<домен> ; secret проверяется в заголовке
 # VK Mini Apps / Одноклассники: секреты приложения (dev.vk.com → «Защищённый ключ»).
 # Пусто = платформа выключена; подпись входа проверяется только на бэкенде.
+# Секрет подписи партнёрских переходов (/go/...). Без него переходы выключены:
+# неподписанная ссылка позволила бы вести получателя на любой сайт.
+PARTNER_SECRET = os.getenv("PARTNER_SECRET", "")
+
 VK_APP_ID = os.getenv("VK_APP_ID", "")
 VK_SECRET = os.getenv("VK_SECRET", "")
 OK_SECRET = os.getenv("OK_SECRET", "")

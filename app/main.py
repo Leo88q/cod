@@ -1488,6 +1488,72 @@ def card_info(code: str):
     return dict(c)
 
 
+@app.get("/api/shops/{shop_id}/sheet.svg", response_class=Response)
+def cards_sheet(request: Request, shop_id: int, count: int = 20, caption: str = "Открой меня"):
+    """Лист A4 с карманными карточками 40×50 мм и метками реза.
+
+    Печатается на офисном принтере и режется ножницами: 20 карточек за лист.
+    """
+    from . import print_cards
+    count = max(1, min(count, print_cards.PER_ROW * print_cards.PER_COL))
+    conn = connect(config.DB_PATH)
+    try:
+        shop = conn.execute("SELECT name FROM shops WHERE id=?", (shop_id,)).fetchone()
+        if not shop:
+            raise HTTPException(404, "Студия не найдена")
+        codes = [new_code() for _ in range(count)]
+        # карточки выдаются сразу: печатаем то, что реально существует в базе
+        conn.executemany("INSERT INTO cards (code, shop_id, printed_at) VALUES (?,?,?)",
+                         [(c, shop_id, now_iso()) for c in codes])
+        conn.commit()
+    finally:
+        conn.close()
+    captions = {"caption": caption}
+    return Response(
+        print_cards.sheet_svg([app_url(request, f"/card/{c}") for c in codes], codes,
+                              shop=captions["caption"] and shop["name"]),
+        media_type="image/svg+xml")
+
+
+@app.get("/go/{code}")
+def partner_go(request: Request, code: str, p: str = "", u: str = "", sig: str = ""):
+    """Подписанный переход на партнёра. Без подписи — отказ, а не редирект.
+
+    Цифровой подарок не должен превращаться в открытый редирект: иначе наш домен
+    становится трамплином для фишинга. Адрес назначения входит в подпись.
+    """
+    from . import marketplaces
+    if not marketplaces.verify(p, code, u, sig, config.PARTNER_SECRET):
+        raise HTTPException(403, "Переход не подтверждён")
+    return RedirectResponse(u, status_code=302)
+
+
+@app.post("/api/gifts/{gift_id}/offer")
+def create_offer(request: Request, gift_id: str, body: dict = None):
+    """Подписанная ссылка «а ещё можно заказать вот это» под подарком.
+
+    Один товарный слот и только официальный адрес партнёра: интернет-реклама в РФ
+    требует маркировки (ERID/ОРД), поэтому API не даёт собрать каталог.
+    """
+    from . import marketplaces
+    body = body or {}
+    partner, target = body.get("partner", ""), body.get("url", "")
+    if not config.PARTNER_SECRET:
+        raise HTTPException(503, "Партнёрские переходы не настроены (PARTNER_SECRET)")
+    conn = connect(config.DB_PATH)
+    try:
+        if not conn.execute("SELECT 1 FROM gifts WHERE id=?", (gift_id,)).fetchone():
+            raise HTTPException(404, "Подарок не найден")
+    finally:
+        conn.close()
+    try:
+        path = marketplaces.offer_path(partner, gift_id, target, config.PARTNER_SECRET)
+    except marketplaces.PartnerError as exc:
+        raise HTTPException(400, str(exc))
+    return {"path": path, "url": app_url(request).split("/#")[0] + path,
+            "commission_pct": marketplaces.PARTNERS[partner]["commission_pct"]}
+
+
 @app.get("/api/cards/{code}/qr.svg")
 def card_qr(request: Request, code: str):
     return Response(qr_svg(app_url(request, f"/card/{code}")), media_type="image/svg+xml")
