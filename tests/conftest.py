@@ -12,3 +12,8 @@ os.environ["RATE_LIMIT_SUGGEST_PER_MIN"] = "100000"
 os.environ.pop("BOT_TOKEN", None)
 
 os.environ["RATE_LIMIT_UPLOAD_PER_MIN"] = "100000"
+
+# Схема инициализируется один раз для временной БД набора: тесты платформ
+# (VK/OK) пишут в users/user_identities напрямую, минуя старт приложения.
+from app.db import init_db  # noqa: E402
+init_db(os.environ["DB_PATH"])

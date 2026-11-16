@@ -113,6 +113,25 @@ bash scripts/dev.sh                                    # затем #/admin с A
 [docs/22-product-without-films.md](docs/22-product-without-films.md).
 Кадр прототипа: `docs/assets/your-film-frames.png`.
 
+## Площадки: Telegram + VK + Одноклассники (16.11.2026)
+
+Одно Mini App работает в трёх мессенджерах. Регистрация в VK Mini Apps
+автоматически даёт витрину ОК (создание приложений внутри ОК больше не
+поддерживается), поэтому вторая соцсеть — бесплатно.
+
+- `app/platform_auth.py` — проверка подписи запуска VK на бэкенде
+  (base64url HMAC-SHA256; подменить `vk_user_id` нельзя — покрыто тестами),
+  единая идентичность `user_identities(provider, external_id) → users.id`,
+  Telegram-совместимость (`users.telegram_id`) сохранена;
+- `POST /api/auth/vk`, `GET /api/platform`;
+- `app/static/platform.js` — мост для трёх платформ, нативная история VK
+  (`VKWebAppShowStoryBox`) под ролик «ваше кино»;
+- MAX: технически похож на Telegram, но публиковать ботов и Mini Apps могут
+  только верифицированные юрлица РФ — не для MVP.
+
+Что брать с GitHub (и что не брать), лицензии и ограничения площадок:
+[docs/23-platforms-and-github.md](docs/23-platforms-and-github.md).
+
 ## Юридические рамки
 
 Показываем только название фильма, год, таймкод и наше описание сцены — без видео и дословных реплик. Персональные данные — по 152-ФЗ (согласия в таблице `consents`, уведомление Роскомнадзора — в чеклисте runbook).

@@ -109,6 +109,18 @@ def _migrate(conn: sqlite3.Connection) -> None:
         cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
         if cols and col not in cols:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {coldef}")
+    # идентичности платформ (VK/OK) для уже существующих БД
+    conn.execute("""CREATE TABLE IF NOT EXISTS user_identities (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      provider TEXT NOT NULL,
+      external_id TEXT NOT NULL,
+      display_name TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      last_seen_at TEXT,
+      UNIQUE (provider, external_id)
+    )""")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_identities_user ON user_identities(user_id)")
     # таблица кандидатов таймкодов (миграция для старых БД)
     conn.execute("""CREATE TABLE IF NOT EXISTS timecode_candidates (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

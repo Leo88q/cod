@@ -402,3 +402,53 @@ test('photo upload failure aborts gift creation', async () => {
     assert.match(dom.window.document.querySelector('#toast').textContent, /Не удалось загрузить фото/);
   } finally { dom.window.close(); }
 });
+
+// --- мост платформ: VK/ОК без改动 в приложении -------------------------------
+test("platform bridge: определяет VK по подписанным launch params и шлёт их на бэкенд", async () => {
+  const { JSDOM } = require("jsdom");
+  const fs = require("fs");
+  const path = require("path");
+  const src = fs.readFileSync(path.join(__dirname, "../../app/static/platform.js"), "utf8");
+  const calls = [];
+  const dom = new JSDOM(`<!doctype html><body></body>`, {
+    url: "https://example.com/app/?vk_app_id=1&vk_user_id=42&sign=abc",
+    runScripts: "outside-only",
+  });
+  dom.window.vkBridge = {
+    send: async (method, payload) => { calls.push({ method, payload }); return { result: true }; },
+  };
+  dom.window.fetch = async (url, opts) => {
+    calls.push({ url, headers: opts.headers, body: opts.body });
+    return { ok: true, json: async () => ({ user: { id: 7 } }) };
+  };
+  dom.window.eval(src);
+  const p = dom.window.scenaPlatform;
+  assert.equal(p.detect(), "vk");
+  await p.init();
+  await p.login();
+  const auth = calls.find((c) => c.method === "VKWebAppInit");
+  assert.ok(auth, "VKWebAppInit обязателен — иначе VK не считает приложение запущенным");
+  const req = calls.find((c) => c.url === "/api/auth/vk");
+  assert.ok(req, "вход идёт на /api/auth/vk");
+  assert.ok(req.headers["X-VK-Launch-Params"].includes("sign=abc"));
+});
+
+test("platform bridge: история VK открывается нативно для ролика", async () => {
+  const { JSDOM } = require("jsdom");
+  const fs = require("fs");
+  const path = require("path");
+  const src = fs.readFileSync(path.join(__dirname, "../../app/static/platform.js"), "utf8");
+  const calls = [];
+  const dom = new JSDOM(`<!doctype html><body></body>`, {
+    url: "https://example.com/app/?vk_app_id=1&sign=abc",
+    runScripts: "outside-only",
+  });
+  dom.window.vkBridge = { send: async (method, payload) => { calls.push({ method, payload }); return { result: true }; } };
+  dom.window.eval(src);
+  await dom.window.scenaPlatform.init();
+  const ok = await dom.window.scenaPlatform.shareStory("https://cdn/f.mp4", "https://vk.com/app1");
+  assert.equal(ok, true);
+  const story = calls.find((c) => c.method === "VKWebAppShowStoryBox");
+  assert.ok(story && story.payload.background_type === "image");
+  assert.equal(story.payload.attachment.url, "https://vk.com/app1");
+});

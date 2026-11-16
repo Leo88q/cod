@@ -420,6 +420,38 @@ def health():
     return {"status": "ok", "service": "scena", "version": "1.0.0", "time": now_iso()}
 
 
+@app.post("/api/auth/vk")
+def auth_vk(request: Request, body: dict = None):
+    """Вход в VK Mini App / Одноклассниках по подписанным параметрам запуска.
+
+    Приложение регистрируется один раз в VK Mini Apps и бесплатно показывается
+    в витрине ОК, поэтому отдельная авторизация для ОК не нужна.
+    """
+    from . import platform_auth
+    raw = (body or {}).get("launch_params") or request.headers.get("X-VK-Launch-Params", "") \
+        or request.url.query
+    try:
+        params = platform_auth.validate_vk_launch(raw, config.VK_SECRET, max_age=24 * 3600)
+    except platform_auth.ProviderError as exc:
+        raise HTTPException(401, f"Вход VK не подтверждён: {exc}")
+    name = " ".join(x for x in (params.get("vk_first_name"), params.get("vk_last_name")) if x)
+    user = platform_auth.upsert_identity("vk", str(params["vk_user_id"]), name)
+    return {"ok": True, "provider": "vk", "user": user, "vk_user_id": params["vk_user_id"]}
+
+
+@app.get("/api/platform")
+def platform_info(request: Request):
+    """Какие платформы включены — клиент показывает нужные кнопки входа."""
+    from . import platform_auth
+    return {
+        "telegram": bool(config.BOT_TOKEN),
+        "vk": bool(config.VK_SECRET),
+        "ok": bool(config.OK_SECRET) or bool(config.VK_SECRET),
+        "providers": list(platform_auth.PROVIDERS),
+        "note": "ОК использует то же приложение VK Mini Apps; отдельный вход не нужен.",
+    }
+
+
 @app.post("/api/auth/telegram")
 def auth_telegram(request: Request, body: dict = None):
     """Валидация initData и upsert пользователя. Клиент шлёт initData также заголовком

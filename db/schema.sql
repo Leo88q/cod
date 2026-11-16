@@ -274,6 +274,20 @@ CREATE INDEX IF NOT EXISTS idx_tc_candidates_scene ON timecode_candidates(scene_
 CREATE INDEX IF NOT EXISTS idx_tc_candidates_status ON timecode_candidates(status);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_tc_candidates_dedup ON timecode_candidates(scene_id, source, timecode_seconds);
 
+-- Идентичности платформ: Telegram / VK / Одноклассники -> один users.id.
+-- users.telegram_id остаётся основным ключом для совместимости.
+CREATE TABLE IF NOT EXISTS user_identities (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  provider    TEXT NOT NULL,              -- telegram / vk / ok
+  external_id TEXT NOT NULL,              -- vk_user_id / ok user id (как строка)
+  display_name TEXT,
+  created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+  last_seen_at TEXT,
+  UNIQUE (provider, external_id)
+);
+CREATE INDEX IF NOT EXISTS idx_identities_user ON user_identities(user_id);
+
 -- события аналитики воронки (gift_created/opened/replied, card_scan, …)
 CREATE TABLE IF NOT EXISTS events (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

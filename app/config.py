@@ -31,6 +31,12 @@ MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "10"))  # лимит загруз
 SUPPORT_CONTACT = os.getenv("SUPPORT_CONTACT", "@scena_support")  # поддержка (бот /help, лендинг)
 
 # Webhook-режим бота (prod): WEBHOOK_URL=https://<домен> ; secret проверяется в заголовке
+# VK Mini Apps / Одноклассники: секреты приложения (dev.vk.com → «Защищённый ключ»).
+# Пусто = платформа выключена; подпись входа проверяется только на бэкенде.
+VK_APP_ID = os.getenv("VK_APP_ID", "")
+VK_SECRET = os.getenv("VK_SECRET", "")
+OK_SECRET = os.getenv("OK_SECRET", "")
+
 WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")
 WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "")
 
