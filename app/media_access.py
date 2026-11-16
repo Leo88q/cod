@@ -7,7 +7,8 @@ from urllib.parse import urlencode
 
 from . import config
 
-_NAME = re.compile(r"[A-Za-z0-9_-]+\.(?:jpg|jpeg|png|webp|gif|ogg|mp3|oga|m4a|wav|webm)\Z")
+# mp4 — «ваше кино», собранное сервером через ffmpeg (см. app/make_film_service.py)
+_NAME = re.compile(r"[A-Za-z0-9_-]+\.(?:jpg|jpeg|png|webp|gif|ogg|mp3|oga|m4a|wav|webm|mp4)\Z")
 
 
 def valid_name(name):
