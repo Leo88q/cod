@@ -4,11 +4,11 @@
   "license_note": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
   "stats": {
     "catalog_scenes": 140,
-    "matched_scenes": 62,
-    "unmatched_scenes": 78,
+    "matched_scenes": 61,
+    "unmatched_scenes": 79,
     "excluded_false_matches": 6,
     "ambiguous_scenes": 5,
-    "subtitle_files": 105,
+    "subtitle_files": 103,
     "sources_used": [
       "fosskers",
       "imkira",
@@ -354,6 +354,10 @@
       "reason": "нет SRT/CSV с таким именем"
     },
     {
+      "key": "Спасти рядового Райана|1998",
+      "reason": "нет English title"
+    },
+    {
       "key": "Зелёная книга|2018",
       "english_title": "Green Book",
       "reason": "нет SRT/CSV с таким именем"
@@ -471,6 +475,7 @@
   "entries": [
     {
       "movie_title": "Only Old Men Are Going to Battle",
+      "catalog_title": "В бой идут одни «старики»",
       "movie_year": 1973,
       "imdb_id": "tt0070861",
       "lang": "en",
@@ -520,6 +525,7 @@
     },
     {
       "movie_title": "War and Peace",
+      "catalog_title": "Война и мир",
       "movie_year": 1966,
       "imdb_id": "tt0063794",
       "lang": "en",
@@ -567,6 +573,7 @@
     },
     {
       "movie_title": "Brother",
+      "catalog_title": "Брат",
       "movie_year": 1997,
       "imdb_id": "tt0118767",
       "lang": "en",
@@ -617,6 +624,7 @@
     },
     {
       "movie_title": "Stalingrad",
+      "catalog_title": "Сталинград",
       "movie_year": 2013,
       "imdb_id": "tt1966566",
       "lang": "en",
@@ -663,6 +671,7 @@
     },
     {
       "movie_title": "When Harry Met Sally",
+      "catalog_title": "Когда Гарри встретил Салли",
       "movie_year": 1989,
       "imdb_id": "tt0098635",
       "lang": "en",
@@ -710,6 +719,7 @@
     },
     {
       "movie_title": "Notting Hill",
+      "catalog_title": "Ноттинг Хилл",
       "movie_year": 1999,
       "imdb_id": "tt0125439",
       "lang": "en",
@@ -756,6 +766,7 @@
     },
     {
       "movie_title": "The Notebook",
+      "catalog_title": "Дневник памяти",
       "movie_year": 2004,
       "imdb_id": "tt0332280",
       "lang": "en",
@@ -802,6 +813,7 @@
     },
     {
       "movie_title": "Amelie",
+      "catalog_title": "Амели",
       "movie_year": 2001,
       "imdb_id": "tt0211915",
       "lang": "en",
@@ -846,6 +858,7 @@
     },
     {
       "movie_title": "La La Land",
+      "catalog_title": "Ла-Ла Ленд",
       "movie_year": 2016,
       "imdb_id": "tt3783952",
       "lang": "en",
@@ -893,6 +906,7 @@
     },
     {
       "movie_title": "Titanic",
+      "catalog_title": "Титаник",
       "movie_year": 1997,
       "imdb_id": "tt0120338",
       "lang": "en",
@@ -940,6 +954,7 @@
     },
     {
       "movie_title": "Pretty Woman",
+      "catalog_title": "Красотка",
       "movie_year": 1990,
       "imdb_id": "tt0100405",
       "lang": "en",
@@ -987,6 +1002,7 @@
     },
     {
       "movie_title": "The Fault in Our Stars",
+      "catalog_title": "Виноваты звёзды",
       "movie_year": 2014,
       "imdb_id": "tt1099212",
       "lang": "en",
@@ -1037,6 +1053,7 @@
     },
     {
       "movie_title": "Eat Pray Love",
+      "catalog_title": "Ешь, молись, люби",
       "movie_year": 2010,
       "imdb_id": "tt0879870",
       "lang": "en",
@@ -1085,6 +1102,7 @@
     },
     {
       "movie_title": "Ghost",
+      "catalog_title": "Привидение",
       "movie_year": 1990,
       "imdb_id": "tt0099653",
       "lang": "en",
@@ -1134,6 +1152,7 @@
     },
     {
       "movie_title": "Ghost",
+      "catalog_title": "Призрак",
       "movie_year": 1990,
       "imdb_id": "tt0099653",
       "lang": "en",
@@ -1181,6 +1200,7 @@
     },
     {
       "movie_title": "Back to the Future",
+      "catalog_title": "Назад в будущее",
       "movie_year": 1985,
       "imdb_id": "tt0088763",
       "lang": "en",
@@ -1226,6 +1246,7 @@
     },
     {
       "movie_title": "Back to the Future Part II",
+      "catalog_title": "Назад в будущее 2",
       "movie_year": 1989,
       "imdb_id": "tt0096874",
       "lang": "en",
@@ -1273,6 +1294,7 @@
     },
     {
       "movie_title": "Home Alone",
+      "catalog_title": "Один дома",
       "movie_year": 1990,
       "imdb_id": "tt0099785",
       "lang": "en",
@@ -1320,6 +1342,7 @@
     },
     {
       "movie_title": "Home Alone 2: Lost in New York",
+      "catalog_title": "Один дома 2",
       "movie_year": 1992,
       "imdb_id": "tt0104431",
       "lang": "en",
@@ -1368,6 +1391,7 @@
     },
     {
       "movie_title": "The Hangover",
+      "catalog_title": "Мальчишник в Вегасе",
       "movie_year": 2009,
       "imdb_id": "tt1119646",
       "lang": "en",
@@ -1419,6 +1443,7 @@
     },
     {
       "movie_title": "Mrs. Doubtfire",
+      "catalog_title": "Миссис Даутфайр",
       "movie_year": 1993,
       "imdb_id": "tt0107614",
       "lang": "en",
@@ -1471,6 +1496,7 @@
     },
     {
       "movie_title": "Shrek",
+      "catalog_title": "Шрек",
       "movie_year": 2001,
       "imdb_id": "tt0126029",
       "lang": "en",
@@ -1519,6 +1545,7 @@
     },
     {
       "movie_title": "Shrek 2",
+      "catalog_title": "Шрек 2",
       "movie_year": 2004,
       "imdb_id": "tt0298148",
       "lang": "en",
@@ -1568,6 +1595,7 @@
     },
     {
       "movie_title": "Up",
+      "catalog_title": "Вверх",
       "movie_year": 2009,
       "imdb_id": "tt1049413",
       "lang": "en",
@@ -1618,6 +1646,7 @@
     },
     {
       "movie_title": "The Lion King",
+      "catalog_title": "Король Лев",
       "movie_year": 1994,
       "imdb_id": "tt0110357",
       "lang": "en",
@@ -1663,6 +1692,7 @@
     },
     {
       "movie_title": "Frozen",
+      "catalog_title": "Холодное сердце",
       "movie_year": 2013,
       "imdb_id": "tt2294629",
       "lang": "en",
@@ -1714,6 +1744,7 @@
     },
     {
       "movie_title": "How to Train Your Dragon",
+      "catalog_title": "Как приручить дракона",
       "movie_year": 2010,
       "imdb_id": "tt0892769",
       "lang": "en",
@@ -1763,6 +1794,7 @@
     },
     {
       "movie_title": "Despicable Me",
+      "catalog_title": "Гадкий я",
       "movie_year": 2010,
       "imdb_id": "tt1323594",
       "lang": "en",
@@ -1812,6 +1844,7 @@
     },
     {
       "movie_title": "Coco",
+      "catalog_title": "Тайна Коко",
       "movie_year": 2017,
       "imdb_id": "tt2380307",
       "lang": "en",
@@ -1858,6 +1891,7 @@
     },
     {
       "movie_title": "Spirited Away",
+      "catalog_title": "Унесённые призраками",
       "movie_year": 2001,
       "imdb_id": "tt0245429",
       "lang": "en",
@@ -1902,6 +1936,7 @@
     },
     {
       "movie_title": "Ratatouille",
+      "catalog_title": "Рататуй",
       "movie_year": 2007,
       "imdb_id": "tt0382932",
       "lang": "en",
@@ -1948,6 +1983,7 @@
     },
     {
       "movie_title": "WALL-E",
+      "catalog_title": "ВАЛЛ-И",
       "movie_year": 2008,
       "imdb_id": "tt0910970",
       "lang": "en",
@@ -1997,6 +2033,7 @@
     },
     {
       "movie_title": "Finding Nemo",
+      "catalog_title": "В поисках Немо",
       "movie_year": 2003,
       "imdb_id": "tt0266543",
       "lang": "en",
@@ -2048,6 +2085,7 @@
     },
     {
       "movie_title": "Toy Story",
+      "catalog_title": "История игрушек",
       "movie_year": 1995,
       "imdb_id": "tt0114709",
       "lang": "en",
@@ -2094,6 +2132,7 @@
     },
     {
       "movie_title": "Toy Story 3",
+      "catalog_title": "История игрушек 3",
       "movie_year": 2010,
       "imdb_id": "tt0435761",
       "lang": "en",
@@ -2143,6 +2182,7 @@
     },
     {
       "movie_title": "The Incredibles",
+      "catalog_title": "Суперсемейка",
       "movie_year": 2004,
       "imdb_id": "tt0317705",
       "lang": "en",
@@ -2192,6 +2232,7 @@
     },
     {
       "movie_title": "Forrest Gump",
+      "catalog_title": "Форрест Гамп",
       "movie_year": 1994,
       "imdb_id": "tt0109830",
       "lang": "en",
@@ -2239,6 +2280,7 @@
     },
     {
       "movie_title": "The Shawshank Redemption",
+      "catalog_title": "Побег из Шоушенка",
       "movie_year": 1994,
       "imdb_id": "tt0111161",
       "lang": "en",
@@ -2284,6 +2326,7 @@
     },
     {
       "movie_title": "The Green Mile",
+      "catalog_title": "Зелёная миля",
       "movie_year": 1999,
       "imdb_id": "tt0120689",
       "lang": "en",
@@ -2329,6 +2372,7 @@
     },
     {
       "movie_title": "A Beautiful Mind",
+      "catalog_title": "Игры разума",
       "movie_year": 2001,
       "imdb_id": "tt0268978",
       "lang": "en",
@@ -2379,6 +2423,7 @@
     },
     {
       "movie_title": "The Godfather",
+      "catalog_title": "Крёстный отец",
       "movie_year": 1972,
       "imdb_id": "tt0068646",
       "lang": "en",
@@ -2425,6 +2470,7 @@
     },
     {
       "movie_title": "The Godfather Part II",
+      "catalog_title": "Крёстный отец 2",
       "movie_year": 1974,
       "imdb_id": "tt0071562",
       "lang": "en",
@@ -2475,6 +2521,7 @@
     },
     {
       "movie_title": "Leon: The Professional",
+      "catalog_title": "Леон",
       "movie_year": 1994,
       "imdb_id": "tt0110413",
       "lang": "en",
@@ -2520,6 +2567,7 @@
     },
     {
       "movie_title": "Schindler's List",
+      "catalog_title": "Список Шиндлера",
       "movie_year": 1993,
       "imdb_id": "tt0108052",
       "lang": "en",
@@ -2567,57 +2615,8 @@
       ]
     },
     {
-      "movie_title": "Saving Private Ryan",
-      "movie_year": 1998,
-      "imdb_id": "tt0120815",
-      "lang": "en",
-      "service": "kinopoisk",
-      "source_license": "OpenSubtitles community subtitles via GitHub mirrors; only timecodes + sha1 stored, subtitle text is not reproduced. See docs/06-timecode-sources.md",
-      "file": [
-        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Saving-Private-Ryan-1998.csv",
-        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Saving%20Private%20Ryan.srt"
-      ],
-      "sources": [
-        "https://github.com/jblinder/subtext/blob/601f8e44b2fd1dd5b8daebbea879ced5797b285e/data/srt/srt_csv/Saving-Private-Ryan-1998.csv",
-        "https://github.com/mesutgurlek/Movie-Category-Classification-from-Subtitles/blob/7ebe351e15ff8220cb8432747902002e5904e349/NonImpairedSubtitles/War/Saving%20Private%20Ryan.srt"
-      ],
-      "formats": [
-        "csv",
-        "srt"
-      ],
-      "ambiguous": false,
-      "match_note": "точное совпадение имени файла с английским названием",
-      "scenes": [
-        {
-          "match_title": "Saving Private Ryan",
-          "keywords": [
-            "Saving",
-            "Private",
-            "Ryan",
-            "love",
-            "friend",
-            "family",
-            "home",
-            "hope",
-            "dream",
-            "time",
-            "life",
-            "father",
-            "mother",
-            "music"
-          ],
-          "keywords_ru": [
-            "отряд",
-            "идёт",
-            "спасать",
-            "солдата"
-          ],
-          "moment_label": "Отряд идёт спасать солдата."
-        }
-      ]
-    },
-    {
       "movie_title": "The Pianist",
+      "catalog_title": "Пианист",
       "movie_year": 2002,
       "imdb_id": "tt0253474",
       "lang": "en",
@@ -2664,6 +2663,7 @@
     },
     {
       "movie_title": "The Intouchables",
+      "catalog_title": "1+1",
       "movie_year": 2011,
       "imdb_id": "tt1675434",
       "lang": "en",
@@ -2711,6 +2711,7 @@
     },
     {
       "movie_title": "The Prestige",
+      "catalog_title": "Престиж",
       "movie_year": 2006,
       "imdb_id": "tt0482571",
       "lang": "en",
@@ -2756,6 +2757,7 @@
     },
     {
       "movie_title": "The Matrix",
+      "catalog_title": "Матрица",
       "movie_year": 1999,
       "imdb_id": "tt0133093",
       "lang": "en",
@@ -2802,6 +2804,7 @@
     },
     {
       "movie_title": "Inception",
+      "catalog_title": "Начало",
       "movie_year": 2010,
       "imdb_id": "tt1375666",
       "lang": "en",
@@ -2846,6 +2849,7 @@
     },
     {
       "movie_title": "Interstellar",
+      "catalog_title": "Интерстеллар",
       "movie_year": 2014,
       "imdb_id": "tt0816692",
       "lang": "en",
@@ -2898,6 +2902,7 @@
     },
     {
       "movie_title": "Harry Potter and the Prisoner of Azkaban",
+      "catalog_title": "Гарри Поттер и узник Азкабана",
       "movie_year": 2004,
       "imdb_id": "tt0304141",
       "lang": "en",
@@ -2947,6 +2952,7 @@
     },
     {
       "movie_title": "Harry Potter and the Deathly Hallows: Part 2",
+      "catalog_title": "Гарри Поттер и Дары смерти",
       "movie_year": 2011,
       "imdb_id": "tt1201607",
       "lang": "en",
@@ -2997,6 +3003,7 @@
     },
     {
       "movie_title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+      "catalog_title": "Пираты Карибского моря",
       "movie_year": 2003,
       "imdb_id": "tt0325980",
       "lang": "en",
@@ -3047,6 +3054,7 @@
     },
     {
       "movie_title": "Avengers: Endgame",
+      "catalog_title": "Мстители: Финал",
       "movie_year": 2019,
       "imdb_id": "tt4154796",
       "lang": "en",
@@ -3092,6 +3100,7 @@
     },
     {
       "movie_title": "Spider-Man: No Way Home",
+      "catalog_title": "Человек-паук: Нет пути домой",
       "movie_year": 2021,
       "imdb_id": "tt10872600",
       "lang": "en",
@@ -3141,6 +3150,7 @@
     },
     {
       "movie_title": "Dirty Dancing",
+      "catalog_title": "Грязные танцы",
       "movie_year": 1987,
       "imdb_id": "tt0092890",
       "lang": "en",
@@ -3183,6 +3193,7 @@
     },
     {
       "movie_title": "A Star Is Born",
+      "catalog_title": "Звезда родилась",
       "movie_year": 2018,
       "imdb_id": "tt1517451",
       "lang": "en",
@@ -3229,6 +3240,7 @@
     },
     {
       "movie_title": "The Greatest Showman",
+      "catalog_title": "Величайшее шоу на Земле",
       "movie_year": 2017,
       "imdb_id": "tt1485796",
       "lang": "en",
@@ -3275,6 +3287,7 @@
     },
     {
       "movie_title": "Psycho",
+      "catalog_title": "Психо",
       "movie_year": 1960,
       "imdb_id": "tt0054215",
       "lang": "en",
@@ -3319,6 +3332,7 @@
     },
     {
       "movie_title": "The Shining",
+      "catalog_title": "Сияние",
       "movie_year": 1980,
       "imdb_id": "tt0081505",
       "lang": "en",
@@ -3364,6 +3378,7 @@
     },
     {
       "movie_title": "Monsters, Inc.",
+      "catalog_title": "Корпорация монстров",
       "movie_year": 2001,
       "imdb_id": "tt0198781",
       "lang": "en",

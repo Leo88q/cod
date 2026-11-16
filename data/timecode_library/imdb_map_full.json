@@ -1000,6 +1000,13 @@
       "imdb_id": "tt0198781",
       "tmdb_id": null,
       "source": "manual"
+    },
+    "Джентльмены|2019": {
+      "original_title": "The Gentlemen",
+      "movie_year": 2019,
+      "imdb_id": "tt8367814",
+      "tmdb_id": null,
+      "source": "manual"
     }
   }
 }

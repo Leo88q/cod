@@ -247,6 +247,10 @@ def main() -> int:
 
         entries.append({
             "movie_title": en,
+            # Название в НАШЕМ каталоге: по нему движок находит сцену в БД.
+            # Без этого английское «Saving Private Ryan» не совпадало с русской
+            # сценой, и такие фильмы молча выпадали из библиотеки.
+            "catalog_title": meta["title"],
             "movie_year": meta["year"],
             "imdb_id": im.get("imdb_id"),
             "lang": "en",

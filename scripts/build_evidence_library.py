@@ -60,8 +60,12 @@ def ensure_cache(manifest_path: str, cache_dir: str, refresh: bool = False) -> d
     if os.path.exists(LOCAL_MANIFEST) and not refresh:
         with open(LOCAL_MANIFEST, encoding="utf-8") as f:
             return json.load(f)
+    # init_db обязателен: fetch_timecodes.py в dry-run всё равно ищет таблицу
+    # scenes, и без инициализации падает с «no such table» на чистом окружении.
+    bootstrap_db = os.path.join(cache_dir, "_bootstrap.db")
+    init_db(bootstrap_db)
     cmd = [sys.executable, IMPORT_SCRIPT, "--manifest", manifest_path,
-           "--cache-dir", cache_dir, "--db", "/tmp/_evidence_bootstrap.db", "--dry-run"]
+           "--cache-dir", cache_dir, "--db", bootstrap_db, "--dry-run"]
     print("== Кэш субтитров пуст — скачиваю издания (dry-run импорта)")
     subprocess.run(cmd, check=True, cwd=BASE_DIR)
     with open(LOCAL_MANIFEST, encoding="utf-8") as f:
@@ -75,7 +79,10 @@ def editions_from_github(local: dict) -> dict[tuple[str, int | None], list[E.Edi
     for entry in local.get("entries", []):
         lang = entry.get("lang", "en")
         for scene in entry.get("scenes", []):
-            title, year = scene.get("match_title"), entry.get("movie_year")
+            # приоритет — название в нашем каталоге (локализованное)
+            title = (entry.get("catalog_title") or scene.get("match_title")
+                     or entry.get("movie_title"))
+            year = entry.get("movie_year")
             for path in entry.get("file", []):
                 if not path.endswith(".srt") or not os.path.exists(path):
                     continue
