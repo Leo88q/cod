@@ -477,55 +477,6 @@ def users_me(request: Request, telegram_id: Optional[int] = None):
     return {"user": user, "premium": premium}
 
 
-class FilmIn(BaseModel):
-    """«Ваше кино»: фото уже загружены через /api/upload, порядок задаёт сюжет."""
-    photos: list[str] = Field(min_length=1, max_length=10)
-    captions: list[str] = Field(default_factory=list, max_length=10)
-    title: str = Field(default="", max_length=60)
-    voice: Optional[str] = None
-
-
-def _local_media(item: str) -> str:
-    """Проверить, что путь — имя файла из нашего /media, и вернуть абсолютный путь.
-
-    Принимаем только то, что произвёл наш собственный нормализатор: имя без
-    каталогов и с ожидаемым расширением — иначе через `../` можно прочитать
-    произвольный файл сервера.
-    """
-    if not item.startswith("/media/"):
-        raise HTTPException(400, "Ожидается путь /media/<файл> от /api/upload")
-    name = item[len("/media/"):]
-    from .media_access import valid_name as valid_media_name
-    if not valid_media_name(name):
-        raise HTTPException(400, "Некорректное имя файла")
-    path = os.path.join(config.MEDIA_DIR, name)
-    if not os.path.isfile(path):
-        raise HTTPException(404, "Файл не найден — загрузите его заново")
-    return path
-
-
-@app.post("/api/film/build")
-async def film_build(request: Request, body: FilmIn):
-    """Собрать вертикальный фильм из фото и голоса — без чужих кадров и прав на них."""
-    if not request_user(request, None) and not request.headers.get("X-Telegram-Init-Data"):
-        raise HTTPException(401, "Нужна авторизация Telegram")
-    from .make_film_service import build_from_media
-    try:
-        result = await run_in_threadpool(
-            build_from_media,
-            [ _local_media(p) for p in body.photos ],
-            [c for c in body.captions][: len(body.photos)],
-            body.title,
-            _local_media(body.voice) if body.voice else None,
-            config.MEDIA_DIR,
-        )
-    except ValueError as exc:
-        raise HTTPException(400, str(exc))
-    except RuntimeError:
-        raise HTTPException(500, "Не удалось собрать фильм")
-    return result
-
-
 @app.post("/api/upload")
 async def upload(file: UploadFile = File(...)):
     """Загрузка медиа (фото открытки, голосовое). Возвращает /media/<имя> путь.
